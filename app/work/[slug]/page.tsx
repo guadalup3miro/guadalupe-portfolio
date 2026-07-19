@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import { projects } from "@/lib/projects";
 
 export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+  return projects
+    .filter((project) => project.slug !== "ripio")
+    .map((project) => ({ slug: project.slug }));
 }
 
 export default async function ProjectPage({
