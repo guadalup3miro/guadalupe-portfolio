@@ -34,6 +34,17 @@ export default function RipioPage() {
         Crypto&apos;s biggest problem was never the technology. It was trust.
       </p>
 
+      <figure className="mt-8 max-w-xl">
+        <CaseStudyImage
+          src="/images/ripio/old-wallet-page.png"
+          alt="Ripio's old wallet page"
+          aspect="wide"
+        />
+        <figcaption className="mt-2 text-xs tracking-wide text-muted uppercase">
+          Before
+        </figcaption>
+      </figure>
+
       <p className="mt-6 leading-relaxed text-muted">
         In 2018, Argentina was a country where crypto adoption should have
         been obvious. Chronic inflation was eating people&apos;s savings in
@@ -87,6 +98,12 @@ export default function RipioPage() {
         aspect="photo"
         className="mt-6 max-w-sm"
       />
+      <CaseStudyImage
+        src="/images/ripio/jtbd-segmentation-matrix.png"
+        alt="Jobs-to-be-done segmentation matrix"
+        aspect="wide"
+        className="mt-6"
+      />
 
       <h2 className="mt-16 text-2xl font-medium tracking-tight">
         Making a stranger feel safe enough to hand over their money
@@ -122,6 +139,12 @@ export default function RipioPage() {
           </figcaption>
         </figure>
       </div>
+      <CaseStudyImage
+        src="/images/ripio/validation-flow-grid.png"
+        alt="Full identity validation flow"
+        aspect="wide"
+        className="mt-6"
+      />
 
       <h2 className="mt-16 text-2xl font-medium tracking-tight">
         Built for people, not just for crypto
