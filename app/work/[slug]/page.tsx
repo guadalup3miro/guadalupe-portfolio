@@ -18,7 +18,10 @@ export default async function ProjectPage({
 
   return (
     <section className="mx-auto w-full max-w-3xl px-6 py-24 sm:px-10">
-      <Link href="/" className="text-sm text-muted hover:text-foreground">
+      <Link
+        href={project.kind === "gallery" ? "/graphic-design" : "/"}
+        className="text-sm text-muted hover:text-foreground"
+      >
         ← Back
       </Link>
       <p className="mt-8 text-sm text-muted">{project.tags.join(" · ")}</p>

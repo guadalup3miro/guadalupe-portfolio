@@ -3,14 +3,14 @@ export type ProjectTag =
   | "UX/UI"
   | "Branding"
   | "Editorial"
-  | "Illustration";
+  | "Collage";
 
 export const projectTags: ProjectTag[] = [
   "Product Design",
   "UX/UI",
   "Branding",
   "Editorial",
-  "Illustration",
+  "Collage",
 ];
 
 export type ProjectKind = "case-study" | "gallery";
@@ -66,6 +66,14 @@ export const projects: Project[] = [
     aspect: "tall",
   },
   {
+    slug: "caminos-de-la-villa",
+    title: "Caminos de la Villa",
+    summary: "Web app",
+    tags: ["Product Design", "UX/UI"],
+    kind: "case-study",
+    aspect: "wide",
+  },
+  {
     slug: "intercoop",
     title: "Intercoop",
     summary: "Editorial and brand identity",
@@ -82,11 +90,51 @@ export const projects: Project[] = [
     aspect: "wide",
   },
   {
+    slug: "bienal-buenos-aires",
+    title: "Bienal Buenos Aires",
+    summary: "Branding and editorial design",
+    tags: ["Branding", "Editorial"],
+    kind: "gallery",
+    aspect: "tall",
+  },
+  {
     slug: "revista-gluck",
     title: "Revista Gluck",
     summary: "Magazine editorial design",
-    tags: ["Editorial", "Branding"],
+    tags: ["Editorial"],
+    kind: "gallery",
+    aspect: "square",
+  },
+  {
+    slug: "carl-jung",
+    title: "Carl Jung",
+    summary: "Editorial design project",
+    tags: ["Editorial"],
+    kind: "gallery",
+    aspect: "wide",
+  },
+  {
+    slug: "hedwig-and-the-angry-inch",
+    title: "Hedwig and the Angry Inch",
+    summary: "Collage piece",
+    tags: ["Collage"],
     kind: "gallery",
     aspect: "tall",
+  },
+  {
+    slug: "coco-rosie",
+    title: "Coco Rosie",
+    summary: "Collage piece",
+    tags: ["Collage"],
+    kind: "gallery",
+    aspect: "square",
+  },
+  {
+    slug: "wes-anderson",
+    title: "Wes Anderson",
+    summary: "Personal collage project",
+    tags: ["Collage"],
+    kind: "gallery",
+    aspect: "wide",
   },
 ];
