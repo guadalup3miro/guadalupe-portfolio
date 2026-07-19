@@ -100,7 +100,7 @@ export default function RipioPage() {
         then phone and ID validation — one clear step at a time, instead of
         a wall of form fields.
       </p>
-      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
         <figure>
           <CaseStudyImage
             src="/images/ripio/onboarding-sketch.png"
@@ -119,16 +119,6 @@ export default function RipioPage() {
           />
           <figcaption className="mt-2 text-xs tracking-wide text-muted uppercase">
             Wireframes
-          </figcaption>
-        </figure>
-        <figure>
-          <CaseStudyImage
-            src="/images/ripio/onboarding-final-polished.png"
-            alt="Onboarding final UI"
-            aspect="portrait"
-          />
-          <figcaption className="mt-2 text-xs tracking-wide text-muted uppercase">
-            Final
           </figcaption>
         </figure>
       </div>
