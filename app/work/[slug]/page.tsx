@@ -2,9 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/lib/projects";
 
+const builtSlugs = new Set(["ripio", "natura"]);
+
 export function generateStaticParams() {
   return projects
-    .filter((project) => project.slug !== "ripio")
+    .filter((project) => !builtSlugs.has(project.slug))
     .map((project) => ({ slug: project.slug }));
 }
 

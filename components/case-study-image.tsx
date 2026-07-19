@@ -8,17 +8,20 @@ const aspectClass = {
   photo: "aspect-[4/3]",
   portrait: "aspect-[3/4]",
   square: "aspect-square",
+  scroll: "aspect-[9/16]",
 } as const;
 
 export default function CaseStudyImage({
   src,
   alt,
   aspect = "wide",
+  position = "center",
   className = "",
 }: {
   src: string;
   alt: string;
   aspect?: keyof typeof aspectClass;
+  position?: "center" | "top";
   className?: string;
 }) {
   const exists = fs.existsSync(path.join(process.cwd(), "public", src));
@@ -33,7 +36,7 @@ export default function CaseStudyImage({
           alt={alt}
           fill
           sizes="(min-width: 768px) 768px, 100vw"
-          className="object-cover"
+          className={position === "top" ? "object-cover object-top" : "object-cover"}
         />
       )}
     </div>
