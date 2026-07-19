@@ -3,7 +3,7 @@ import { BehanceIcon, GithubIcon, LinkedinIcon, MailIcon } from "@/components/ic
 const links = [
   { label: "Behance", href: "https://www.behance.net/guadalupemiro", Icon: BehanceIcon },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/guadalupemiro", Icon: LinkedinIcon },
-  { label: "GitHub", href: "https://github.com/guadalupemiro", Icon: GithubIcon },
+  { label: "GitHub", href: "https://github.com/guadalup3miro", Icon: GithubIcon },
   { label: "Email", href: "mailto:guadamiro@gmail.com", Icon: MailIcon },
 ];
 
