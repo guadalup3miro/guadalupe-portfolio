@@ -21,7 +21,7 @@ export interface Project {
   summary: string;
   tags: ProjectTag[];
   kind: ProjectKind;
-  aspect: "tall" | "square" | "wide";
+  thumbnail?: string;
 }
 
 export const projects: Project[] = [
@@ -31,7 +31,7 @@ export const projects: Project[] = [
     summary: "Crypto exchange — wallet and trading experience",
     tags: ["Product Design", "UX/UI"],
     kind: "case-study",
-    aspect: "tall",
+    thumbnail: "/images/thumbnails/ripio-thumbnail.png",
   },
   {
     slug: "natura",
@@ -39,7 +39,7 @@ export const projects: Project[] = [
     summary: "Product catalog redesign",
     tags: ["Product Design", "UX/UI"],
     kind: "case-study",
-    aspect: "square",
+    thumbnail: "/images/thumbnails/natura-thumbnail.png",
   },
   {
     slug: "maintainx",
@@ -47,7 +47,7 @@ export const projects: Project[] = [
     summary: "Procedure creation flow",
     tags: ["Product Design", "UX/UI"],
     kind: "case-study",
-    aspect: "wide",
+    thumbnail: "/images/thumbnails/maintainx-thumbnail.png",
   },
   {
     slug: "apaleo",
@@ -55,7 +55,6 @@ export const projects: Project[] = [
     summary: "Payment flow experiment",
     tags: ["Product Design", "UX/UI"],
     kind: "case-study",
-    aspect: "square",
   },
   {
     slug: "pura-mente",
@@ -63,7 +62,6 @@ export const projects: Project[] = [
     summary: "Meditation app design system",
     tags: ["Product Design", "UX/UI", "Branding"],
     kind: "case-study",
-    aspect: "tall",
   },
   {
     slug: "caminos-de-la-villa",
@@ -71,7 +69,6 @@ export const projects: Project[] = [
     summary: "Web app",
     tags: ["Product Design", "UX/UI"],
     kind: "case-study",
-    aspect: "wide",
   },
   {
     slug: "intercoop",
@@ -79,7 +76,6 @@ export const projects: Project[] = [
     summary: "Editorial and brand identity",
     tags: ["Branding", "Editorial"],
     kind: "gallery",
-    aspect: "square",
   },
   {
     slug: "festival-fanaticos",
@@ -87,7 +83,6 @@ export const projects: Project[] = [
     summary: "Event branding",
     tags: ["Branding"],
     kind: "gallery",
-    aspect: "wide",
   },
   {
     slug: "bienal-buenos-aires",
@@ -95,7 +90,6 @@ export const projects: Project[] = [
     summary: "Branding and editorial design",
     tags: ["Branding", "Editorial"],
     kind: "gallery",
-    aspect: "tall",
   },
   {
     slug: "revista-gluck",
@@ -103,7 +97,6 @@ export const projects: Project[] = [
     summary: "Magazine editorial design",
     tags: ["Editorial"],
     kind: "gallery",
-    aspect: "square",
   },
   {
     slug: "carl-jung",
@@ -111,7 +104,6 @@ export const projects: Project[] = [
     summary: "Editorial design project",
     tags: ["Editorial"],
     kind: "gallery",
-    aspect: "wide",
   },
   {
     slug: "hedwig-and-the-angry-inch",
@@ -119,7 +111,6 @@ export const projects: Project[] = [
     summary: "Collage piece",
     tags: ["Collage"],
     kind: "gallery",
-    aspect: "tall",
   },
   {
     slug: "coco-rosie",
@@ -127,7 +118,6 @@ export const projects: Project[] = [
     summary: "Collage piece",
     tags: ["Collage"],
     kind: "gallery",
-    aspect: "square",
   },
   {
     slug: "wes-anderson",
@@ -135,6 +125,5 @@ export const projects: Project[] = [
     summary: "Personal collage project",
     tags: ["Collage"],
     kind: "gallery",
-    aspect: "wide",
   },
 ];
