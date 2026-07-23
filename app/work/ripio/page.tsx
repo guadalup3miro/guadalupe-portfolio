@@ -71,6 +71,12 @@ export default function RipioPage() {
         and identity verification process, the credit flow, and the UI kit
         and design system it would all run on.
       </p>
+      <CaseStudyImage
+        src="/images/ripio/discovery-scope-growth.png"
+        alt="Discovery scope growing from a one-month proof of concept into a full wallet rebuild"
+        aspect="wide"
+        className="mt-8"
+      />
 
       <h2 className="mt-16 text-2xl font-medium tracking-tight">
         Understanding who we were actually building for
@@ -101,6 +107,18 @@ export default function RipioPage() {
       <CaseStudyImage
         src="/images/ripio/jtbd-segmentation-matrix.png"
         alt="Jobs-to-be-done segmentation matrix"
+        aspect="wide"
+        className="mt-6"
+      />
+      <CaseStudyImage
+        src="/images/ripio/user-survey-results.png"
+        alt="User survey results on wallet choice and banking habits"
+        aspect="wide"
+        className="mt-6"
+      />
+      <CaseStudyImage
+        src="/images/ripio/competitive-benchmark.png"
+        alt="Competitive benchmark against Coinbase, MetaMask, Opensea, Xapo, and Blockchain.com"
         aspect="wide"
         className="mt-6"
       />
@@ -162,6 +180,15 @@ export default function RipioPage() {
           , built for logged-in and logged-out users alike, so the
           product&apos;s logic was never a mystery
         </li>
+      </ul>
+      <CaseStudyImage
+        src="/images/ripio/information-architecture.png"
+        alt="Information architecture diagram"
+        aspect="wide"
+        className="mt-6"
+      />
+
+      <ul className="mt-6 list-disc space-y-4 pl-5 leading-relaxed text-muted">
         <li>
           <strong className="font-medium text-foreground">
             A brand-new dashboard
