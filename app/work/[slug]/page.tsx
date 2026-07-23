@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/lib/projects";
 
-const builtSlugs = new Set(["ripio", "natura"]);
+const builtSlugs = new Set(["ripio", "natura", "maintainx"]);
 
 export function generateStaticParams() {
   return projects
