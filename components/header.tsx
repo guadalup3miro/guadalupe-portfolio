@@ -8,6 +8,7 @@ const navLinks = [
   { label: "Work", href: "/#work" },
   { label: "About", href: "/about" },
   { label: "Resume", href: "/resume.pdf" },
+  { label: "Old Portfolio", href: "/old-portfolio.pdf" },
   { label: "Contact me", href: "mailto:guadamiro@gmail.com" },
 ];
 
