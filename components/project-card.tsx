@@ -1,36 +1,183 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/lib/projects";
+import { gallerySlotAspect } from "@/lib/gallery-layout";
+import ViewArrow from "@/components/icons/view-arrow";
 
-const kindLabel: Record<Project["kind"], string> = {
-  "case-study": "Case study",
-  gallery: "Gallery",
-};
+export default function ProjectCard({
+  project,
+  index = 0,
+  masonry = false,
+}: {
+  project: Project;
+  index?: number;
+  // True masonry rendering — see ProjectGrid, which pre-sorts cards into
+  // explicit columns and just needs each card here to be a plain block
+  // (column spacing is handled by the column wrapper's own gap). This is
+  // also currently synonymous with "on the /graphic-design page," which
+  // is why it doubles as the switch for that page's image-only cards +
+  // estudionuar-style hover reveal, vs. the homepage's caption-under-image
+  // cards.
+  masonry?: boolean;
+}) {
+  // Homepage cards are all the same size now — 352 tall, width set by the
+  // grid column (528 wide in the reference, expressed as a ratio so it
+  // holds at any column width).
+  const aspect: {
+    className: string;
+    style?: { aspectRatio: string };
+  } =
+    project.kind === "gallery"
+      ? gallerySlotAspect(project, index)
+      : {
+          className: project.cardAspect ?? "",
+          style: { aspectRatio: "528 / 352" },
+        };
+  const isGalleryMiddle = project.kind === "gallery" && index % 3 === 1;
+  const wrapperClass = masonry
+    ? "block w-full"
+    : (project.cardOffsetClass ?? "") + (isGalleryMiddle ? " lg:self-center" : "");
+  const meta = `${project.tags.join(" · ").toUpperCase()} · @${project.slug.replace(/-/g, "").toUpperCase()}`;
+  // Homepage caption splits the two: hype + handle as the title line,
+  // tags alone as the small line underneath (matches the reference grid).
+  const handle = project.slug.replace(/-/g, "");
+  const tagsLine = project.tags.join(" · ").toUpperCase();
 
-export default function ProjectCard({ project }: { project: Project }) {
+  // Future projects with no thumbnail yet render the same black card as
+  // the hover reveal on real projects, just permanently shown (nothing to
+  // reveal from under) and not clickable — "coming soon" sits where the
+  // arrow-only row would normally go.
+  if (!project.thumbnail) {
+    return (
+      <div
+        style={aspect.style}
+        className={`flex ${aspect.className} ${wrapperClass} cursor-default flex-col justify-between overflow-hidden bg-black p-6 text-white`}
+      >
+        <div>
+          <h3 className="text-[32px] font-medium leading-[36px]">{project.hype}</h3>
+          <p className="mt-2 text-[20px] font-medium leading-normal">@{handle}</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <ViewArrow className="h-6 w-11 text-white" />
+          <span className="text-[32px] font-medium leading-none">coming soon</span>
+        </div>
+      </div>
+    );
+  }
+
+  const isGif = project.thumbnail.toLowerCase().endsWith(".gif");
+
+  // /graphic-design: image-only card, no caption underneath. On hover the
+  // whole image is covered by a solid coral panel (estudionuar.com-style)
+  // carrying the title, an arrow, the description, and the tag line, all
+  // in cream so it reads as an inverse of the page's cream/coral palette.
+  if (masonry) {
+    const content = (
+      <div
+        style={aspect.style}
+        className={`relative ${aspect.className} overflow-hidden bg-zinc-50`}
+      >
+        <Image
+          src={project.thumbnail}
+          alt={project.title}
+          fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          unoptimized={isGif}
+          className="object-cover"
+        />
+        <div className="absolute inset-0 flex flex-col justify-between bg-coral p-5 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 sm:p-6">
+          <div>
+            <h3 className="font-display text-[32px] font-medium leading-[0.95] text-cream sm:text-[44px] lg:text-[56px]">
+              {project.title}
+            </h3>
+            <p className="mt-3 text-base font-medium text-cream sm:text-lg">
+              {project.hype}
+            </p>
+          </div>
+          <p className="text-xs font-medium uppercase tracking-wide text-cream">
+            {meta}
+          </p>
+        </div>
+      </div>
+    );
+
+    // Standalone gallery pieces (no case-study page behind them, e.g.
+    // Misión Veleta) skip the "group" class entirely — no hover reveal,
+    // since there's nowhere to click through to.
+    if (project.standalone) {
+      return (
+        <div className={`block cursor-default ${wrapperClass}`}>
+          {content}
+        </div>
+      );
+    }
+
+    return (
+      <Link
+        href={`/work/${project.slug}`}
+        data-cursor="project"
+        className={`group block ${wrapperClass}`}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  // Homepage: plain image, no hover overlay. Caption below is one line
+  // ("hype @handle", GT Alpina regular 16), tags line to the right of it
+  // (same row), Inter medium 12, fading in only on hover.
+  const content = (
+    <>
+      <div
+        style={aspect.style}
+        className={`relative ${aspect.className} overflow-hidden bg-zinc-50`}
+      >
+        <Image
+          src={project.thumbnail}
+          alt={project.title}
+          fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          // GIFs need `unoptimized` — otherwise Next's image optimizer
+          // re-encodes them and the animation is lost, leaving a still.
+          unoptimized={isGif}
+          className={`object-cover ${
+            project.noHoverZoom
+              ? ""
+              : "transition-transform duration-500 ease-out group-hover:scale-110"
+          }`}
+        />
+      </div>
+      <div className="mt-2 flex items-baseline justify-between gap-4">
+        <p className="font-display text-base font-normal leading-normal text-foreground">
+          {project.hype} @{handle}
+        </p>
+        <p
+          className="shrink-0 text-xs font-medium uppercase leading-3 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100"
+          style={{ color: "#ADA4A4" }}
+        >
+          {tagsLine}
+        </p>
+      </div>
+    </>
+  );
+
+  // Standalone pieces (visual experiments, GIFs, stills) render as a card
+  // with no project page behind them — same look, just not clickable.
+  if (project.standalone) {
+    return (
+      <div className={`group block cursor-default ${wrapperClass}`}>
+        {content}
+      </div>
+    );
+  }
+
   return (
     <Link
       href={`/work/${project.slug}`}
-      className="group mb-6 block break-inside-avoid overflow-hidden rounded-lg border border-border bg-white"
+      data-cursor="project"
+      className={`group block ${wrapperClass}`}
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-zinc-50">
-        {project.thumbnail && (
-          <Image
-            src={project.thumbnail}
-            alt={project.title}
-            fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.06]"
-          />
-        )}
-      </div>
-      <div className="p-4">
-        <h3 className="text-sm font-medium">{project.title}</h3>
-        <p className="mt-0.5 truncate text-sm text-muted">{project.summary}</p>
-        <span className="mt-2 inline-block rounded-full border border-border px-2 py-0.5 text-xs tracking-wide text-muted uppercase">
-          {kindLabel[project.kind]}
-        </span>
-      </div>
+      {content}
     </Link>
   );
 }

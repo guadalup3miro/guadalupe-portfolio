@@ -1,35 +1,95 @@
-"use client";
-
-import { useState } from "react";
-import { projectTags, type Project, type ProjectTag } from "@/lib/projects";
-import TagFilter from "@/components/tag-filter";
+import type { Project } from "@/lib/projects";
 import ProjectCard from "@/components/project-card";
+import { assignMasonryColumns } from "@/lib/gallery-layout";
 
-export default function ProjectGrid({ projects }: { projects: Project[] }) {
-  const [active, setActive] = useState<ProjectTag | "All">("All");
+// Tag filtering (components/tag-filter.tsx) is temporarily hidden — not
+// currently used, but left in place in case it's wanted later.
 
-  const tags = projectTags.filter((tag) =>
-    projects.some((project) => project.tags.includes(tag)),
-  );
+export default function ProjectGrid({
+  projects,
+  masonry = false,
+}: {
+  projects: Project[];
+  // True masonry: cards are packed into explicit columns server-side
+  // (see lib/gallery-layout.ts) instead of relying on CSS `columns`,
+  // which balances by an opaque browser heuristic and won't reliably put
+  // card #2 in column #2. Packing greedily by estimated height means
+  // every column starts flush at the same top line and the order still
+  // reads left-to-right for at least the first row, same as a row grid,
+  // while every later card slots into whichever column has room — no
+  // blank space under any card.
+  masonry?: boolean;
+}) {
+  if (projects.length === 0) {
+    return (
+      <section className="w-full pb-32">
+        <p className="mx-auto mt-10 max-w-7xl px-6 text-sm text-muted sm:px-10">
+          More coming soon.
+        </p>
+      </section>
+    );
+  }
 
-  const filtered =
-    active === "All"
-      ? projects
-      : projects.filter((project) => project.tags.includes(active));
-
-  return (
-    <section className="mx-auto w-full max-w-5xl px-6 pb-24 sm:px-10">
-      <TagFilter tags={tags} active={active} onChange={setActive} />
-
-      {filtered.length > 0 ? (
-        <div className="mt-10 columns-1 gap-6 sm:columns-2 lg:columns-3">
-          {filtered.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+  if (!masonry) {
+    // Every card is the same 352-tall size now, so a plain CSS grid works
+    // fine — no more independent per-column flow needed to dodge dead
+    // space under a shorter card.
+    return (
+      <section className="w-full pb-32">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 px-6 sm:grid-cols-2 sm:px-10">
+          {projects.map((project, index) => (
+            <ProjectCard key={project.slug} project={project} index={index} />
           ))}
         </div>
-      ) : (
-        <p className="mt-10 text-sm text-muted">More coming soon.</p>
-      )}
+      </section>
+    );
+  }
+
+  const twoCol = assignMasonryColumns(projects, 2);
+  const threeCol = assignMasonryColumns(projects, 3);
+
+  return (
+    <section className="w-full pb-32">
+      <div className="mx-auto max-w-7xl px-6 sm:px-10">
+        {/* mobile: single column, natural order — trivially gapless */}
+        <div className="flex flex-col gap-4 sm:hidden">
+          {projects.map((project, index) => (
+            <ProjectCard key={project.slug} project={project} index={index} masonry />
+          ))}
+        </div>
+
+        {/* tablet: 2-column masonry */}
+        <div className="hidden gap-4 sm:flex lg:hidden">
+          {twoCol.map((column, columnIndex) => (
+            <div key={columnIndex} className="flex flex-1 flex-col gap-4">
+              {column.map(({ project, index }) => (
+                <ProjectCard
+                  key={project.slug}
+                  project={project}
+                  index={index}
+                  masonry
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+
+        {/* desktop: 3-column masonry */}
+        <div className="hidden gap-4 lg:flex">
+          {threeCol.map((column, columnIndex) => (
+            <div key={columnIndex} className="flex flex-1 flex-col gap-4">
+              {column.map(({ project, index }) => (
+                <ProjectCard
+                  key={project.slug}
+                  project={project}
+                  index={index}
+                  masonry
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
