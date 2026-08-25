@@ -4,12 +4,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+// Temporarily hidden for a recruiter-shared build that shouldn't expose
+// personal contact info — flip back to true to bring the nav link back.
+const SHOW_CONTACT_LINK = false;
+
 const navLinks = [
   { label: "Work", href: "/#work" },
   { label: "About", href: "/about" },
   { label: "Resume", href: "/resume.pdf" },
   { label: "Old Portfolio", href: "/old-portfolio.pdf" },
-  { label: "Contact me", href: "mailto:guadamiro@gmail.com" },
+  ...(SHOW_CONTACT_LINK
+    ? [{ label: "Contact me", href: "mailto:guadamiro@gmail.com" }]
+    : []),
 ];
 
 const HEADER_HEIGHT = 64;

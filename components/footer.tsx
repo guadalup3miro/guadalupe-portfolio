@@ -3,11 +3,19 @@
 import { usePathname } from "next/navigation";
 import TimezoneClock from "@/components/timezone-clock";
 
-const socialLinks = [
-  { label: "Behance", href: "https://www.behance.net/guadalupemiro" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/guadalupemiro" },
-  { label: "GitHub", href: "https://github.com/guadalup3miro" },
-];
+// Temporarily hidden for a recruiter-shared build that shouldn't expose
+// personal contact info or external profile links — flip back to true to
+// bring the email block and/or these links back.
+const SHOW_CONTACT_EMAIL = false;
+const SHOW_SOCIAL_LINKS = false;
+
+const socialLinks = SHOW_SOCIAL_LINKS
+  ? [
+      { label: "Behance", href: "https://www.behance.net/guadalupemiro" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/guadalupemiro" },
+      { label: "GitHub", href: "https://github.com/guadalup3miro" },
+    ]
+  : [];
 
 export default function Footer() {
   // /graphic-design runs its own coral-on-cream palette (see Header), and
@@ -56,18 +64,24 @@ export default function Footer() {
       }
     >
       <div className="mx-auto max-w-7xl px-6 py-16 sm:px-10">
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-          <div>
-            <p className="text-xs uppercase tracking-wide text-foreground">
-              Contact
-            </p>
-            <a
-              href="mailto:guadamiro@gmail.com"
-              className="text-sm font-medium transition-opacity hover:opacity-70"
-            >
-              guadamiro@gmail.com
-            </a>
-          </div>
+        <div
+          className={`grid grid-cols-1 gap-12 sm:grid-cols-2 lg:gap-8 ${
+            SHOW_CONTACT_EMAIL ? "lg:grid-cols-4" : "lg:grid-cols-3"
+          }`}
+        >
+          {SHOW_CONTACT_EMAIL && (
+            <div>
+              <p className="text-xs uppercase tracking-wide text-foreground">
+                Contact
+              </p>
+              <a
+                href="mailto:guadamiro@gmail.com"
+                className="text-sm font-medium transition-opacity hover:opacity-70"
+              >
+                guadamiro@gmail.com
+              </a>
+            </div>
+          )}
 
           <div>
             <p className="text-xs uppercase tracking-wide text-foreground">
