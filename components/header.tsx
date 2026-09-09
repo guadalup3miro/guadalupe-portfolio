@@ -26,6 +26,23 @@ export default function Header() {
   const isHome = pathname === "/";
   const isProject = pathname?.startsWith("/work/") ?? false;
 
+  // Below `sm` the full inline nav (wordmark + 5 links) is ~120px wider
+  // than a phone viewport — it overflowed the page and overlapped the
+  // wordmark. Collapse it into a toggle + stacked drop-down panel instead.
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Close the panel whenever the route changes — this component stays
+  // mounted across client-side navigations, so an open panel would
+  // otherwise carry onto the next page (covers back/forward too; tapping a
+  // panel link also closes it directly). Store-and-compare during render
+  // rather than an effect, per the React "adjusting state when a prop
+  // changes" pattern — no throwaway render with the panel still open.
+  const [lastPathname, setLastPathname] = useState(pathname);
+  if (pathname !== lastPathname) {
+    setLastPathname(pathname);
+    setMenuOpen(false);
+  }
+
   // On the homepage the header floats clear (no bg) over the cream hero,
   // then swaps to a solid black bar the moment the dark work section
   // scrolls up underneath it — watches the #dark-section-start marker
@@ -93,7 +110,9 @@ export default function Header() {
         >
           Guadalupe Miró
         </Link>
-        <nav className="flex items-center gap-8 text-xs font-semibold uppercase tracking-wide">
+
+        {/* Desktop / tablet: the full inline nav. Hidden below `sm`. */}
+        <nav className="hidden items-center gap-8 text-xs font-semibold uppercase tracking-wide sm:flex">
           {navLinks.map(({ label, href }, index) => {
             const linkClassName = `animate-fade-in-down transition-colors ${
               isGraphicDesign || isOverDark ? "hover:opacity-70" : "hover:text-muted"
@@ -120,7 +139,73 @@ export default function Header() {
             );
           })}
         </nav>
+
+        {/* Mobile: a toggle button. Inherits the bar's current text color
+            via currentColor, so it tracks the same light/dark/coral states
+            as the links do. */}
+        <button
+          type="button"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          className="-mr-2 animate-fade-in-down p-2 sm:hidden"
+        >
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+            {menuOpen ? (
+              <path
+                d="M5 5l12 12M17 5L5 17"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            ) : (
+              <path
+                d="M3 6h16M3 11h16M3 16h16"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            )}
+          </svg>
+        </button>
       </div>
+
+      {/* Mobile drop-down panel. Rendered in normal flow inside the sticky
+          header (not an overlay), so it just extends the header's height
+          while open — no z-index/backdrop juggling. Always cream-surfaced
+          with dark (or coral) text so it stays legible over whatever the
+          bar itself is doing. */}
+      {menuOpen && (
+        <div
+          className={`border-b border-black/10 bg-[#F6F5EF] sm:hidden ${
+            isGraphicDesign ? "text-coral" : "text-[#1A1A1A]"
+          }`}
+        >
+          <nav className="flex flex-col px-6 py-2 text-xs font-semibold uppercase tracking-wide">
+            {navLinks.map(({ label, href }) => {
+              const linkClassName = "py-3 transition-opacity hover:opacity-70";
+              // Close on tap explicitly: same-page hash links (/#work) don't
+              // change the pathname, so the route-change check above wouldn't
+              // catch them.
+              const close = () => setMenuOpen(false);
+
+              if (href.startsWith("mailto:")) {
+                return (
+                  <a key={label} href={href} className={linkClassName} onClick={close}>
+                    {label}
+                  </a>
+                );
+              }
+
+              return (
+                <Link key={label} href={href} className={linkClassName} onClick={close}>
+                  {label}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
