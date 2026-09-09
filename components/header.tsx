@@ -4,9 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-// Temporarily hidden for a recruiter-shared build that shouldn't expose
-// personal contact info — flip back to true to bring the nav link back.
-const SHOW_CONTACT_LINK = false;
+const SHOW_CONTACT_LINK = true;
 
 const navLinks = [
   { label: "Work", href: "/#work" },

@@ -3,11 +3,10 @@
 import { usePathname } from "next/navigation";
 import TimezoneClock from "@/components/timezone-clock";
 
-// Temporarily hidden for a recruiter-shared build that shouldn't expose
-// personal contact info or external profile links — flip back to true to
-// bring the email block and/or these links back.
+// Email block stays hidden for now for a recruiter-shared build that
+// shouldn't expose personal contact info — flip back to true to restore it.
 const SHOW_CONTACT_EMAIL = false;
-const SHOW_SOCIAL_LINKS = false;
+const SHOW_SOCIAL_LINKS = true;
 
 const socialLinks = SHOW_SOCIAL_LINKS
   ? [
