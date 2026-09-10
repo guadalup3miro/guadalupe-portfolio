@@ -35,8 +35,12 @@ export default function ProjectGrid({
     // fine — no more independent per-column flow needed to dodge dead
     // space under a shorter card.
     return (
-      <section className="w-full pb-32">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 px-6 sm:grid-cols-2 sm:px-10">
+      // pt-12/14: real breathing room between the tab bar and the first
+      // card row (was flush). gap-y-10: vertical gutter between card rows,
+      // wider than the 16px column gutter — same airy rhythm as
+      // deadpine.xyz / rominaideses.com project grids.
+      <section className="w-full pb-32 pt-12 sm:pt-14">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-4 gap-y-10 px-6 sm:grid-cols-2 sm:px-10">
           {projects.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} />
           ))}

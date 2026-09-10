@@ -1,6 +1,6 @@
 import Hero from "@/components/hero";
 import SectionTabs from "@/components/section-tabs";
-import WorkRows from "@/components/work-rows";
+import ProjectGrid from "@/components/project-grid";
 import { projects } from "@/lib/projects";
 
 export default function Home() {
@@ -14,17 +14,13 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {/* Zero-height marker Header watches (by id) to know when the dark
-          section has scrolled up underneath it, so it can swap from a
-          clear bar to a solid black one right at this boundary. */}
-      <div id="dark-section-start" />
-      {/* #work wraps the tabs too (not just WorkRows) so the "Work" nav
+      {/* #work wraps the tabs too (not just the grid) so the "Work" nav
           link lands with the selector visible, not scrolled past it.
           scroll-mt-16 offsets for the sticky 64px header so the tabs don't
           land tucked underneath it. */}
       <div id="work" className="scroll-mt-16">
         <SectionTabs active="product" />
-        <WorkRows projects={caseStudies} />
+        <ProjectGrid projects={caseStudies} />
       </div>
     </>
   );

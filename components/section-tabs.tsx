@@ -8,12 +8,10 @@ const tabs = [
   { label: "Visual & Brand", href: "/graphic-design#work", key: "visual" as const },
 ];
 
-// Full-width bar, echoing WorkRows' dark section below it. Text stays the
+// Full-width bar between the page hero and the project grid. Text stays the
 // same solid color whether a tab is active or not — the only difference is
 // the pill/oval outline (and medium vs. regular weight) on the active one.
-// `-mb-px` closes the hairline seam Chrome renders between this bar and the
-// same-color section below it (two adjacent same-color elements otherwise
-// show a 1px gap from sub-pixel layout rounding).
+// Default tone is dark-text-on-transparent, matching the light homepage;
 // `tone="coral"` mirrors the page-wide coral-on-cream reskin /graphic-design
 // already does elsewhere (see Header, Footer).
 export default function SectionTabs({
@@ -23,11 +21,11 @@ export default function SectionTabs({
   active: "product" | "visual";
   tone?: "default" | "coral";
 }) {
-  const barClass = tone === "coral" ? "bg-cream text-coral" : "bg-[#1A1A1A] text-cream";
-  const pillClass = tone === "coral" ? "border-coral" : "border-cream";
+  const barClass = tone === "coral" ? "bg-cream text-coral" : "bg-transparent text-foreground";
+  const pillClass = tone === "coral" ? "border-coral" : "border-foreground";
 
   return (
-    <div className={`relative -mb-px w-full ${barClass}`}>
+    <div className={`relative w-full ${barClass}`}>
       <nav className="mx-auto flex w-full max-w-7xl items-center gap-12 px-6 py-5 text-xs uppercase tracking-wide sm:px-10">
         {tabs.map(({ label, href, key }) =>
           key === active ? (

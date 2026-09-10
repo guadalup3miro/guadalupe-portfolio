@@ -17,13 +17,15 @@ const socialLinks = SHOW_SOCIAL_LINKS
   : [];
 
 export default function Footer() {
-  // /graphic-design runs its own coral-on-cream palette (see Header), and
-  // /about is light cream/near-black — the footer follows suit on both
-  // instead of falling back to the site-wide dark theme, so the page stays
-  // visually continuous all the way to the bottom.
+  // /graphic-design runs its own coral-on-cream palette (see Header); the
+  // homepage and /about are light cream/near-black — the footer follows
+  // suit on each instead of falling back to the site-wide dark theme, so
+  // the page stays visually continuous all the way to the bottom.
   const pathname = usePathname();
   const isGraphicDesign = pathname?.startsWith("/graphic-design") ?? false;
   const isAbout = pathname?.startsWith("/about") ?? false;
+  const isHome = pathname === "/";
+  const isLight = isAbout || isHome;
 
   return (
     <footer
@@ -38,7 +40,7 @@ export default function Footer() {
       className={`w-full ${
         isGraphicDesign
           ? "bg-cream text-coral"
-          : isAbout
+          : isLight
             ? "bg-[#F6F5EF] text-[#1A1A1A]"
             : "bg-[#1A1A1A] text-white"
       }`}
@@ -49,7 +51,7 @@ export default function Footer() {
               "--muted": "color-mix(in srgb, var(--coral) 65%, transparent)",
               "--border": "color-mix(in srgb, var(--coral) 25%, transparent)",
             }
-          : isAbout
+          : isLight
             ? {
                 "--foreground": "#1a1a1a",
                 "--muted": "rgba(26,26,26,0.55)",
@@ -75,7 +77,7 @@ export default function Footer() {
               </p>
               <a
                 href="mailto:guadamiro@gmail.com"
-                className="text-sm font-medium transition-opacity hover:opacity-70"
+                className="text-sm font-normal transition-opacity hover:opacity-70"
               >
                 guadamiro@gmail.com
               </a>
@@ -86,7 +88,7 @@ export default function Footer() {
             <p className="text-xs uppercase tracking-wide text-foreground">
               Buenos Aires ⇄ Madrid
             </p>
-            <p className="mt-3 max-w-[220px] text-sm font-medium leading-snug">
+            <p className="mt-3 max-w-[220px] text-sm font-normal leading-snug">
               Splitting time between Buenos Aires and Madrid. Available
               worldwide.
             </p>
@@ -106,7 +108,7 @@ export default function Footer() {
 
         <div className="mt-16 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-foreground">© 2026 Guadalupe Miró</p>
-          <div className="flex gap-6 text-xs font-medium uppercase tracking-wide">
+          <div className="flex gap-6 text-xs font-normal uppercase tracking-wide">
             {socialLinks.map(({ label, href }) => (
               <a
                 key={label}
