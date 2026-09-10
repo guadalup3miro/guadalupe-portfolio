@@ -26,7 +26,7 @@ export default function SectionTabs({
 
   return (
     <div className={`relative w-full ${barClass}`}>
-      <nav className="mx-auto flex w-full max-w-7xl items-center gap-12 px-6 py-5 text-xs uppercase tracking-wide sm:px-10">
+      <nav className="mx-auto flex w-full max-w-7xl items-center gap-6 px-6 py-5 text-xs uppercase tracking-wide sm:gap-12 sm:px-10">
         {tabs.map(({ label, href, key }) =>
           key === active ? (
             <span

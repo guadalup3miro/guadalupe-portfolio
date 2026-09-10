@@ -86,7 +86,7 @@ export default function AboutSection() {
 
         {/* Work experience */}
         <div className="mt-20 sm:mt-28">
-          <h2 className="font-display text-[96px] italic leading-[0.93] tracking-[-0.08em] sm:text-[152px] sm:leading-[141px]">
+          <h2 className="font-display text-[72px] italic leading-[0.95] tracking-[-0.08em] sm:text-[152px] sm:leading-[141px]">
             work
             <br />
             experience
