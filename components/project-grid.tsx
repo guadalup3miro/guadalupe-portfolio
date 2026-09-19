@@ -78,7 +78,8 @@ export default function ProjectGrid({
           ))}
         </div>
 
-        {/* desktop: 3-column masonry */}
+        {/* desktop: 3-column masonry -- trying this again per Guada's
+            request, in place of the 2-column-everywhere layout. */}
         <div className="hidden gap-4 lg:flex">
           {threeCol.map((column, columnIndex) => (
             <div key={columnIndex} className="flex flex-1 flex-col gap-4">

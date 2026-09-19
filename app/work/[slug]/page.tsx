@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/lib/projects";
+import { getVisualProject } from "@/lib/visual-projects";
+import VisualProjectPage from "@/components/visual-project-page";
 
 const builtSlugs = new Set(["ripio", "natura", "maintainx", "apaleo"]);
 
@@ -19,6 +21,11 @@ export default async function ProjectPage({
   const project = projects.find((p) => p.slug === slug);
 
   if (!project) notFound();
+
+  const visualProject = getVisualProject(slug);
+  if (visualProject) {
+    return <VisualProjectPage project={visualProject} />;
+  }
 
   return (
     <section className="mx-auto w-full max-w-3xl px-6 py-24 sm:px-10">

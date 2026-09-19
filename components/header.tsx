@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { visualProjects } from "@/lib/visual-projects";
 
 const SHOW_CONTACT_LINK = true;
 
@@ -25,6 +26,12 @@ export default function Header() {
   const isGraphicDesign = pathname?.startsWith("/graphic-design") ?? false;
   const isHome = pathname === "/";
   const isProject = pathname?.startsWith("/work/") ?? false;
+  // Visual-project pages (see lib/visual-projects.ts) each carry their own
+  // background/text color — the header and footer pick those up directly
+  // instead of the site-wide cream/dark bar, so the color runs unbroken
+  // from the very top of the page.
+  const projectSlug = isProject ? pathname?.split("/")[2] : undefined;
+  const visualProject = projectSlug ? visualProjects[projectSlug] : undefined;
 
   // Below `sm` the full inline nav (wordmark + 5 links) is ~120px wider
   // than a phone viewport — it overflowed the page and overlapped the
@@ -97,11 +104,21 @@ export default function Header() {
       className={`sticky top-0 z-50 w-full transition-[transform,background-color] duration-300 ${
         isProject && hidden ? "-translate-y-full" : "translate-y-0"
       } ${
-        isOverDark ? "bg-[#1A1A1A]" : isProject && scrolledPastTop ? "bg-[#F6F5EF]" : "bg-transparent"
+        visualProject
+          ? ""
+          : isOverDark
+            ? "bg-[#1A1A1A]"
+            : isProject && scrolledPastTop
+              ? "bg-[#F6F5EF]"
+              : "bg-transparent"
       }`}
+      style={visualProject ? { backgroundColor: visualProject.bgColor } : undefined}
     >
       <div
-        className={`mx-auto flex h-16 max-w-7xl items-center justify-between px-6 sm:px-10 ${useLightText}`}
+        className={`mx-auto flex h-16 max-w-7xl items-center justify-between px-6 sm:px-10 ${
+          visualProject ? "" : useLightText
+        }`}
+        style={visualProject ? { color: visualProject.textColor } : undefined}
       >
         <Link
           href="/"
@@ -177,9 +194,14 @@ export default function Header() {
           bar itself is doing. */}
       {menuOpen && (
         <div
-          className={`border-b border-black/10 bg-[#F6F5EF] sm:hidden ${
-            isGraphicDesign ? "text-coral" : "text-[#1A1A1A]"
+          className={`border-b border-black/10 sm:hidden ${
+            visualProject ? "" : isGraphicDesign ? "bg-[#F6F5EF] text-coral" : "bg-[#F6F5EF] text-[#1A1A1A]"
           }`}
+          style={
+            visualProject
+              ? { backgroundColor: visualProject.bgColor, color: visualProject.textColor }
+              : undefined
+          }
         >
           <nav className="flex flex-col px-6 py-2 text-xs font-semibold uppercase tracking-wide">
             {navLinks.map(({ label, href }) => {
