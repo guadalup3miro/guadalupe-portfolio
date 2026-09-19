@@ -81,7 +81,7 @@ export default function ProjectCard({
           src={project.thumbnail}
           alt={project.title}
           fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          sizes="(min-width: 640px) 50vw, 100vw"
           unoptimized={isGif}
           className="object-cover"
         />

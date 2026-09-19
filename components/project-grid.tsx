@@ -50,7 +50,6 @@ export default function ProjectGrid({
   }
 
   const twoCol = assignMasonryColumns(projects, 2);
-  const threeCol = assignMasonryColumns(projects, 3);
 
   return (
     <section className="w-full pb-32">
@@ -62,25 +61,10 @@ export default function ProjectGrid({
           ))}
         </div>
 
-        {/* tablet: 2-column masonry */}
-        <div className="hidden gap-4 sm:flex lg:hidden">
+        {/* tablet + desktop: 2-column masonry (was 3 on desktop, dropped
+            down to 2 everywhere above mobile per Guada's request). */}
+        <div className="hidden gap-4 sm:flex">
           {twoCol.map((column, columnIndex) => (
-            <div key={columnIndex} className="flex flex-1 flex-col gap-4">
-              {column.map(({ project, index }) => (
-                <ProjectCard
-                  key={project.slug}
-                  project={project}
-                  index={index}
-                  masonry
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-
-        {/* desktop: 3-column masonry */}
-        <div className="hidden gap-4 lg:flex">
-          {threeCol.map((column, columnIndex) => (
             <div key={columnIndex} className="flex flex-1 flex-col gap-4">
               {column.map(({ project, index }) => (
                 <ProjectCard
