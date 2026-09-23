@@ -63,7 +63,7 @@ function RainbowHoverLink({ text, href }: { text: string; href: string }) {
 export default function Hero() {
   return (
     <section
-      className="relative mx-auto flex w-full max-w-7xl flex-col px-6 pt-[180px] pb-[180px] sm:px-10"
+      className="relative mx-auto flex w-full max-w-7xl flex-col px-6 pt-[180px] pb-16 sm:pb-[80px] sm:px-10"
     >
       <div className="relative z-10">
         <h1 className="max-w-[728px] text-[32px] font-normal leading-tight tracking-tight">
@@ -78,6 +78,11 @@ export default function Hero() {
           maintenance, hotel platforms — different worlds, same job:
           translate chaos into something people can actually use.
         </h1>
+        {/* Same type treatment as the nav labels, in an AA-contrast gray
+            (#666 on cream = 5.26:1). */}
+        <p className="mt-6 text-xs font-semibold uppercase leading-relaxed tracking-wide text-[#666666]">
+          Senior Product Designer at Apaleo · Previously first designer hire at MaintainX
+        </p>
       </div>
     </section>
   );
