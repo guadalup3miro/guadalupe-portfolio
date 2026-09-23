@@ -26,9 +26,9 @@ export const homeProjects: HomeProject[] = [
   {
     slug: "ripio",
     company: "Ripio",
-    area: "Crypto wallet",
+    area: "Crypto platform",
     years: "2018–2019",
-    title: "Ripio was more than a wallet. We designed it to look like it.",
+    title: "Crypto for people who don't speak crypto.",
     outcome:
       "Led the redesign end to end, from discovery to launch, for one of Argentina's largest crypto exchanges. Everything shipped in 6 months.",
     tags: ["Product Design", "UX/UI"],
