@@ -24,19 +24,6 @@ export interface HomeProject {
 
 export const homeProjects: HomeProject[] = [
   {
-    slug: "maintainx",
-    company: "MaintainX",
-    area: "Procedures",
-    years: "2020–2022",
-    title: "Procedures a technician can build in minutes, not days",
-    outcome:
-      "First product designer hire — built the early design system and led the Sketch → Figma transition as the company scaled past 200 people.",
-    tags: ["Product Design", "UX/UI"],
-    accentColor: "#1887FC",
-    image: "/home/maintainx.webp",
-    published: true,
-  },
-  {
     slug: "ripio",
     company: "Ripio",
     area: "Crypto wallet",
@@ -47,6 +34,19 @@ export const homeProjects: HomeProject[] = [
     tags: ["Product Design", "UX/UI"],
     accentColor: "#825EFB",
     image: "/home/ripio.webp",
+    published: true,
+  },
+  {
+    slug: "maintainx",
+    company: "MaintainX",
+    area: "Procedures",
+    years: "2020–2022",
+    title: "Procedures a technician can build in minutes, not days",
+    outcome:
+      "First product designer hire — built the early design system and led the Sketch → Figma transition as the company scaled past 200 people.",
+    tags: ["Product Design", "UX/UI"],
+    accentColor: "#1887FC",
+    image: "/home/maintainx.webp",
     published: true,
   },
   {
