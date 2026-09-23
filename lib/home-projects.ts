@@ -43,7 +43,7 @@ export const homeProjects: HomeProject[] = [
     years: "2018–2019",
     title: "Ripio was more than a wallet. We designed it to look like it.",
     outcome:
-      "Led the wallet and dashboard redesign for one of Argentina's largest crypto exchanges, from discovery to delivery in 4 months.",
+      "Led the redesign end to end, from discovery to launch, for one of Argentina's largest crypto exchanges. Everything shipped in 6 months.",
     tags: ["Product Design", "UX/UI"],
     accentColor: "#825EFB",
     image: "/home/ripio.webp",
