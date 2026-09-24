@@ -31,7 +31,7 @@ export default function NaturalImageGrid({
 }: {
   items: VisualProjectMediaItem[];
   cols: 2 | 3;
-  altPrefix: (index: number) => string;
+  altPrefix: string;
 }) {
   const [index, setIndex] = useState(-1);
 
@@ -64,7 +64,7 @@ export default function NaturalImageGrid({
             >
               <Image
                 src={item.src}
-                alt={altPrefix(imageIndex)}
+                alt={`${altPrefix}, image ${imageIndex + 1}`}
                 width={item.width}
                 height={item.height}
                 sizes={cols === 3 ? "(min-width: 640px) 384px, 100vw" : "(min-width: 640px) 576px, 100vw"}
