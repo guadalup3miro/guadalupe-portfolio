@@ -118,7 +118,7 @@ export default function TimezoneClock({
         <circle cx="40" cy="40" r="2" fill="currentColor" />
       </svg>
       <div>
-        <p className="text-sm font-medium">{city}</p>
+        <p className="text-sm font-normal">{city}</p>
         <p className="text-[11px] uppercase tracking-wide text-foreground">
           {countryCode}
         </p>
