@@ -176,7 +176,11 @@ export default function VisualProjectPage({ project }: { project: VisualProject 
           // natural aspect ratio (no crop, no object-cover), rounded
           // corners, click-to-open lightbox (see natural-image-grid.tsx).
           <section className="mx-auto w-full max-w-6xl px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20">
-            <NaturalImageGrid items={project.images} cols={naturalGridCols} altPrefix={galleryAltPrefix} />
+            <NaturalImageGrid
+              items={project.images}
+              cols={naturalGridCols}
+              altPrefix={`${project.title} — ${services}`}
+            />
           </section>
         ) : seamless ? (
           // Uno en Uno-style: one continuous scroll, images stacked with
