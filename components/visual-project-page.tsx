@@ -1,11 +1,17 @@
 import Image from "next/image";
-import type { VisualProject, VisualProjectMediaItem } from "@/lib/visual-projects";
+import type {
+  VisualProject,
+  VisualProjectImage,
+  VisualProjectMediaItem,
+} from "@/lib/visual-projects";
 import { isVideoItem } from "@/lib/visual-projects";
 import VideoEmbed from "@/components/video-embed";
 import NaturalImageGrid from "@/components/natural-image-grid";
 
-// One shared landing template for every /graphic-design project — a single
-// hero photo, a title + metadata block, a short paragraph, then a gallery
+// One shared landing template for every /graphic-design project — a hero
+// (the first image in the project's `images` array, pulled out of the
+// gallery so it isn't shown twice), a title + metadata block, a short
+// paragraph, then a gallery
 // that mixes full-width images with 2-up pairs. Every project supplies its
 // own background/text color pair via `project` (see lib/visual-projects.ts)
 // so the look changes per project without touching this file.
@@ -111,23 +117,47 @@ export default function VisualProjectPage({ project }: { project: VisualProject 
   const galleryAltPrefix = `${project.title} — ${services}`;
   const naturalGridCols = project.galleryNaturalGridCols ?? 2;
   const seamless = !naturalGrid && (project.gallerySeamless ?? false);
+
+  // Hero = the first image (skipping a leading video, e.g. hedwig's), taken
+  // out of the gallery. When it's item 0, the first `galleryGroups` row
+  // gives up one slot too, so the rest of the explicit rhythm stays aligned.
+  const heroIndex = project.images.findIndex((item) => !isVideoItem(item));
+  const hero =
+    heroIndex >= 0 ? (project.images[heroIndex] as VisualProjectImage) : undefined;
+  const galleryItems = project.images.filter((_, i) => i !== heroIndex);
+  const galleryGroups =
+    heroIndex === 0 && project.galleryGroups
+      ? [project.galleryGroups[0] - 1, ...project.galleryGroups.slice(1)].filter((n) => n > 0)
+      : project.galleryGroups;
+
   const blocks =
     naturalGrid || seamless
-      ? project.images.map((image) => [image])
-      : groupImages(project.images, project.galleryGroups);
+      ? galleryItems.map((image) => [image])
+      : groupImages(galleryItems, galleryGroups);
 
   return (
     <div style={{ backgroundColor: project.bgColor, color: project.textColor }}>
-      {!project.hideHero && (
-        <div className="relative aspect-[3/2] w-full sm:aspect-[2/1]">
-          <Image
-            src={project.hero.src}
-            alt={project.title}
-            fill
-            sizes="100vw"
-            priority
-            className="object-cover"
-          />
+      {hero && (
+        // Shown uncropped at its own aspect ratio, capped at 85% of the
+        // viewport height (a portrait hero narrows and centers instead of
+        // running several screens tall).
+        <div className="mx-auto w-full max-w-6xl px-6 pt-6 sm:px-10 sm:pt-10">
+          <div
+            className="relative mx-auto"
+            style={{
+              aspectRatio: `${hero.width} / ${hero.height}`,
+              width: `min(100%, calc(85vh * ${hero.width / hero.height}))`,
+            }}
+          >
+            <Image
+              src={hero.src}
+              alt={`${galleryAltPrefix}, image ${heroIndex + 1}`}
+              fill
+              sizes="(min-width: 1024px) 1152px, 100vw"
+              priority
+              className="object-cover"
+            />
+          </div>
         </div>
       )}
 
@@ -177,7 +207,7 @@ export default function VisualProjectPage({ project }: { project: VisualProject 
           // corners, click-to-open lightbox (see natural-image-grid.tsx).
           <section className="mx-auto w-full max-w-6xl px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20">
             <NaturalImageGrid
-              items={project.images}
+              items={galleryItems}
               cols={naturalGridCols}
               altPrefix={`${project.title} — ${services}`}
             />
@@ -185,8 +215,7 @@ export default function VisualProjectPage({ project }: { project: VisualProject 
         ) : seamless ? (
           // Uno en Uno-style: one continuous scroll, images stacked with
           // zero gap between them — but still inside the same side
-          // wrapper/margins as the rest of the page. Full-bleed (no side
-          // wrapper) is reserved for the cover/hero only.
+          // wrapper/margins as the rest of the page.
           <section className="mx-auto w-full max-w-6xl px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20">
             <div className="flex flex-col">
               {blocks.map((block) => {

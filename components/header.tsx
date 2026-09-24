@@ -17,7 +17,9 @@ const navLinks = [
     : []),
 ];
 
-const HEADER_HEIGHT = 64;
+// Keep in sync with --header-height in app/globals.css (the CSS side, used
+// for scroll-margin on in-page anchors).
+export const HEADER_HEIGHT = 64;
 
 export default function Header() {
   // /graphic-design runs its own coral-on-cream palette — the nav text
@@ -50,9 +52,8 @@ export default function Header() {
     setMenuOpen(false);
   }
 
-  // On the homepage the header floats clear (no bg) over the cream hero,
-  // then swaps to a solid black bar the moment the dark work section
-  // scrolls up underneath it — watches the #dark-section-start marker
+  // On the homepage the header swaps from the cream bar to a solid black
+  // one the moment a dark section scrolls up underneath it — watches the #dark-section-start marker
   // rendered right at that boundary in app/page.tsx.
   const [isOverDark, setIsOverDark] = useState(false);
 
@@ -70,13 +71,9 @@ export default function Header() {
     return () => window.removeEventListener("scroll", checkScroll);
   }, [isHome]);
 
-  // Project case studies get a different pattern: the header hides on
-  // scroll-down (out of the reader's way over the imagery), then reappears
-  // on scroll-up — with a solid page-background fill instead of a
-  // transparent one, so the nav stays legible over whatever content has
-  // scrolled up underneath it.
+  // Project case studies also hide the header on scroll-down (out of the
+  // reader's way over the imagery), then bring it back on scroll-up.
   const [hidden, setHidden] = useState(false);
-  const [scrolledPastTop, setScrolledPastTop] = useState(false);
   const lastY = useRef(0);
 
   useEffect(() => {
@@ -84,11 +81,9 @@ export default function Header() {
     const onScroll = () => {
       if (!isProject) {
         setHidden(false);
-        setScrolledPastTop(false);
         return;
       }
       const y = window.scrollY;
-      setScrolledPastTop(y > HEADER_HEIGHT);
       setHidden(y > lastY.current && y > HEADER_HEIGHT);
       lastY.current = y;
     };
@@ -99,6 +94,10 @@ export default function Header() {
 
   const useLightText = isGraphicDesign ? "text-coral" : isOverDark ? "text-white" : "";
 
+  // The bar is always solid, filled with the page's own background (cream
+  // by default, the project's color on visual project pages, black over the
+  // homepage's dark section) — a transparent bar let the nav render on top
+  // of whatever content scrolled up underneath it.
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-[transform,background-color] duration-300 ${
@@ -108,9 +107,7 @@ export default function Header() {
           ? ""
           : isOverDark
             ? "bg-[#1A1A1A]"
-            : isProject && scrolledPastTop
-              ? "bg-[#F6F5EF]"
-              : "bg-transparent"
+            : "bg-background"
       }`}
       style={visualProject ? { backgroundColor: visualProject.bgColor } : undefined}
     >

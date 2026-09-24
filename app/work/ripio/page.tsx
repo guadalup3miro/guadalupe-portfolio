@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import CaseStudySectionNav from "@/components/case-study-section-nav";
 import CaseStudyImage from "@/components/case-study-image";
-import Header from "@/components/header";
 
 export const metadata: Metadata = {
   title: "Ripio — Guadalupe Miró",
@@ -173,8 +172,9 @@ function Prose({ children }: { children: React.ReactNode }) {
   );
 }
 
-// One numbered section: id'd for the left rail, scroll offset so anchor
-// jumps clear the sticky site header.
+// One numbered section: id'd for the left rail. The scroll margin is the
+// header height minus 2rem, which with the 3.5rem top padding lands the
+// section's label 1.5rem below the sticky site header on an anchor jump.
 function Section({
   id,
   children,
@@ -183,7 +183,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-28 py-14">
+    <section id={id} className="scroll-mt-[calc(var(--header-height)-2rem)] py-14">
       {children}
     </section>
   );
@@ -191,9 +191,7 @@ function Section({
 
 export default function RipioPage() {
   return (
-    <>
-      <Header />
-      <article className="w-full pb-24 text-[#1A1A1A]">
+    <article className="w-full pb-24 text-[#1A1A1A]">
       <div className="mx-auto max-w-7xl px-6 sm:px-10">
         <div className="pt-8">
           <Link
@@ -972,7 +970,6 @@ export default function RipioPage() {
           </div>
         </div>
       </div>
-      </article>
-    </>
+    </article>
   );
 }
