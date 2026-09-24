@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import CaseStudySectionNav from "@/components/case-study-section-nav";
-import CaseStudyPlaceholder from "@/components/case-study-placeholder";
+import CaseStudyImage from "@/components/case-study-image";
 
 export const metadata: Metadata = {
   title: "MaintainX — Procedure Creation — Guadalupe Miró",
@@ -103,9 +103,11 @@ export default function MaintainXPage() {
               </dl>
 
               <div className="mt-10">
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Procedure editor with sections, fields, and scoring — 16:10 — maintainx-procedure-editor.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/procedure-editor.png"
+                  alt="Procedure editor with sections, fields, and scoring"
+                  width={2880}
+                  height={1800}
                 />
               </div>
             </header>
@@ -149,29 +151,41 @@ export default function MaintainXPage() {
               </Prose>
 
               <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="MaintainX Procedure Hub — public library of procedure templates — 16:10 — maintainx-procedure-hub-landing.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/procedure-hub-landing.png"
+                  alt="MaintainX Procedure Hub — public library of procedure templates"
+                  width={2682}
+                  height={1442}
                 />
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Procedure templates browsable by industry — 16:10 — maintainx-procedure-hub-browse.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/procedure-hub-browse.png"
+                  alt="Procedure templates browsable by industry"
+                  width={2688}
+                  height={1460}
                 />
-                <CaseStudyPlaceholder
-                  ratio="1 / 1"
-                  label="Nested conditional logic on a numeric field — 1:1 — maintainx-conditional-logic-nested.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/conditional-logic-nested.png"
+                  alt="Nested conditional logic on a numeric field"
+                  width={2880}
+                  height={2642}
                 />
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Adding a choice field inside conditional logic — 16:10 — maintainx-logic-add-field.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/logic-add-field.png"
+                  alt="Adding a choice field inside conditional logic"
+                  width={2880}
+                  height={1800}
                 />
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Procedure preview showing a max score — 16:10 — maintainx-procedure-preview-score.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/procedure-preview-score.png"
+                  alt="Procedure preview showing a max score"
+                  width={2880}
+                  height={1800}
                 />
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="A reading outside the expected range flagged as an anomaly — 16:10 — maintainx-anomaly-flagging.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/anomaly-flagging.webp"
+                  alt="A reading outside the expected range flagged as an anomaly"
+                  width={1248}
+                  height={800}
                 />
               </div>
             </Section>
@@ -194,13 +208,17 @@ export default function MaintainXPage() {
                 </p>
               </Prose>
               <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <CaseStudyPlaceholder
-                  ratio="4 / 3"
-                  label="Preventive maintenance work order history and schedule — 4:3 — maintainx-preventive-work-orders.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/preventive-work-orders.webp"
+                  alt="Preventive maintenance work order history and schedule"
+                  width={1248}
+                  height={800}
                 />
-                <CaseStudyPlaceholder
-                  ratio="4 / 3"
-                  label="An out-of-range reading automatically triggering a PM work order — 4:3 — maintainx-reading-triggers-pm.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/reading-triggers-pm.webp"
+                  alt="An out-of-range reading automatically triggering a PM work order"
+                  width={1200}
+                  height={780}
                 />
               </div>
 
@@ -218,13 +236,17 @@ export default function MaintainXPage() {
                 </Prose>
               </div>
               <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <CaseStudyPlaceholder
-                  ratio="4 / 3"
-                  label="A Pass, Flag, or Fail inspection step — 4:3 — maintainx-procedures-checklist-step.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/procedures-checklist-step.webp"
+                  alt="A Pass, Flag, or Fail inspection step"
+                  width={1248}
+                  height={800}
                 />
-                <CaseStudyPlaceholder
-                  ratio="4 / 3"
-                  label="A safety precautions checklist on a global procedure — 4:3 — maintainx-global-procedure-checklist.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/global-procedure-checklist.webp"
+                  alt="A safety precautions checklist on a global procedure"
+                  width={1248}
+                  height={800}
                 />
               </div>
 
@@ -239,13 +261,17 @@ export default function MaintainXPage() {
                 </Prose>
               </div>
               <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <CaseStudyPlaceholder
-                  ratio="4 / 3"
-                  label="A work order with a required signature and activity log — 4:3 — maintainx-work-order-signature.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/work-order-signature.webp"
+                  alt="A work order with a required signature and activity log"
+                  width={1250}
+                  height={800}
                 />
-                <CaseStudyPlaceholder
-                  ratio="4 / 3"
-                  label="A new work order linked to a procedure from the library — 4:3 — maintainx-new-work-order.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/new-work-order.webp"
+                  alt="A new work order linked to a procedure from the library"
+                  width={1250}
+                  height={800}
                 />
               </div>
             </Section>
@@ -267,9 +293,11 @@ export default function MaintainXPage() {
                 </p>
               </Prose>
               <div className="mt-10">
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="A single, simple text field in the procedure editor — 16:10 — maintainx-simple-field-editor.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/simple-field-editor.png"
+                  alt="A single, simple text field in the procedure editor"
+                  width={2880}
+                  height={1800}
                 />
               </div>
             </Section>
@@ -290,21 +318,29 @@ export default function MaintainXPage() {
                 </p>
               </Prose>
               <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Creating a new procedure from the Global Library — 16:10 — maintainx-create-procedure-options.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/create-procedure-options.png"
+                  alt="Creating a new procedure from the Global Library"
+                  width={2880}
+                  height={1800}
                 />
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="The Procedure Library with an Explore Global Library option — 16:10 — maintainx-procedure-library.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/procedure-library.png"
+                  alt="The Procedure Library with an Explore Global Library option"
+                  width={2880}
+                  height={1800}
                 />
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="A prompt to edit a shared template from the Global Library — 16:10 — maintainx-template-library-edit-modal.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/template-library-edit-modal.png"
+                  alt="A prompt to edit a shared template from the Global Library"
+                  width={2880}
+                  height={1800}
                 />
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Usage performance across work orders generated from a procedure — 16:10 — maintainx-procedure-library-usage.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/procedure-library-usage.png"
+                  alt="Usage performance across work orders generated from a procedure"
+                  width={2880}
+                  height={1800}
                 />
               </div>
             </Section>
@@ -332,13 +368,17 @@ export default function MaintainXPage() {
                 </p>
               </div>
               <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Naming and describing a new procedure — 16:10 — maintainx-new-procedure-modal.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/new-procedure-modal.png"
+                  alt="Naming and describing a new procedure"
+                  width={2880}
+                  height={1800}
                 />
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Procedure settings: tags, teams in charge, recommended frequency — 16:10 — maintainx-procedure-settings.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/procedure-settings.png"
+                  alt="Procedure settings: tags, teams in charge, recommended frequency"
+                  width={2880}
+                  height={1800}
                 />
               </div>
 
@@ -356,9 +396,11 @@ export default function MaintainXPage() {
                 </p>
               </div>
               <div className="mt-8">
-                <CaseStudyPlaceholder
-                  ratio="16 / 9"
-                  label="A public procedure page with a send-to-phone option — 16:9 — maintainx-procedure-hub-detail.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/procedure-hub-detail.png"
+                  alt="A public procedure page with a send-to-phone option"
+                  width={2664}
+                  height={1498}
                 />
               </div>
             </Section>
@@ -377,13 +419,17 @@ export default function MaintainXPage() {
                 </p>
               </Prose>
               <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <CaseStudyPlaceholder
-                  ratio="4 / 3"
-                  label="Inspection completion stats: pass, flag, fail rates — 4:3 — maintainx-inspection-stats.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/inspection-stats.webp"
+                  alt="Inspection completion stats: pass, flag, fail rates"
+                  width={1248}
+                  height={800}
                 />
-                <CaseStudyPlaceholder
-                  ratio="4 / 3"
-                  label="Mean time between failures dashboard — 4:3 — maintainx-mtbf-dashboard.jpg"
+                <CaseStudyImage
+                  src="/images/maintainx/mtbf-dashboard.webp"
+                  alt="Mean time between failures dashboard"
+                  width={1200}
+                  height={768}
                 />
               </div>
             </Section>
