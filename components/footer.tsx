@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import TimezoneClock from "@/components/timezone-clock";
+import { visualProjects } from "@/lib/visual-projects";
 
 // Email block stays hidden for now for a recruiter-shared build that
 // shouldn't expose personal contact info — flip back to true to restore it.
@@ -17,13 +18,19 @@ const socialLinks = SHOW_SOCIAL_LINKS
   : [];
 
 export default function Footer() {
-  // /graphic-design runs its own coral-on-cream palette (see Header), and
-  // /about is light cream/near-black — the footer follows suit on both
-  // instead of falling back to the site-wide dark theme, so the page stays
-  // visually continuous all the way to the bottom.
+  // /graphic-design runs its own coral-on-cream palette (see Header).
+  // Every other page (home, /about, /work/apaleo, every product case
+  // study) sits on the site's default cream background — the footer
+  // stays light/near-black to match, instead of falling back to a dark
+  // theme, so the page reads as one continuous surface to the bottom.
   const pathname = usePathname();
   const isGraphicDesign = pathname?.startsWith("/graphic-design") ?? false;
-  const isAbout = pathname?.startsWith("/about") ?? false;
+  const isProject = pathname?.startsWith("/work/") ?? false;
+  // Visual-project pages (see lib/visual-projects.ts) each carry their own
+  // background/text color — the footer picks those up directly instead of
+  // the site-wide dark bar, so the color runs unbroken to the bottom.
+  const projectSlug = isProject ? pathname?.split("/")[2] : undefined;
+  const visualProject = projectSlug ? visualProjects[projectSlug] : undefined;
 
   return (
     <footer
@@ -36,30 +43,32 @@ export default function Footer() {
       // text-foreground/text-muted/border-border children below still pick
       // up the variable overrides.
       className={`w-full ${
-        isGraphicDesign
-          ? "bg-cream text-coral"
-          : isAbout
-            ? "bg-[#F6F5EF] text-[#1A1A1A]"
-            : "bg-[#1A1A1A] text-white"
+        visualProject
+          ? ""
+          : isGraphicDesign
+            ? "bg-cream text-coral"
+            : "bg-[#F6F5EF] text-[#1A1A1A]"
       }`}
       style={
-        (isGraphicDesign
+        (visualProject
           ? {
-              "--foreground": "var(--coral)",
-              "--muted": "color-mix(in srgb, var(--coral) 65%, transparent)",
-              "--border": "color-mix(in srgb, var(--coral) 25%, transparent)",
+              backgroundColor: visualProject.bgColor,
+              color: visualProject.textColor,
+              "--foreground": visualProject.textColor,
+              "--muted": visualProject.mutedTextColor,
+              "--border": "color-mix(in srgb, " + visualProject.textColor + " 20%, transparent)",
             }
-          : isAbout
+          : isGraphicDesign
             ? {
+                "--foreground": "var(--coral)",
+                "--muted": "color-mix(in srgb, var(--coral) 65%, transparent)",
+                "--border": "color-mix(in srgb, var(--coral) 25%, transparent)",
+              }
+            : {
                 "--foreground": "#1a1a1a",
                 "--muted": "rgba(26,26,26,0.55)",
                 "--border": "rgba(26,26,26,0.15)",
-              }
-            : {
-                "--foreground": "#f6f5ef",
-                "--muted": "rgba(246,245,239,0.55)",
-                "--border": "rgba(246,245,239,0.15)",
-              }) as React.CSSProperties
+              }) as unknown as React.CSSProperties
       }
     >
       <div className="mx-auto max-w-7xl px-6 py-16 sm:px-10">
@@ -75,7 +84,7 @@ export default function Footer() {
               </p>
               <a
                 href="mailto:guadamiro@gmail.com"
-                className="text-sm font-medium transition-opacity hover:opacity-70"
+                className="text-sm font-normal transition-opacity hover:opacity-70"
               >
                 guadamiro@gmail.com
               </a>
@@ -86,7 +95,7 @@ export default function Footer() {
             <p className="text-xs uppercase tracking-wide text-foreground">
               Buenos Aires ⇄ Madrid
             </p>
-            <p className="mt-3 max-w-[220px] text-sm font-medium leading-snug">
+            <p className="mt-3 max-w-[220px] text-sm font-normal leading-snug">
               Splitting time between Buenos Aires and Madrid. Available
               worldwide.
             </p>
@@ -106,7 +115,7 @@ export default function Footer() {
 
         <div className="mt-16 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-foreground">© 2026 Guadalupe Miró</p>
-          <div className="flex gap-6 text-xs font-medium uppercase tracking-wide">
+          <div className="flex gap-6 text-xs font-normal uppercase tracking-wide">
             {socialLinks.map(({ label, href }) => (
               <a
                 key={label}

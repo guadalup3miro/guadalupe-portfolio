@@ -21,7 +21,7 @@ export default function WorkRows({ projects }: { projects: Project[] }) {
 
           const textBlock = (
             <div className="flex flex-1 flex-col justify-start">
-              <p className="max-w-xl text-[48px] font-normal leading-tight text-white">
+              <p className="max-w-xl text-[30px] font-normal leading-tight text-white sm:text-[48px]">
                 {project.hype} @{handle}
               </p>
               <p className="mt-4 text-xs font-medium uppercase tracking-wide text-white/50">

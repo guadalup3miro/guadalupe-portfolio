@@ -19,7 +19,7 @@ export default function MaintainXPage() {
         timeline="May 2020 – Jun 2022"
       />
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 pt-16">
+      <div className="mx-auto w-full max-w-[660px] px-6 pt-16">
         <CaseStudyImage
           src="/images/maintainx/procedure-editor.png"
           alt="Procedure editor with sections, fields, and scoring"
@@ -48,7 +48,7 @@ export default function MaintainXPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 py-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <CaseStudyImage
             src="/images/maintainx/procedure-hub-landing.png"
@@ -94,7 +94,7 @@ export default function MaintainXPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 py-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <CaseStudyImage
             src="/images/maintainx/preventive-work-orders.webp"
@@ -118,7 +118,7 @@ export default function MaintainXPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 py-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <CaseStudyImage
             src="/images/maintainx/procedures-checklist-step.webp"
@@ -141,7 +141,7 @@ export default function MaintainXPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 py-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <CaseStudyImage
             src="/images/maintainx/work-order-signature.webp"
@@ -184,7 +184,7 @@ export default function MaintainXPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 py-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <CaseStudyImage
             src="/images/maintainx/create-procedure-options.png"
@@ -218,7 +218,7 @@ export default function MaintainXPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 py-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <CaseStudyImage
             src="/images/maintainx/new-procedure-modal.png"
@@ -258,7 +258,7 @@ export default function MaintainXPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 py-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <CaseStudyImage
             src="/images/maintainx/inspection-stats.webp"
@@ -273,7 +273,7 @@ export default function MaintainXPage() {
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 pt-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 pt-8">
         <Link href="/" className="text-sm text-[#1A1A1A] hover:opacity-70">
           ← Back to all work
         </Link>
