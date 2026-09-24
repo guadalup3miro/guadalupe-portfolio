@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import CaseStudySectionNav from "@/components/case-study-section-nav";
-import CaseStudyPlaceholder from "@/components/case-study-placeholder";
+import CaseStudyImage from "@/components/case-study-image";
 
 export const metadata: Metadata = {
   title: "Catálogo Natura — Guadalupe Miró",
@@ -125,9 +125,11 @@ export default function NaturaPage() {
               </dl>
 
               <div className="mt-10">
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Catálogo Natura on a laptop — 16:10 — natura-hero-laptop.jpg"
+                <CaseStudyImage
+                  src="/images/natura/natura-extra-6.png"
+                  alt="Catálogo Natura on a laptop"
+                  width={4000}
+                  height={2250}
                 />
               </div>
             </header>
@@ -168,21 +170,29 @@ export default function NaturaPage() {
                 </p>
               </Prose>
               <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Home carousel — Una — 3:4 — natura-home-carousel-una.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Home_Copy_42.png"
+                  alt="Home carousel — Una"
+                  width={2880}
+                  height={2718}
                 />
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Home carousel — Chronos — 3:4 — natura-home-carousel-chronos.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Home_Copy_65.png"
+                  alt="Home carousel — Chronos"
+                  width={2880}
+                  height={2718}
                 />
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Home carousel — Ilía — 3:4 — natura-home-carousel-ilia.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Home_Copy_69-1.png"
+                  alt="Home carousel — Ilía"
+                  width={2880}
+                  height={2718}
                 />
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Home carousel — Ekos — 3:4 — natura-home-carousel-ekos.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Home_Copy_71.png"
+                  alt="Home carousel — Ekos"
+                  width={2880}
+                  height={2718}
                 />
               </div>
             </Section>
@@ -205,13 +215,17 @@ export default function NaturaPage() {
                 </p>
               </Prose>
               <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Site flow diagram — 16:10 — natura-site-flow-diagram.jpg"
+                <CaseStudyImage
+                  src="/images/natura/natura-extra-2.png"
+                  alt="Site flow diagram"
+                  width={4000}
+                  height={2250}
                 />
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Mobile navigation flow wireframes — 16:10 — natura-mobile-nav-wireframes.jpg"
+                <CaseStudyImage
+                  src="/images/natura/natura-extra-1.png"
+                  alt="Mobile navigation flow wireframes"
+                  width={4000}
+                  height={2250}
                 />
               </div>
             </Section>
@@ -235,23 +249,31 @@ export default function NaturaPage() {
                 </p>
               </Prose>
               <div className="mt-10">
-                <CaseStudyPlaceholder
-                  ratio="16 / 9"
-                  label="Ekos page from sketch to wireframe to final — 16:9 — natura-ekos-sketch-to-final.jpg"
+                <CaseStudyImage
+                  src="/images/natura/natura-extra-3.png"
+                  alt="Ekos page from sketch to wireframe to final"
+                  width={4000}
+                  height={2250}
                 />
               </div>
               <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Home header option — portrait insert — 3:4 — natura-home-header-portrait.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Opcion_Header.png"
+                  alt="Home header option — portrait insert"
+                  width={2880}
+                  height={2048}
                 />
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Home header option — product flat lay — 3:4 — natura-home-header-flatlay.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Opcion_Header_Copy.png"
+                  alt="Home header option — product flat lay"
+                  width={2880}
+                  height={2048}
                 />
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Home header option — macro texture — 3:4 — natura-home-header-macro.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Opcion_Header_Copy_2.png"
+                  alt="Home header option — macro texture"
+                  width={2880}
+                  height={2048}
                 />
               </div>
             </Section>
@@ -274,31 +296,43 @@ export default function NaturaPage() {
               </ul>
 
               <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Ekos collection page — 3:4 — natura-collection-ekos.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Ekos.png"
+                  alt="Ekos collection page"
+                  aspect="portrait"
+                  position="top"
                 />
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Chronos collection page — 3:4 — natura-collection-chronos.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Chronos.png"
+                  alt="Chronos collection page"
+                  aspect="portrait"
+                  position="top"
                 />
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Una collection page — 3:4 — natura-collection-una.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Una.png"
+                  alt="Una collection page"
+                  aspect="portrait"
+                  position="top"
                 />
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Ilía collection page — 3:4 — natura-collection-ilia.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Ilia.png"
+                  alt="Ilía collection page"
+                  aspect="portrait"
+                  position="top"
                 />
               </div>
               <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <CaseStudyPlaceholder
-                  ratio="16 / 10"
-                  label="Ekos collection, Andiroba line — 16:10 — natura-collection-ekos-andiroba.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Ekos_Copy.png"
+                  alt="Ekos collection, Andiroba line"
+                  width={2880}
+                  height={2048}
                 />
-                <CaseStudyPlaceholder
-                  ratio="3 / 4"
-                  label="Product detail page — 3:4 — natura-product-detail.jpg"
+                <CaseStudyImage
+                  src="/images/natura/Detalleproducto.png"
+                  alt="Product detail page"
+                  aspect="portrait"
+                  position="top"
                 />
               </div>
             </Section>
