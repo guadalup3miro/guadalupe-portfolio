@@ -232,12 +232,9 @@ export default function RipioPage() {
               </dl>
 
               <div className="mt-10">
-                <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
-                  At a glance
-                </p>
                 <div className="mt-4 space-y-4">
                   <div>
-                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                    <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
                       Problem
                     </p>
                     <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
@@ -247,7 +244,7 @@ export default function RipioPage() {
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                    <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
                       What I did
                     </p>
                     <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
@@ -257,7 +254,7 @@ export default function RipioPage() {
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                    <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
                       Outcome
                     </p>
                     <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
