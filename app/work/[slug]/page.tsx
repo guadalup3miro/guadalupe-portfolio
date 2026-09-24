@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/lib/projects";
@@ -10,6 +11,28 @@ export function generateStaticParams() {
   return projects
     .filter((project) => !builtSlugs.has(project.slug) && !project.standalone)
     .map((project) => ({ slug: project.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getVisualProject(slug);
+
+  if (!project) return {};
+
+  const description = project.description.split(/(?<=[.!?])\s+/)[0];
+  return {
+    title: `${project.title} — Guadalupe Miró`,
+    description,
+    openGraph: {
+      title: `${project.title} — Guadalupe Miró`,
+      description,
+      images: [{ url: project.hero.src, alt: project.title }],
+    },
+  };
 }
 
 export default async function ProjectPage({

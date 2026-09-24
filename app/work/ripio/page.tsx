@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import CaseStudySectionNav from "@/components/case-study-section-nav";
 import CaseStudyImage from "@/components/case-study-image";
+import Header from "@/components/header";
 
 export const metadata: Metadata = {
   title: "Ripio — Guadalupe Miró",
@@ -190,7 +191,9 @@ function Section({
 
 export default function RipioPage() {
   return (
-    <article className="w-full pb-24 text-[#1A1A1A]">
+    <>
+      <Header />
+      <article className="w-full pb-24 text-[#1A1A1A]">
       <div className="mx-auto max-w-7xl px-6 sm:px-10">
         <div className="pt-8">
           <Link
@@ -972,6 +975,7 @@ export default function RipioPage() {
           </div>
         </div>
       </div>
-    </article>
+      </article>
+    </>
   );
 }
