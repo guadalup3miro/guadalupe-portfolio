@@ -60,11 +60,10 @@ export default function AboutSection() {
             underneath anymore. */}
         <div className="flex flex-col gap-16 sm:gap-24">
           <p className="max-w-[728px] text-[32px] font-normal uppercase leading-[1.2] tracking-tight">
-            Hi there! With 10+ years of experience in visual design and
-            design systems, I&apos;m glad you found your way here — I
-            started in graphic design and fell in love with product &amp;
-            systems. I specialize in elevating products through strong
-            branding and craft.
+            Hi there! I&apos;m glad you found your way here. I&apos;ve spent 10+ years in
+            visual design and design systems — I started in graphic design
+            and fell in love with product and systems. I specialize in
+            elevating products through strong branding and craft.
           </p>
 
           <p className="ml-auto max-w-[728px] text-right text-[32px] font-normal uppercase leading-[1.2] tracking-tight">
@@ -79,17 +78,14 @@ export default function AboutSection() {
             </a>
             , where I hold
             decision-making autonomy across payments and fiscalization — and
-            running freelance practice on brand and 0-to-1
-            product work.
+            running a freelance practice on brand and 0-to-1 product work.
           </p>
         </div>
 
         {/* Work experience */}
         <div className="mt-20 sm:mt-28">
           <h2 className="font-display text-[72px] italic leading-[0.95] tracking-[-0.08em] sm:text-[152px] sm:leading-[141px]">
-            work
-            <br />
-            experience
+            Work experience
           </h2>
 
           <div className="mt-16 grid grid-cols-1 gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">

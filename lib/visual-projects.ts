@@ -198,9 +198,9 @@ export const visualProjects: Record<string, VisualProject> = {
     title: "Intercoop",
     metadata: [
       { label: "Services", value: "Branding, editorial, web" },
-      { label: "Industry", value: "Cooperative / finance" },
+      { label: "Industry", value: "Editorial cooperative" },
       { label: "Client", value: "Intercoop" },
-      { label: "Year", value: "2015 (approx.)" },
+      { label: "Year", value: "2015" },
     ],
     description:
       "A brand identity redesign for Intercoop, an editorial cooperative based in Buenos Aires — built so clients could touch and feel the essence of the brand through its own communication elements. “An autonomous association of people united voluntarily to meet their common economic, social, and cultural needs — a jointly owned, democratically controlled business.” Each part of the cooperative acts independently, but together they bring one layered, playful personality.",
@@ -261,7 +261,7 @@ export const visualProjects: Record<string, VisualProject> = {
       { label: "Services", value: "Posters, postcards, flyers, merchandising, brochure, public ads" },
       { label: "Industry", value: "Culture / city government" },
       { label: "Client", value: "Buenos Aires Ciudad" },
-      { label: "Year", value: "2015 (approx.)" },
+      { label: "Year", value: "2015" },
     ],
     description:
       "Identity and editorial for the city's youth art biennial — call for entries, exhibition signage, festival programming, and merchandise, each stage of the event given its own color from a shared rotating palette so visitors could tell at a glance where they were.",
@@ -306,7 +306,7 @@ export const visualProjects: Record<string, VisualProject> = {
       { label: "Services", value: "Branding, signage, print" },
       { label: "Industry", value: "Hospitality / food" },
       { label: "Client", value: "Mecha — Meet & Grill" },
-      { label: "Year", value: "2016 (approx.)" },
+      { label: "Year", value: "2016" },
     ],
     description:
       "Identity for Mecha, a meet & grill restaurant — wordmark, signage, menus, and print collateral built around a simple woodcut-style mark and a kraft-paper material palette that reads warm rather than corporate.",
@@ -338,7 +338,7 @@ export const visualProjects: Record<string, VisualProject> = {
       { label: "Services", value: "Branding, stationery, editorial" },
       { label: "Industry", value: "Real estate" },
       { label: "Client", value: "Pavilion Recoleta" },
-      { label: "Year", value: "2016 (approx.)" },
+      { label: "Year", value: "2016" },
     ],
     description:
       "Branding for a residential development in Recoleta — stationery, a location map, and a brochure built around marble textures and a dusty rose accent, aiming for considered rather than corporate.",
@@ -382,7 +382,7 @@ export const visualProjects: Record<string, VisualProject> = {
       { label: "Services", value: "Branding, web design" },
       { label: "Industry", value: "Sports & leisure" },
       { label: "Client", value: "Racket Club" },
-      { label: "Year", value: "2017 (approx.)" },
+      { label: "Year", value: "2017" },
     ],
     description:
       "Branding and a booking website for a paddle and tennis club — a confident wordmark paired with court photography and a dark, editorial site that makes reserving a court feel like part of the brand.",
@@ -415,7 +415,7 @@ export const visualProjects: Record<string, VisualProject> = {
       { label: "Services", value: "Editorial design, data visualization" },
       { label: "Industry", value: "Pharma / sustainability" },
       { label: "Client", value: "Pfizer" },
-      { label: "Year", value: "2017 (approx.)" },
+      { label: "Year", value: "2017" },
     ],
     description:
       "Editorial design for Pfizer's annual sustainability report — a system of color-coded sections (governance, environment, people, community) built to make a dense report skimmable without flattening the data.",
@@ -448,7 +448,7 @@ export const visualProjects: Record<string, VisualProject> = {
       { label: "Services", value: "Web design, branding" },
       { label: "Industry", value: "Architecture" },
       { label: "Client", value: "Uno en Uno Estudio" },
-      { label: "Year", value: "2017 (approx.)" },
+      { label: "Year", value: "2017" },
     ],
     description:
       "Website design for an architecture studio — a dark, image-forward site built to let the studio's own built work, like the MOHO building, do the talking.",
@@ -482,7 +482,7 @@ export const visualProjects: Record<string, VisualProject> = {
       { label: "Services", value: "Collage illustration, motion story board" },
       { label: "Industry", value: "Film" },
       { label: "Client", value: "Self-initiated" },
-      { label: "Year", value: "2018 (approx.)" },
+      { label: "Year", value: "2018" },
     ],
     description:
       "A reimagined title sequence for Hedwig and the Angry Inch — collage illustrations and a motion story board, hand-built type and a particle field introducing the film, followed by a set of cast and crew credit cards for the full ensemble.",
@@ -515,7 +515,7 @@ export const visualProjects: Record<string, VisualProject> = {
       { label: "Services", value: "Poster design" },
       { label: "Industry", value: "Street art / culture" },
       { label: "Client", value: "School project" },
-      { label: "Year", value: "2015 (approx.)" },
+      { label: "Year", value: "2015" },
     ],
     description:
       "A poster series for a street art festival taking place in the bare streets of the port of Buenos Aires, surrounded by recycled containers and riverbank walls — spectators walk among the artists, eat from local vendors, and watch world-class graffiti artists turn blank canvas into massive collaborative murals.",
@@ -554,7 +554,7 @@ export const visualProjects: Record<string, VisualProject> = {
       { label: "Services", value: "Illustration, vinyl design" },
       { label: "Industry", value: "Music" },
       { label: "Client", value: "CocoRosie — Noah's Ark" },
-      { label: "Year", value: "2016 (approx.)" },
+      { label: "Year", value: "2016" },
     ],
     description:
       "Collage illustration and layout design for experimental freak-folk band CocoRosie's Noah's Ark — a fusion of ‘soft surrealism,’ hip hop, and electronica that called for an equally strange, hand-drawn cover.",
@@ -583,7 +583,7 @@ export const visualProjects: Record<string, VisualProject> = {
       { label: "Services", value: "Illustration, collage" },
       { label: "Industry", value: "Personal project" },
       { label: "Client", value: "Self-initiated" },
-      { label: "Year", value: "2016 (approx.)" },
+      { label: "Year", value: "2016" },
     ],
     description:
       "Collage illustrations around Wes Anderson's The Life Aquatic, The Royal Tenenbaums, and The Darjeeling Limited, made for a director film series. Handmade aesthetic, signature curios, and saturated color — quirky, bold, and a little nostalgic, the same way his movie cosmos is identifiable in every frame.",
@@ -615,7 +615,7 @@ export const visualProjects: Record<string, VisualProject> = {
       { label: "Services", value: "Motion identity, on-air branding" },
       { label: "Industry", value: "Broadcast / TV" },
       { label: "Client", value: "Pogo TV" },
-      { label: "Year", value: "2018 (approx.)" },
+      { label: "Year", value: "2018" },
     ],
     description:
       "A motion identity system for Pogo TV — show bumpers, lower thirds, and on-air idents built around tape-deck nostalgia and confetti-bright color blocking. Type-driven cards for play/pause moments, program marquees, and the J.POP special, designed to read as clearly in a single frame as in motion.",

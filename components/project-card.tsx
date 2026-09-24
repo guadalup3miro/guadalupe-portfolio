@@ -37,7 +37,7 @@ export default function ProjectCard({
   const wrapperClass = masonry
     ? "block w-full"
     : (project.cardOffsetClass ?? "") + (isGalleryMiddle ? " lg:self-center" : "");
-  const meta = `${project.tags.join(" · ").toUpperCase()} · @${project.slug.replace(/-/g, "").toUpperCase()}`;
+  const meta = project.tags.join(" · ").toUpperCase();
   // Homepage caption splits the two: hype + handle as the title line,
   // tags alone as the small line underneath (matches the reference grid).
   const handle = project.slug.replace(/-/g, "");

@@ -78,10 +78,12 @@ function Media({
   item,
   aspectClass,
   sizes,
+  alt,
 }: {
   item: VisualProjectMediaItem;
   aspectClass: string;
   sizes: string;
+  alt: string;
 }) {
   if (isVideoItem(item)) {
     return <VideoEmbed vimeoId={item.vimeoId} background={item.background} />;
@@ -92,19 +94,21 @@ function Media({
         className="relative w-full overflow-hidden"
         style={{ aspectRatio: `${item.width} / ${item.height}` }}
       >
-        <Image src={item.src} alt="" fill sizes={sizes} className="object-cover" />
+        <Image src={item.src} alt={alt} fill sizes={sizes} className="object-cover" />
       </div>
     );
   }
   return (
     <div className={`relative w-full overflow-hidden ${aspectClass}`}>
-      <Image src={item.src} alt="" fill sizes={sizes} className="object-cover" />
+      <Image src={item.src} alt={alt} fill sizes={sizes} className="object-cover" />
     </div>
   );
 }
 
 export default function VisualProjectPage({ project }: { project: VisualProject }) {
   const naturalGrid = project.galleryNaturalGrid ?? false;
+  const services = project.metadata.find((item) => item.label === "Services")?.value ?? "Visual design";
+  const galleryAlt = (index: number) => `${project.title} — ${services}, image ${index + 1}`;
   const naturalGridCols = project.galleryNaturalGridCols ?? 2;
   const seamless = !naturalGrid && (project.gallerySeamless ?? false);
   const blocks =
@@ -172,7 +176,7 @@ export default function VisualProjectPage({ project }: { project: VisualProject 
           // natural aspect ratio (no crop, no object-cover), rounded
           // corners, click-to-open lightbox (see natural-image-grid.tsx).
           <section className="mx-auto w-full max-w-6xl px-6 pb-24 pt-14 sm:px-10 sm:pb-32 sm:pt-20">
-            <NaturalImageGrid items={project.images} cols={naturalGridCols} />
+            <NaturalImageGrid items={project.images} cols={naturalGridCols} altPrefix={galleryAlt} />
           </section>
         ) : seamless ? (
           // Uno en Uno-style: one continuous scroll, images stacked with
@@ -186,7 +190,7 @@ export default function VisualProjectPage({ project }: { project: VisualProject 
                 const spaced = !isVideoItem(item) && item.spaced;
                 return (
                   <div key={mediaKey(item)} className={spaced ? "my-6 sm:my-10" : undefined}>
-                    <Media item={item} aspectClass="aspect-[16/10]" sizes="(min-width: 1024px) 1152px, 100vw" />
+                    <Media item={item} alt={galleryAlt(project.images.indexOf(item))} aspectClass="aspect-[16/10]" sizes="(min-width: 1024px) 1152px, 100vw" />
                   </div>
                 );
               })}
@@ -204,6 +208,7 @@ export default function VisualProjectPage({ project }: { project: VisualProject 
                     <Media
                       key={mediaKey(item)}
                       item={item}
+                      alt={galleryAlt(project.images.indexOf(item))}
                       aspectClass={block.length === 1 ? "aspect-[16/10]" : "aspect-[4/3]"}
                       sizes={
                         block.length === 1

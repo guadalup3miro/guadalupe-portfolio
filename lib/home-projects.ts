@@ -30,7 +30,7 @@ export const homeProjects: HomeProject[] = [
     years: "2018–2019",
     title: "Crypto for people who don't speak crypto.",
     outcome:
-      "Led the redesign end to end, from discovery to launch, for one of Argentina's largest crypto exchanges. Everything shipped in 6 months.",
+      "Led design end to end on a ground-up build of the wallet, trading, onboarding and credit flows for one of Argentina's largest crypto exchanges. Everything shipped in 6 months.",
     tags: ["Product Design", "UX/UI"],
     accentColor: "#825EFB",
     image: "/home/ripio.webp",
@@ -52,10 +52,11 @@ export const homeProjects: HomeProject[] = [
   {
     slug: "natura",
     company: "Natura",
-    area: "E-commerce",
-    years: "TODO",
+    area: "Digital catalog",
+    years: "2019",
     title: "A sprawling beauty catalog, made easy to shop",
-    outcome: "TODO — outcome line for Natura.",
+    outcome:
+      "Turned a printed catalog shared by independent vendors into a digital one they could share with a QR code, built on a CMS so Natura's team could launch new campaigns on their own.",
     tags: ["Product Design", "UX/UI"],
     accentColor: "#F2E65E",
     image: "/home/natura.webp",
