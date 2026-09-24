@@ -17,13 +17,13 @@ const socialLinks = SHOW_SOCIAL_LINKS
   : [];
 
 export default function Footer() {
-  // /graphic-design runs its own coral-on-cream palette (see Header), and
-  // /about is light cream/near-black — the footer follows suit on both
-  // instead of falling back to the site-wide dark theme, so the page stays
-  // visually continuous all the way to the bottom.
+  // /graphic-design runs its own coral-on-cream palette (see Header).
+  // Every other page (home, /about, every /work/* case study) sits on the
+  // site's default cream background, so the footer stays light/near-black
+  // to match instead of switching to a dark theme — the page should read
+  // as one continuous surface all the way to the bottom.
   const pathname = usePathname();
   const isGraphicDesign = pathname?.startsWith("/graphic-design") ?? false;
-  const isAbout = pathname?.startsWith("/about") ?? false;
 
   return (
     <footer
@@ -36,11 +36,7 @@ export default function Footer() {
       // text-foreground/text-muted/border-border children below still pick
       // up the variable overrides.
       className={`w-full ${
-        isGraphicDesign
-          ? "bg-cream text-coral"
-          : isAbout
-            ? "bg-[#F6F5EF] text-[#1A1A1A]"
-            : "bg-[#1A1A1A] text-white"
+        isGraphicDesign ? "bg-cream text-coral" : "bg-[#F6F5EF] text-[#1A1A1A]"
       }`}
       style={
         (isGraphicDesign
@@ -49,17 +45,11 @@ export default function Footer() {
               "--muted": "color-mix(in srgb, var(--coral) 65%, transparent)",
               "--border": "color-mix(in srgb, var(--coral) 25%, transparent)",
             }
-          : isAbout
-            ? {
-                "--foreground": "#1a1a1a",
-                "--muted": "rgba(26,26,26,0.55)",
-                "--border": "rgba(26,26,26,0.15)",
-              }
-            : {
-                "--foreground": "#f6f5ef",
-                "--muted": "rgba(246,245,239,0.55)",
-                "--border": "rgba(246,245,239,0.15)",
-              }) as React.CSSProperties
+          : {
+              "--foreground": "#1a1a1a",
+              "--muted": "rgba(26,26,26,0.55)",
+              "--border": "rgba(26,26,26,0.15)",
+            }) as React.CSSProperties
       }
     >
       <div className="mx-auto max-w-7xl px-6 py-16 sm:px-10">

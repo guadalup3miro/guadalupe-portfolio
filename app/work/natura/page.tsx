@@ -19,7 +19,7 @@ export default function NaturaPage() {
         timeline="May – Aug 2019"
       />
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 pt-16">
+      <div className="mx-auto w-full max-w-[660px] px-6 pt-16">
         <CaseStudyImage
           src="/images/natura/natura-extra-6.png"
           alt="Catálogo Natura shown on a laptop"
@@ -51,7 +51,7 @@ export default function NaturaPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 py-8">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <CaseStudyImage
             src="/images/natura/Home_Copy_42.png"
@@ -88,7 +88,7 @@ export default function NaturaPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 py-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <CaseStudyImage
             src="/images/natura/natura-extra-2.png"
@@ -124,7 +124,7 @@ export default function NaturaPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 py-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           <CaseStudyImage
             src="/images/natura/Opcion_Header.png"
@@ -170,7 +170,7 @@ export default function NaturaPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 py-8">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <CaseStudyImage
             src="/images/natura/Ekos.png"
@@ -221,7 +221,7 @@ export default function NaturaPage() {
         </p>
       </CaseStudyBlock>
 
-      <div className="mx-auto w-full max-w-[1088px] px-6 pt-8">
+      <div className="mx-auto w-full max-w-[660px] px-6 pt-8">
         <Link href="/" className="text-sm text-[#1A1A1A] hover:opacity-70">
           ← Back to all work
         </Link>
