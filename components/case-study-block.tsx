@@ -4,7 +4,9 @@ import CaseStudyImage from "@/components/case-study-image";
 // paragraph column, next to an image at its natural size (never stretched
 // or cropped), both inside the 1088px safe area. `imageSide` controls
 // whether the text sits left or right of the image. If no image is
-// supplied, the text column just renders on its own (full safe-area width).
+// supplied, the text column fills the full safe-area width instead of
+// staying capped at 504px — otherwise it reads narrower than the image
+// grids elsewhere on the same page, breaking the shared-container feel.
 export default function CaseStudyBlock({
   title,
   children,
@@ -25,7 +27,7 @@ export default function CaseStudyBlock({
   imageSide?: "left" | "right";
 }) {
   const text = (
-    <div className="w-full max-w-[504px] shrink-0">
+    <div className={`w-full shrink-0 ${image ? "max-w-[504px]" : ""}`}>
       {title && (
         <h2 className="text-[40px] leading-tight font-normal text-[#1A1A1A]">
           {title}
@@ -39,7 +41,7 @@ export default function CaseStudyBlock({
 
   if (!image) {
     return (
-      <div className="mx-auto w-full max-w-[1088px] px-6 py-16">{text}</div>
+      <div className="mx-auto w-full max-w-[660px] px-6 py-16">{text}</div>
     );
   }
 
@@ -58,7 +60,7 @@ export default function CaseStudyBlock({
   );
 
   return (
-    <div className="mx-auto w-full max-w-[1088px] px-6 py-16">
+    <div className="mx-auto w-full max-w-[660px] px-6 py-16">
       <div
         className={`flex flex-col gap-10 sm:items-center ${
           imageSide === "left" ? "sm:flex-row-reverse" : "sm:flex-row"

@@ -29,13 +29,26 @@ export default function CaseStudyImage({
   // Reserved for the single lead/hero shot at the top of a case study —
   // everything else stays inside the page's safe-area column.
   bleed = false,
-  // 20px rounded corners + a soft drop shadow — the default treatment for
-  // every in-grid (non-bleed) image.
+  // 10px rounded corners — the default treatment for every in-grid
+  // (non-bleed) image.
   radius = true,
+  // Soft drop shadow alongside the radius. Off for case studies that want
+  // a flatter, borderless look.
+  shadow = true,
   // mix-blend-mode: multiply — for images with a white/light background
   // (the top hero shot, hand-drawn sketches) so they sit into the page's
   // cream background instead of showing a hard rectangle edge.
   multiply = false,
+  // Skip Next's image optimizer entirely and serve the source file as-is.
+  // Required for animated GIFs — the optimizer's srcset picks a smaller
+  // breakpoint and re-encodes it, which can shrink the real pixel size
+  // well below the source (and risks flattening the animation).
+  unoptimized = false,
+  // Thin solid border, same tone as the placeholder's dashed one — keeps
+  // every image reading as a consistent "card" even without a shadow, and
+  // gives images with a background close to the page's cream a visible
+  // edge instead of bleeding into it.
+  stroke = false,
 }: {
   src: string;
   alt: string;
@@ -46,14 +59,22 @@ export default function CaseStudyImage({
   className?: string;
   bleed?: boolean;
   radius?: boolean;
+  shadow?: boolean;
   multiply?: boolean;
+  unoptimized?: boolean;
+  stroke?: boolean;
 }) {
   const exists = fs.existsSync(path.join(process.cwd(), "public", src));
   const bleedClass = bleed ? "relative left-1/2 w-screen -translate-x-1/2" : "";
-  const treatmentClass =
-    !bleed && radius
-      ? "rounded-[10px] shadow-[0_25px_50px_-20px_rgba(26,26,26,0.25)]"
-      : "";
+  const treatmentClass = !bleed
+    ? [
+        radius && "rounded-[10px]",
+        shadow && "shadow-[0_25px_50px_-20px_rgba(26,26,26,0.25)]",
+        stroke && "border border-[#1A1A1A]/15",
+      ]
+        .filter(Boolean)
+        .join(" ")
+    : "";
   const multiplyClass = multiply ? "mix-blend-multiply" : "";
 
   if (!exists) return null;
@@ -67,6 +88,7 @@ export default function CaseStudyImage({
         alt={alt}
         width={width}
         height={height}
+        unoptimized={unoptimized}
         sizes={bleed ? "100vw" : "(min-width: 1088px) 1088px, 100vw"}
         className={`h-auto w-full overflow-hidden ${bleedClass} ${treatmentClass} ${multiplyClass} ${className}`}
       />
