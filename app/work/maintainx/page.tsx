@@ -11,7 +11,12 @@ export const metadata: Metadata = {
 
 const stats = [
   { label: "Role", value: "Senior Product Designer" },
-  { label: "Timeline", value: "May 2020 – Jun 2022" },
+  { label: "Timeline", value: "May 2020 – Apr 2022" },
+  {
+    label: "Team",
+    value: "First product designer, working with the CEO and CTO",
+  },
+  { label: "Tools", value: "Sketch, Figma" },
 ];
 
 const sections = [
