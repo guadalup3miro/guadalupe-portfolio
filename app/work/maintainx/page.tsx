@@ -104,6 +104,44 @@ export default function MaintainXPage() {
               </dl>
 
               <div className="mt-10">
+                <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
+                  At a glance
+                </p>
+                <div className="mt-4 space-y-4">
+                  <div>
+                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                      Problem
+                    </p>
+                    <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
+                      Maintenance instructions lived on paper: site-specific,
+                      rarely updated, and impossible to standardize across
+                      locations.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                      What I did
+                    </p>
+                    <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
+                      Designed MaintainX&apos;s procedure system: the
+                      authoring tool, the step-by-step field experience for
+                      technicians, and the Global Procedure Library.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                      Outcome
+                    </p>
+                    <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
+                      Procedures became structured data: scored, able to
+                      trigger corrective work automatically, and reusable
+                      across every site.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-10">
                 <CaseStudyImage
                   src="/images/maintainx/procedure-editor.png"
                   alt="Procedure editor with sections, fields, and scoring"
