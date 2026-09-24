@@ -20,7 +20,7 @@ export default function CaseStudyHero({
   about?: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto w-full max-w-[1088px] px-6 pt-24">
+    <div className="mx-auto w-full max-w-[660px] px-6 pt-24">
       <p className="text-base font-normal text-[#1A1A1A]">{eyebrow}</p>
       <h1 className="mt-2 max-w-2xl text-[40px] font-normal leading-tight text-[#1A1A1A]">
         {title}

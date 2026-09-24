@@ -81,7 +81,7 @@ export default function ProjectCard({
           src={project.thumbnail}
           alt={project.title}
           fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          sizes="(min-width: 640px) 50vw, 100vw"
           unoptimized={isGif}
           className="object-cover"
         />
@@ -123,14 +123,16 @@ export default function ProjectCard({
     );
   }
 
-  // Homepage: plain image, no hover overlay. Caption below is one line
-  // ("hype @handle", GT Alpina regular 16), tags line to the right of it
-  // (same row), Inter medium 12, fading in only on hover.
+  // Homepage: plain image in a rounded, overflow-clipped wrapper (no
+  // background block or border), scaling up slightly on hover — same
+  // effect as deadpine.xyz's project cards. Caption below is just two
+  // lines, both Inter regular: the title ("hype @handle", 16), then the
+  // tag line (uppercase, 12) directly under it.
   const content = (
     <>
       <div
         style={aspect.style}
-        className={`relative ${aspect.className} overflow-hidden bg-zinc-50`}
+        className={`relative ${aspect.className} overflow-hidden rounded-2xl`}
       >
         <Image
           src={project.thumbnail}
@@ -143,16 +145,16 @@ export default function ProjectCard({
           className={`object-cover ${
             project.noHoverZoom
               ? ""
-              : "transition-transform duration-500 ease-out group-hover:scale-110"
+              : "transition-transform duration-300 ease-out group-hover:scale-[1.05]"
           }`}
         />
       </div>
-      <div className="mt-2 flex items-baseline justify-between gap-4">
-        <p className="font-display text-base font-normal leading-normal text-foreground">
+      <div className="mt-3 flex flex-col gap-2">
+        <p className="text-base font-normal leading-normal text-foreground">
           {project.hype} @{handle}
         </p>
         <p
-          className="shrink-0 text-xs font-medium uppercase leading-3 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100"
+          className="text-xs font-normal uppercase leading-3"
           style={{ color: "#ADA4A4" }}
         >
           {tagsLine}
