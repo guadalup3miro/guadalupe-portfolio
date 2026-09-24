@@ -24,12 +24,12 @@ const sections = [
   { id: "opportunity", num: "07", label: "The opportunity" },
 ];
 
-// Numbered eyebrow + section title, left-aligned, solid #1A1A1A.
+// Numbered eyebrow ("01 — OVERVIEW", monospace) + section title below.
 function SectionHeading({ num, title }: { num: string; title: string }) {
   return (
     <div className="mb-8">
-      <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
-        {num}
+      <p className="font-mono text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
+        {num} — {title}
       </p>
       <h2 className="mt-2 text-[32px] font-normal leading-tight text-[#1A1A1A]">
         {title}
@@ -38,10 +38,11 @@ function SectionHeading({ num, title }: { num: string; title: string }) {
   );
 }
 
-// Standard body measure — left-aligned, readable width.
+// Body copy — full column width, so it shares the same container as the
+// images instead of sitting narrower inside it.
 function Prose({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-w-[640px] text-base leading-[22px] font-normal text-[#1A1A1A]">
+    <div className="text-base leading-[22px] font-normal text-[#1A1A1A]">
       {children}
     </div>
   );
@@ -79,7 +80,7 @@ export default function MaintainXPage() {
         <div className="mt-10 lg:grid lg:grid-cols-[168px_minmax(0,1fr)] lg:gap-x-16">
           <CaseStudySectionNav sections={sections} />
 
-          <div className="min-w-0">
+          <div className="min-w-0 max-w-[660px]">
             {/* HERO */}
             <header className="py-6">
               <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
@@ -108,6 +109,7 @@ export default function MaintainXPage() {
                   alt="Procedure editor with sections, fields, and scoring"
                   width={2880}
                   height={1800}
+                  shadow={false}
                 />
               </div>
             </header>
@@ -156,36 +158,42 @@ export default function MaintainXPage() {
                   alt="MaintainX Procedure Hub — public library of procedure templates"
                   width={2682}
                   height={1442}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/procedure-hub-browse.png"
                   alt="Procedure templates browsable by industry"
                   width={2688}
                   height={1460}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/conditional-logic-nested.png"
                   alt="Nested conditional logic on a numeric field"
                   width={2880}
                   height={2642}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/logic-add-field.png"
                   alt="Adding a choice field inside conditional logic"
                   width={2880}
                   height={1800}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/procedure-preview-score.png"
                   alt="Procedure preview showing a max score"
                   width={2880}
                   height={1800}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/anomaly-flagging.webp"
                   alt="A reading outside the expected range flagged as an anomaly"
                   width={1248}
                   height={800}
+                  shadow={false}
                 />
               </div>
             </Section>
@@ -213,12 +221,14 @@ export default function MaintainXPage() {
                   alt="Preventive maintenance work order history and schedule"
                   width={1248}
                   height={800}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/reading-triggers-pm.webp"
                   alt="An out-of-range reading automatically triggering a PM work order"
                   width={1200}
                   height={780}
+                  shadow={false}
                 />
               </div>
 
@@ -241,12 +251,14 @@ export default function MaintainXPage() {
                   alt="A Pass, Flag, or Fail inspection step"
                   width={1248}
                   height={800}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/global-procedure-checklist.webp"
                   alt="A safety precautions checklist on a global procedure"
                   width={1248}
                   height={800}
+                  shadow={false}
                 />
               </div>
 
@@ -266,12 +278,14 @@ export default function MaintainXPage() {
                   alt="A work order with a required signature and activity log"
                   width={1250}
                   height={800}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/new-work-order.webp"
                   alt="A new work order linked to a procedure from the library"
                   width={1250}
                   height={800}
+                  shadow={false}
                 />
               </div>
             </Section>
@@ -298,6 +312,7 @@ export default function MaintainXPage() {
                   alt="A single, simple text field in the procedure editor"
                   width={2880}
                   height={1800}
+                  shadow={false}
                 />
               </div>
             </Section>
@@ -323,24 +338,28 @@ export default function MaintainXPage() {
                   alt="Creating a new procedure from the Global Library"
                   width={2880}
                   height={1800}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/procedure-library.png"
                   alt="The Procedure Library with an Explore Global Library option"
                   width={2880}
                   height={1800}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/template-library-edit-modal.png"
                   alt="A prompt to edit a shared template from the Global Library"
                   width={2880}
                   height={1800}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/procedure-library-usage.png"
                   alt="Usage performance across work orders generated from a procedure"
                   width={2880}
                   height={1800}
+                  shadow={false}
                 />
               </div>
             </Section>
@@ -352,7 +371,7 @@ export default function MaintainXPage() {
                 title="Designing for two very different moments"
               />
 
-              <div className="max-w-[640px]">
+              <div>
                 <h3 className="text-[22px] font-normal leading-tight text-[#1A1A1A]">
                   Creating a procedure
                   <span className="mt-1 block text-xs uppercase tracking-wide text-[#1A1A1A]/50">
@@ -373,16 +392,18 @@ export default function MaintainXPage() {
                   alt="Naming and describing a new procedure"
                   width={2880}
                   height={1800}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/procedure-settings.png"
                   alt="Procedure settings: tags, teams in charge, recommended frequency"
                   width={2880}
                   height={1800}
+                  shadow={false}
                 />
               </div>
 
-              <div className="mt-20 max-w-[640px]">
+              <div className="mt-20">
                 <h3 className="text-[22px] font-normal leading-tight text-[#1A1A1A]">
                   Running a procedure
                   <span className="mt-1 block text-xs uppercase tracking-wide text-[#1A1A1A]/50">
@@ -401,6 +422,7 @@ export default function MaintainXPage() {
                   alt="A public procedure page with a send-to-phone option"
                   width={2664}
                   height={1498}
+                  shadow={false}
                 />
               </div>
             </Section>
@@ -424,12 +446,14 @@ export default function MaintainXPage() {
                   alt="Inspection completion stats: pass, flag, fail rates"
                   width={1248}
                   height={800}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/maintainx/mtbf-dashboard.webp"
                   alt="Mean time between failures dashboard"
                   width={1200}
                   height={768}
+                  shadow={false}
                 />
               </div>
             </Section>
