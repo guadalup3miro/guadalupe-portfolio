@@ -45,12 +45,12 @@ const principles = [
   },
 ];
 
-// Numbered eyebrow + section title, left-aligned, solid #1A1A1A.
+// Numbered eyebrow ("01 — OVERVIEW", monospace) + section title below.
 function SectionHeading({ num, title }: { num: string; title: string }) {
   return (
     <div className="mb-8">
-      <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
-        {num}
+      <p className="font-mono text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
+        {num} — {title}
       </p>
       <h2 className="mt-2 text-[32px] font-normal leading-tight text-[#1A1A1A]">
         {title}
@@ -59,10 +59,11 @@ function SectionHeading({ num, title }: { num: string; title: string }) {
   );
 }
 
-// Standard body measure — left-aligned, readable width.
+// Body copy — full column width, so it shares the same container as the
+// images instead of sitting narrower inside it.
 function Prose({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-w-[640px] text-base leading-[22px] font-normal text-[#1A1A1A]">
+    <div className="text-base leading-[22px] font-normal text-[#1A1A1A]">
       {children}
     </div>
   );
@@ -100,7 +101,7 @@ export default function NaturaPage() {
         <div className="mt-10 lg:grid lg:grid-cols-[168px_minmax(0,1fr)] lg:gap-x-16">
           <CaseStudySectionNav sections={sections} />
 
-          <div className="min-w-0">
+          <div className="min-w-0 max-w-[660px]">
             {/* HERO */}
             <header className="py-6">
               <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
@@ -130,6 +131,7 @@ export default function NaturaPage() {
                   alt="Catálogo Natura on a laptop"
                   width={4000}
                   height={2250}
+                  shadow={false}
                 />
               </div>
             </header>
@@ -169,30 +171,34 @@ export default function NaturaPage() {
                   shared it earned the commission.
                 </p>
               </Prose>
-              <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+              <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <CaseStudyImage
                   src="/images/natura/Home_Copy_42.png"
                   alt="Home carousel — Una"
                   width={2880}
                   height={2718}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/natura/Home_Copy_65.png"
                   alt="Home carousel — Chronos"
                   width={2880}
                   height={2718}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/natura/Home_Copy_69-1.png"
                   alt="Home carousel — Ilía"
                   width={2880}
                   height={2718}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/natura/Home_Copy_71.png"
                   alt="Home carousel — Ekos"
                   width={2880}
                   height={2718}
+                  shadow={false}
                 />
               </div>
             </Section>
@@ -220,12 +226,14 @@ export default function NaturaPage() {
                   alt="Site flow diagram"
                   width={4000}
                   height={2250}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/natura/natura-extra-1.png"
                   alt="Mobile navigation flow wireframes"
                   width={4000}
                   height={2250}
+                  shadow={false}
                 />
               </div>
             </Section>
@@ -254,6 +262,7 @@ export default function NaturaPage() {
                   alt="Ekos page from sketch to wireframe to final"
                   width={4000}
                   height={2250}
+                  shadow={false}
                 />
               </div>
               <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -262,18 +271,21 @@ export default function NaturaPage() {
                   alt="Home header option — portrait insert"
                   width={2880}
                   height={2048}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/natura/Opcion_Header_Copy.png"
                   alt="Home header option — product flat lay"
                   width={2880}
                   height={2048}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/natura/Opcion_Header_Copy_2.png"
                   alt="Home header option — macro texture"
                   width={2880}
                   height={2048}
+                  shadow={false}
                 />
               </div>
             </Section>
@@ -284,7 +296,7 @@ export default function NaturaPage() {
                 num="05"
                 title="Built for the business, not just the browse"
               />
-              <ul className="max-w-[640px] space-y-5">
+              <ul className="space-y-5">
                 {principles.map(({ lead, body }) => (
                   <li
                     key={lead}
@@ -295,30 +307,34 @@ export default function NaturaPage() {
                 ))}
               </ul>
 
-              <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+              <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <CaseStudyImage
                   src="/images/natura/Ekos.png"
                   alt="Ekos collection page"
                   aspect="portrait"
                   position="top"
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/natura/Chronos.png"
                   alt="Chronos collection page"
                   aspect="portrait"
                   position="top"
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/natura/Una.png"
                   alt="Una collection page"
                   aspect="portrait"
                   position="top"
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/natura/Ilia.png"
                   alt="Ilía collection page"
                   aspect="portrait"
                   position="top"
+                  shadow={false}
                 />
               </div>
               <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -327,12 +343,14 @@ export default function NaturaPage() {
                   alt="Ekos collection, Andiroba line"
                   width={2880}
                   height={2048}
+                  shadow={false}
                 />
                 <CaseStudyImage
                   src="/images/natura/Detalleproducto.png"
                   alt="Product detail page"
                   aspect="portrait"
                   position="top"
+                  shadow={false}
                 />
               </div>
             </Section>
