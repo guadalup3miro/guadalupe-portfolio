@@ -126,6 +126,44 @@ export default function NaturaPage() {
               </dl>
 
               <div className="mt-10">
+                <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
+                  At a glance
+                </p>
+                <div className="mt-4 space-y-4">
+                  <div>
+                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                      Problem
+                    </p>
+                    <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
+                      Natura&apos;s catalog, shared by independent vendors,
+                      was stuck in print while their customers moved to
+                      phones.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                      What I did
+                    </p>
+                    <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
+                      Designed a digital catalog, not an online shop: simple,
+                      predictable navigation, a magazine-like visual surface,
+                      and QR-code sharing per vendor.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                      Outcome
+                    </p>
+                    <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
+                      Consultoras could share the catalog from their phone and
+                      still earn the commission, and Natura&apos;s team could
+                      load new campaigns without redesigning pages.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-10">
                 <CaseStudyImage
                   src="/images/natura/natura-extra-6.png"
                   alt="Catálogo Natura on a laptop"
