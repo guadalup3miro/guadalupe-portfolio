@@ -538,6 +538,22 @@ export default function MaintainXPage() {
                   move without a designer in every conversation.
                 </p>
               </div>
+              <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <CaseStudyImage
+                  src="/images/maintainx/inspection-stats.webp"
+                  alt="Inspection completion stats: pass, flag, fail rates"
+                  width={1248}
+                  height={800}
+                  shadow={false}
+                />
+                <CaseStudyImage
+                  src="/images/maintainx/mtbf-dashboard.webp"
+                  alt="Mean time between failures dashboard"
+                  width={1200}
+                  height={768}
+                  shadow={false}
+                />
+              </div>
             </Section>
 
             <div className="pt-8">
