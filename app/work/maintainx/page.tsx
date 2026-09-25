@@ -525,19 +525,6 @@ export default function MaintainXPage() {
                   trigger the next piece of work on their own.
                 </p>
               </Prose>
-              <div className="mt-10">
-                <p className="text-base leading-[22px] font-bold text-[#1A1A1A]">
-                  What I&apos;d do differently
-                </p>
-                <p className="mt-4 text-base leading-[22px] font-normal text-[#1A1A1A]">
-                  Treat the design system as its own project from day one. I
-                  built it alongside feature work, because that&apos;s what a
-                  six-person startup needed at the time. But the earlier a
-                  system exists, the less every new screen has to be
-                  reconciled with it later, and the faster a growing team can
-                  move without a designer in every conversation.
-                </p>
-              </div>
               <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <CaseStudyImage
                   src="/images/maintainx/inspection-stats.webp"
@@ -553,6 +540,24 @@ export default function MaintainXPage() {
                   height={768}
                   shadow={false}
                 />
+              </div>
+              <p className="mt-3 text-sm leading-[20px] font-normal text-[#1A1A1A]/70">
+                Reporting I designed so teams could see results, not just
+                record them: inspection completion and scores, and mean time
+                between failures per asset.
+              </p>
+              <div className="mt-10">
+                <p className="text-base leading-[22px] font-bold text-[#1A1A1A]">
+                  What I&apos;d do differently
+                </p>
+                <p className="mt-4 text-base leading-[22px] font-normal text-[#1A1A1A]">
+                  Treat the design system as its own project from day one. I
+                  built it alongside feature work, because that&apos;s what a
+                  six-person startup needed at the time. But the earlier a
+                  system exists, the less every new screen has to be
+                  reconciled with it later, and the faster a growing team can
+                  move without a designer in every conversation.
+                </p>
               </div>
             </Section>
 
