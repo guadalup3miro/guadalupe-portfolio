@@ -66,6 +66,19 @@ export default function HomeProjectRows({ projects }: { projects: HomeProject[] 
               <p className={`mt-6 text-xs font-medium uppercase leading-normal tracking-wide ${GRAY}`}>
                 {tagsLine}
               </p>
+              {project.note && (
+                // relative z-10 lifts the inline link above the row's
+                // overlay link (see below), so it opens on its own.
+                <p className={`relative z-10 mt-3 text-xs font-medium uppercase leading-normal tracking-wide ${GRAY}`}>
+                  {project.note.text} ·{" "}
+                  <a
+                    href={project.note.linkHref}
+                    className="underline underline-offset-2 transition-colors hover:text-foreground"
+                  >
+                    {project.note.linkLabel}
+                  </a>
+                </p>
+              )}
               {!project.published && (
                 <p className="mt-6 text-xs font-medium uppercase tracking-wide text-foreground">
                   Case study coming soon
@@ -79,6 +92,23 @@ export default function HomeProjectRows({ projects }: { projects: HomeProject[] 
           if (!project.published) {
             return (
               <div key={project.slug} className={rowClass}>
+                {card}
+                {text}
+              </div>
+            );
+          }
+
+          // A row with its own inline link can't be one big <a> (links can't
+          // nest), so the case-study link becomes an overlay stretched over
+          // the row instead.
+          if (project.note) {
+            return (
+              <div key={project.slug} className={`group relative ${rowClass}`}>
+                <Link
+                  href={`/work/${project.slug}`}
+                  aria-label={`${project.company} — ${project.title}`}
+                  className="absolute inset-0 z-[1]"
+                />
                 {card}
                 {text}
               </div>
