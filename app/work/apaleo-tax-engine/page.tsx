@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import CaseStudySectionNav from "@/components/case-study-section-nav";
-import CaseStudyImage from "@/components/case-study-image";
 import CaseStudyPlaceholder from "@/components/case-study-placeholder";
 import PrototypeEmbed from "@/components/prototype-embed";
+import ZoomableImage from "@/components/zoomable-image";
 import { isUnlocked } from "@/lib/tax-engine-gate";
 import { unlock } from "./actions";
 
@@ -149,6 +149,15 @@ function PasswordGate({ error }: { error: boolean }) {
               That password didn&apos;t work. Try again.
             </p>
           )}
+          <p className="mt-4 text-base leading-[22px]">
+            Don&apos;t have the password?{" "}
+            <a
+              href="mailto:guadamiro@gmail.com?subject=Password%20for%20Tax%20Engine%202.0%20case%20study"
+              className="underline underline-offset-2 transition-opacity hover:opacity-70"
+            >
+              Request access
+            </a>
+          </p>
         </div>
       </div>
     </article>
@@ -214,11 +223,12 @@ export default async function ApaleoTaxEnginePage({
               </div>
 
               <div className="mt-10">
-                {/* TODO(image): HERO — full-width screenshot of the finished,
-                    on-brand build (tax-engine-v5.html, not the plain
-                    exploratory prototype): the tax list view or main create
-                    flow, navy sidebar and amber accents visible. */}
-                <CaseStudyPlaceholder label="HERO — full-width screenshot of the finished, on-brand build (tax-engine-v5.html): tax list view or main create flow, navy sidebar and amber accents visible" />
+                <ZoomableImage
+                  src="/images/apaleo-tax-engine/hero-tax-list.png"
+                  alt="Tax engine list view in apaleo, with a City tax configured for Berlin"
+                  width={2880}
+                  height={1400}
+                />
               </div>
             </header>
 
@@ -278,22 +288,18 @@ export default async function ApaleoTaxEnginePage({
                   often.
                 </Option>
               </div>
-              <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <CaseStudyImage
+              <div className="mt-8 space-y-6">
+                <ZoomableImage
                   src="/images/apaleo-tax-engine/single-page-identity.png"
                   alt="Single-page prototype, top: Identity and Tax Configuration sections"
                   width={2020}
                   height={1702}
-                  shadow={false}
-                  stroke
                 />
-                <CaseStudyImage
+                <ZoomableImage
                   src="/images/apaleo-tax-engine/single-page-applicability.png"
                   alt="Single-page prototype, bottom: Applicability and Calculation Rules sections"
                   width={2068}
                   height={1722}
-                  shadow={false}
-                  stroke
                 />
               </div>
 
@@ -308,7 +314,7 @@ export default async function ApaleoTaxEnginePage({
               <div className="mt-8">
                 {/* TODO(image): step wizard — one screenshot per step, or a
                     single composite showing the 4-step progression. */}
-                <CaseStudyPlaceholder label="Step wizard — one screenshot per step, or a single composite showing the 4-step progression" />
+                <CaseStudyPlaceholder label="Image coming soon" />
               </div>
 
               <div className="mt-16">
@@ -321,7 +327,7 @@ export default async function ApaleoTaxEnginePage({
               <div className="mt-8">
                 {/* TODO(image): accordion — one collapsed-with-summary state
                     + one expanded state. */}
-                <CaseStudyPlaceholder label="Accordion — one collapsed-with-summary state + one expanded state" />
+                <CaseStudyPlaceholder label="Image coming soon" />
               </div>
 
               <div className="mt-16">
@@ -357,12 +363,7 @@ export default async function ApaleoTaxEnginePage({
                 num="05"
                 title="From prototype to production-ready UI"
               />
-              {/* TODO(image): the finished, apaleo-styled build — list view,
-                  empty state, the create flow's three sections, and the
-                  read-only detail view (screenshots from tax-engine-v5.html). */}
-              <CaseStudyPlaceholder label="Finished apaleo-styled build — list view, empty state, the create flow's three sections, and the read-only detail view (from tax-engine-v5.html)" />
-
-              <div className="mt-10">
+              <div>
                 <Prose>
                   <p>
                     Try it below. This is the real prototype, running live.
