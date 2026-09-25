@@ -34,6 +34,10 @@ export default function CustomCursor() {
   // Hovering the hero's "visual designer's eye for the details" link — the
   // dot cycles through the same 4 colors as the letters underneath it.
   const [isOverRainbow, setIsOverRainbow] = useState(false);
+  // Over an embedded iframe (e.g. a live prototype) the page stops getting
+  // mousemove, so the dot would freeze at its edge — hide it there and let
+  // the iframe's native cursor take over.
+  const [isOverFrame, setIsOverFrame] = useState(false);
   const [rainbowTick, setRainbowTick] = useState(0);
   const rainbowIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   // /graphic-design runs its own coral/cream palette — the cursor matches
@@ -65,6 +69,7 @@ export default function CustomCursor() {
     const handleOver = (event: MouseEvent) => {
       const el = event.target as HTMLElement | null;
       setIsOverProject(!!el?.closest('[data-cursor="project"]'));
+      setIsOverFrame(el?.tagName === "IFRAME");
 
       const overRainbow = !!el?.closest('[data-cursor="rainbow"]');
       setIsOverRainbow((was) => {
@@ -111,7 +116,7 @@ export default function CustomCursor() {
   return (
     <div
       ref={dotRef}
-      className={`pointer-events-none fixed left-0 top-0 z-[999] h-3 w-3 rounded-full opacity-100 transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+      className={`pointer-events-none fixed left-0 top-0 z-[999] h-3 w-3 rounded-full ${isOverFrame ? "opacity-0" : "opacity-100"} transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
         isOverRainbow
           ? ""
           : isGraphicDesign
