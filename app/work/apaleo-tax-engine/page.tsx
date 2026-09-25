@@ -91,6 +91,27 @@ function Option({ name, children }: { name: string; children: React.ReactNode })
   );
 }
 
+// Full-width, click-to-zoom screenshot with a caption underneath.
+function CaptionedImage({
+  caption,
+  ...image
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  caption: string;
+}) {
+  return (
+    <figure>
+      <ZoomableImage {...image} />
+      <figcaption className="mt-3 text-sm leading-[20px] font-normal text-[#1A1A1A]/70">
+        {caption}
+      </figcaption>
+    </figure>
+  );
+}
+
 function BackLink({ label }: { label: string }) {
   return (
     <Link
@@ -363,7 +384,48 @@ export default async function ApaleoTaxEnginePage({
                 num="05"
                 title="From prototype to production-ready UI"
               />
-              <div>
+              <h3 className="text-[22px] font-normal leading-tight text-[#1A1A1A]">
+                Rules that change over time
+              </h3>
+              <div className="mt-5">
+                <Prose>
+                  <p>
+                    Tax rates don&apos;t stay still. A city raises its tax, a
+                    levy only applies in high season. Instead of editing a tax
+                    on the day it changes, each tax holds one or more
+                    calculation rules, each with its own valid period, stay
+                    range and priority, so a change can be set up ahead of
+                    time. And the rule doesn&apos;t end in settings: in the
+                    booking flow, staff can see which tax applies to an offer,
+                    the rate in effect today, and what changes next.
+                  </p>
+                </Prose>
+              </div>
+              <div className="mt-8 space-y-10">
+                <CaptionedImage
+                  src="/images/apaleo-tax-engine/calculation-rule-single.png"
+                  alt="A single calculation rule: valid period, stay range, calculation base and percentage per service"
+                  width={2880}
+                  height={1870}
+                  caption="A calculation rule: when it's valid, which nights of a stay it covers, and how the amount is calculated."
+                />
+                <CaptionedImage
+                  src="/images/apaleo-tax-engine/calculation-rules-priority.png"
+                  alt="Two stacked calculation rules with different validity periods and priorities, and a Remove rule menu"
+                  width={2880}
+                  height={1870}
+                  caption="Rules stack. Each one has its own validity period and a priority, and can be removed without touching the rest."
+                />
+                <CaptionedImage
+                  src="/images/apaleo-tax-engine/booking-tax-tooltip.jpg"
+                  alt="Booking flow offer with a City Tax tooltip showing it's included, the current 5% rate, and the upcoming 10% rate"
+                  width={1302}
+                  height={548}
+                  caption="Where it lands: in the booking flow, the tax on an offer shows whether it's included, the current rate, and the one coming next."
+                />
+              </div>
+
+              <div className="mt-16">
                 <Prose>
                   <p>
                     Try it below. This is the real prototype, running live.
