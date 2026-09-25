@@ -20,8 +20,8 @@ const stats = [
 ];
 
 const sections = [
-  { id: "my-role", num: "01", label: "My role" },
-  { id: "overview", num: "02", label: "Overview" },
+  { id: "overview", num: "01", label: "Overview" },
+  { id: "my-role", num: "02", label: "My role" },
   { id: "problem", num: "03", label: "The problem" },
   { id: "three-ways", num: "04", label: "Three ways it showed up" },
   { id: "technician", num: "05", label: "Designed for a technician" },
@@ -157,27 +157,9 @@ export default function MaintainXPage() {
               </div>
             </header>
 
-            {/* 01 MY ROLE */}
-            <Section id="my-role">
-              <SectionHeading num="01" title="My role" />
-              <Prose>
-                <p>
-                  I joined MaintainX as its first product designer, on a team
-                  of six. There was no design process, no component library,
-                  and no one to hand anything off to. Over two years I
-                  designed core product surfaces like the procedure builder,
-                  set up the early design system, led the move from Sketch to
-                  Figma, and helped grow design to a team of two while the
-                  company scaled past 200 people. This case study focuses on
-                  procedures, the part of the product I spent the most time
-                  shaping.
-                </p>
-              </Prose>
-            </Section>
-
-            {/* 02 OVERVIEW */}
+            {/* 01 OVERVIEW */}
             <Section id="overview">
-              <SectionHeading num="02" title="Overview" />
+              <SectionHeading num="01" title="Overview" />
               <Prose>
                 <p>
                   This wasn&apos;t about making paper look like an app. It was
@@ -196,6 +178,24 @@ export default function MaintainXPage() {
                   checklists, inspection sheets, often specific to one site,
                   rarely updated, and impossible to standardize across a
                   company with multiple locations.
+                </p>
+              </Prose>
+            </Section>
+
+            {/* 02 MY ROLE */}
+            <Section id="my-role">
+              <SectionHeading num="02" title="My role" />
+              <Prose>
+                <p>
+                  I joined MaintainX as its first product designer, on a team
+                  of six. There was no design process, no component library,
+                  and no one to hand anything off to. Over two years I
+                  designed core product surfaces like the procedure builder,
+                  set up the early design system, led the move from Sketch to
+                  Figma, and helped grow design to a team of two while the
+                  company scaled past 200 people. This case study focuses on
+                  procedures, the part of the product I spent the most time
+                  shaping.
                 </p>
               </Prose>
             </Section>
