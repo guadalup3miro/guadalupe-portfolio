@@ -224,10 +224,10 @@ export default async function ApaleoTaxEnginePage({
 
               <div className="mt-10">
                 <ZoomableImage
-                  src="/images/apaleo-tax-engine/hero-tax-list.png"
-                  alt="Tax engine list view in apaleo, with a City tax configured for Berlin"
+                  src="/images/apaleo-tax-engine/hero-tax-list-berlin.png"
+                  alt="Tax engine list view in apaleo, with five local taxes configured for Berlin"
                   width={2880}
-                  height={1400}
+                  height={1240}
                 />
               </div>
             </header>
