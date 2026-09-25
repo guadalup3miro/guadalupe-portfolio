@@ -10,23 +10,25 @@ export const metadata: Metadata = {
 };
 
 const stats = [
-  { label: "Role", value: "Senior Product Designer" },
+  { label: "Role", value: "Senior Product Designer · First design hire" },
   { label: "Timeline", value: "May 2020 – Apr 2022" },
   {
     label: "Team",
-    value: "First product designer, working with the CEO and CTO",
+    value: "First designer on a 6-person team; grew design to 2",
   },
-  { label: "Tools", value: "Sketch, Figma" },
+  { label: "Tools", value: "Figma, FigJam" },
 ];
 
 const sections = [
   { id: "overview", num: "01", label: "Overview" },
-  { id: "problem", num: "02", label: "The problem" },
-  { id: "three-ways", num: "03", label: "Three ways it showed up" },
-  { id: "technician", num: "04", label: "Designed for a technician" },
-  { id: "global-library", num: "05", label: "Standardization at scale" },
-  { id: "two-moments", num: "06", label: "Two moments" },
-  { id: "opportunity", num: "07", label: "The opportunity" },
+  { id: "my-role", num: "02", label: "My role" },
+  { id: "problem", num: "03", label: "The problem" },
+  { id: "three-ways", num: "04", label: "Three ways it showed up" },
+  { id: "technician", num: "05", label: "Designed for a technician" },
+  { id: "global-library", num: "06", label: "Standardization at scale" },
+  { id: "two-moments", num: "07", label: "Two moments" },
+  { id: "design-from-zero", num: "08", label: "Building design from zero" },
+  { id: "reflection", num: "09", label: "Reflection" },
 ];
 
 // Numbered eyebrow ("01 — OVERVIEW", monospace) + section title below.
@@ -110,38 +112,35 @@ export default function MaintainXPage() {
               </dl>
 
               <div className="mt-10">
-                <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
-                  At a glance
-                </p>
                 <div className="mt-4 space-y-4">
                   <div>
-                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                    <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
                       Problem
                     </p>
                     <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
-                      Maintenance instructions lived on paper: site-specific,
-                      rarely updated, and impossible to standardize across
-                      locations.
+                      Frontline maintenance teams ran on paper checklists
+                      that couldn&apos;t be standardized, audited, or acted
+                      on.
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                    <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
                       What I did
                     </p>
                     <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
-                      Designed MaintainX&apos;s procedure system: the
-                      authoring tool, the step-by-step field experience for
-                      technicians, and the Global Procedure Library.
+                      Joined as the first designer. Designed the procedure
+                      builder and field experience, built the early design
+                      system, and moved the team from Sketch to Figma.
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs font-normal text-[#1A1A1A]/50">
+                    <p className="text-xs font-normal uppercase tracking-wide text-[#1A1A1A]/50">
                       Outcome
                     </p>
                     <p className="mt-1.5 text-sm leading-[20px] font-normal text-[#1A1A1A]">
-                      Procedures became structured data: scored, able to
-                      trigger corrective work automatically, and reusable
-                      across every site.
+                      Procedures became structured, reusable data: scored
+                      inspections that trigger follow-up work, shared across
+                      every site from one global library.
                     </p>
                   </div>
                 </div>
@@ -163,6 +162,14 @@ export default function MaintainXPage() {
               <SectionHeading num="01" title="Overview" />
               <Prose>
                 <p>
+                  This wasn&apos;t about making paper look like an app. It was
+                  about giving frontline teams — the people actually keeping
+                  equipment running and workplaces safe — a system precise
+                  enough for compliance, standardized enough to trust
+                  everywhere, and simple enough to actually get used every
+                  single day, gloves and all.
+                </p>
+                <p className="mt-5">
                   MaintainX is a CMMS — maintenance and asset management
                   software — for the people keeping factories, hotels, and
                   facilities running: technicians doing inspections,
@@ -175,10 +182,28 @@ export default function MaintainXPage() {
               </Prose>
             </Section>
 
-            {/* 02 THE PROBLEM */}
+            {/* 02 MY ROLE */}
+            <Section id="my-role">
+              <SectionHeading num="02" title="My role" />
+              <Prose>
+                <p>
+                  I joined MaintainX as its first product designer, on a team
+                  of six. There was no design process, no component library,
+                  and no one to hand anything off to. Over two years I
+                  designed core product surfaces like the procedure builder,
+                  set up the early design system, led the move from Sketch to
+                  Figma, and helped grow design to a team of two while the
+                  company scaled past 200 people. This case study focuses on
+                  procedures, the part of the product I spent the most time
+                  shaping.
+                </p>
+              </Prose>
+            </Section>
+
+            {/* 03 THE PROBLEM */}
             <Section id="problem">
               <SectionHeading
-                num="02"
+                num="03"
                 title={
                   'Not just "digitize a checklist." Build the system underneath it.'
                 }
@@ -242,10 +267,10 @@ export default function MaintainXPage() {
               </div>
             </Section>
 
-            {/* 03 THREE WAYS THIS SHOWED UP */}
+            {/* 04 THREE WAYS THIS SHOWED UP */}
             <Section id="three-ways">
               <SectionHeading
-                num="03"
+                num="04"
                 title="Three ways this showed up in the real world"
               />
 
@@ -334,10 +359,10 @@ export default function MaintainXPage() {
               </div>
             </Section>
 
-            {/* 04 DESIGNED FOR A TECHNICIAN */}
+            {/* 05 DESIGNED FOR A TECHNICIAN */}
             <Section id="technician">
               <SectionHeading
-                num="04"
+                num="05"
                 title="Designed for a technician, not a desk"
               />
               <Prose>
@@ -361,10 +386,10 @@ export default function MaintainXPage() {
               </div>
             </Section>
 
-            {/* 05 GLOBAL PROCEDURE LIBRARY */}
+            {/* 06 GLOBAL PROCEDURE LIBRARY */}
             <Section id="global-library">
               <SectionHeading
-                num="05"
+                num="06"
                 title="Built for standardization at scale"
               />
               <Prose>
@@ -408,10 +433,10 @@ export default function MaintainXPage() {
               </div>
             </Section>
 
-            {/* 06 DESIGNING FOR TWO MOMENTS */}
+            {/* 07 DESIGNING FOR TWO MOMENTS */}
             <Section id="two-moments">
               <SectionHeading
-                num="06"
+                num="07"
                 title="Designing for two very different moments"
               />
 
@@ -471,17 +496,33 @@ export default function MaintainXPage() {
               </div>
             </Section>
 
-            {/* 07 THE OPPORTUNITY */}
-            <Section id="opportunity">
-              <SectionHeading num="07" title="The opportunity" />
+            {/* 08 BUILDING DESIGN FROM ZERO */}
+            <Section id="design-from-zero">
+              <SectionHeading num="08" title="Building design from zero" />
               <Prose>
                 <p>
-                  This wasn&apos;t about making paper look like an app. It was
-                  about giving frontline teams — the people actually keeping
-                  equipment running and workplaces safe — a system precise
-                  enough for compliance, standardized enough to trust
-                  everywhere, and simple enough to actually get used every
-                  single day, gloves and all.
+                  Being the first designer meant the job was bigger than
+                  screens. I built the first shared components so engineers
+                  could ship consistent UI without waiting on me for every
+                  screen, moved all design work from Sketch to Figma so
+                  product and engineering could see and comment on work in
+                  one place, and set the habits the team grew into: how
+                  design gets reviewed, how specs get handed off, how
+                  decisions get documented. When the second designer joined,
+                  they started from a system, not a blank file.
+                </p>
+              </Prose>
+            </Section>
+
+            {/* 09 REFLECTION */}
+            <Section id="reflection">
+              <SectionHeading num="09" title="Reflection" />
+              <Prose>
+                <p>
+                  <span className="font-bold">Outcome.</span>{" "}
+                  Procedures went from static paper to structured data:
+                  scored, conditional, reusable across sites, and able to
+                  trigger the next piece of work on their own.
                 </p>
               </Prose>
               <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -499,6 +540,24 @@ export default function MaintainXPage() {
                   height={768}
                   shadow={false}
                 />
+              </div>
+              <p className="mt-3 text-sm leading-[20px] font-normal text-[#1A1A1A]/70">
+                Reporting I designed so teams could see results, not just
+                record them: inspection completion and scores, and mean time
+                between failures per asset.
+              </p>
+              <div className="mt-10">
+                <p className="text-base leading-[22px] font-bold text-[#1A1A1A]">
+                  What I&apos;d do differently
+                </p>
+                <p className="mt-4 text-base leading-[22px] font-normal text-[#1A1A1A]">
+                  Treat the design system as its own project from day one. I
+                  built it alongside feature work, because that&apos;s what a
+                  six-person startup needed at the time. But the earlier a
+                  system exists, the less every new screen has to be
+                  reconciled with it later, and the faster a growing team can
+                  move without a designer in every conversation.
+                </p>
               </div>
             </Section>
 
