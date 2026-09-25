@@ -5,7 +5,8 @@ export type ProjectTag =
   | "Editorial"
   | "Collage"
   | "Finance/Compliance"
-  | "Product Thinking";
+  | "Product Thinking"
+  | "AI-native prototyping";
 
 export const projectTags: ProjectTag[] = [
   "Product Design",
@@ -15,6 +16,7 @@ export const projectTags: ProjectTag[] = [
   "Collage",
   "Finance/Compliance",
   "Product Thinking",
+  "AI-native prototyping",
 ];
 
 export type ProjectKind = "case-study" | "gallery";

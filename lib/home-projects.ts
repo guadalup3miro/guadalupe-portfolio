@@ -20,9 +20,32 @@ export interface HomeProject {
   // false = the row still renders, but shows "Case study coming soon"
   // instead of linking to a placeholder page.
   published: boolean;
+  // Optional small line under the tags, with an inline link that works on
+  // its own (e.g. a mailto) rather than opening the case study.
+  note?: { text: string; linkLabel: string; linkHref: string };
 }
 
 export const homeProjects: HomeProject[] = [
+  {
+    slug: "apaleo-tax-engine",
+    company: "Apaleo",
+    area: "Tax Engine 2.0",
+    years: "In development",
+    title:
+      "A tax system grown patch by patch, turned into one platform anyone can explain.",
+    outcome:
+      "Designed and prototyped Apaleo's new tax engine in code, from a messy problem to a working prototype the team tested internally.",
+    tags: ["Product Design", "Finance/Compliance", "AI-native prototyping"],
+    accentColor: "#FFBC69",
+    image: "/home/apaleo-tax-engine.webp",
+    published: true,
+    note: {
+      text: "Password protected",
+      linkLabel: "Request access",
+      linkHref:
+        "mailto:guadamiro@gmail.com?subject=Password%20for%20Tax%20Engine%202.0%20case%20study",
+    },
+  },
   {
     slug: "ripio",
     company: "Ripio",
@@ -61,20 +84,6 @@ export const homeProjects: HomeProject[] = [
     accentColor: "#F2E65E",
     image: "/home/natura.webp",
     published: true,
-  },
-  {
-    slug: "apaleo",
-    company: "Apaleo",
-    area: "Payments & Fiscalization",
-    years: "2023–Now",
-    title: "Deposit taxation is a compliance maze. I turned it into a flow.",
-    outcome:
-      "Full design ownership across Payments and Fiscalization for a B2B hospitality platform.",
-    tags: ["Product Design", "Finance/Compliance", "Product Thinking"],
-    accentColor: "#FFBC69",
-    image: "/home/apaleo.webp",
-    // app/work/apaleo is still a "Full case study coming soon" stub.
-    published: false,
   },
 ];
 
