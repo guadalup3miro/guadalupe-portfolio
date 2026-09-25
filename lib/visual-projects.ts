@@ -71,10 +71,9 @@ export interface VisualProject {
   title: string;
   metadata: VisualProjectMeta[];
   description: string;
+  // Social-share (Open Graph) image only -- the on-page hero is the first
+  // image in `images` (see components/visual-project-page.tsx).
   hero: VisualProjectImage;
-  // Optional: skip rendering the hero banner entirely -- page starts
-  // straight at the "← Back" / title section instead.
-  hideHero?: boolean;
   // Optional: a Vimeo embed as its own fixed section, directly below the
   // description/metadata and above the images gallery (distinct from a
   // VisualProjectVideo placed inline inside `images` -- see
@@ -127,7 +126,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     gallerySeamless: true,
     images: [
       { src: "/images/work/revista-gluck/002.jpg", width: 2200, height: 1375 },
@@ -163,7 +161,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     // Explicit groups: default full/pair alternation for the first 12
     // images (011 no longer exists on disk, so the range now starts at
     // 012), then the last two (024, 025) each full width instead of
@@ -209,22 +206,23 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     // Reordered per Guada's notes: open with 026 (the wordmark), then the
     // "INTERCOOP BRANDING" mark (041), then 042-053, then 027-040 (moved to
     // sit right before the close), and close with the three book-cover
     // mockups side by side (054-056) as the final flourish. Every page in
     // the folder now appears exactly once across this list.
-    // One continuous scroll, no gaps between images.
+    // One continuous scroll, no gaps between images. 042 and 046 were
+    // cropped to drop leftover strips from the PDF pages (042's green frame,
+    // 046's yellow/pink band) -- noCrop keeps their new shapes whole.
     gallerySeamless: true,
     images: [
       { src: "/images/work/intercoop/026.jpg", width: 2200, height: 1375 },
       { src: "/images/work/intercoop/041.jpg", width: 2200, height: 1375 },
-      { src: "/images/work/intercoop/042.jpg", width: 2200, height: 1375 },
+      { src: "/images/work/intercoop/042.jpg", width: 1964, height: 565, noCrop: true },
       { src: "/images/work/intercoop/043.jpg", width: 2200, height: 1375 },
       { src: "/images/work/intercoop/044.jpg", width: 2200, height: 1375 },
       { src: "/images/work/intercoop/045.jpg", width: 2200, height: 1375 },
-      { src: "/images/work/intercoop/046.jpg", width: 2200, height: 1375 },
+      { src: "/images/work/intercoop/046.jpg", width: 2200, height: 1284, noCrop: true },
       { src: "/images/work/intercoop/047.jpg", width: 2200, height: 1375 },
       { src: "/images/work/intercoop/048.jpg", width: 2200, height: 1375 },
       { src: "/images/work/intercoop/049.jpg", width: 2200, height: 1375 },
@@ -270,7 +268,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     // 057 dropped (near-blank divider). The next 4 read as "explorations":
     // 058 alone, 059+060 side by side, 061 alone, then 062 and 063 each
     // alone -- the rest (064 on) keeps the default full/pair alternation.
@@ -315,7 +312,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     images: [
       { src: "/images/work/mecha-meets-unreal/075.jpg", width: 2200, height: 1375 },
       { src: "/images/work/mecha-meets-unreal/076.jpg", width: 2200, height: 1375 },
@@ -347,7 +343,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     // 089 was missing (its export was corrupted like intercoop's 033 --
     // only the top strip decoded) -- salvaged the same way, cropped to the
     // intact region, rather than dropping it. Explicit groups so the
@@ -391,7 +386,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     // One continuous scroll, no gaps between images.
     gallerySeamless: true,
     images: [
@@ -424,7 +418,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     // One continuous scroll, no gaps between images.
     gallerySeamless: true,
     images: [
@@ -457,7 +450,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     // One continuous scroll, no gutters/gaps between images — matches the
     // dark, edge-to-edge feel of the site itself.
     gallerySeamless: true,
@@ -491,7 +483,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     // Video goes first — right after the description, before any photos.
     // One continuous scroll, no gaps between items.
     gallerySeamless: true,
@@ -524,7 +515,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     // One continuous scroll, no gaps between images.
     gallerySeamless: true,
     images: [
@@ -563,7 +553,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     // One continuous scroll, no gaps between images.
     gallerySeamless: true,
     images: [
@@ -592,7 +581,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 2200,
       height: 1375,
     },
-    hideHero: true,
     // One continuous scroll, no gaps between images.
     gallerySeamless: true,
     images: [
@@ -624,7 +612,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 1683,
       height: 935,
     },
-    hideHero: true,
     // No hero banner for this project -- page goes straight from the
     // header into title/metadata/description, then the video.
     // Fixed video section (not inline in `images`, unlike Hedwig) --
@@ -690,7 +677,6 @@ export const visualProjects: Record<string, VisualProject> = {
       width: 1078,
       height: 1753,
     },
-    hideHero: true,
     images: [
       { src: "/images/work/car-photography/001.jpg", width: 1280, height: 1829 },
       { src: "/images/work/car-photography/002.jpg", width: 400, height: 400 },

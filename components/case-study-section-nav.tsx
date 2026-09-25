@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { HEADER_HEIGHT } from "@/components/header";
 
 // Left-rail wayfinding for a numbered case study: a vertical list of the
 // sections that stays pinned while the reader scrolls and highlights the
@@ -18,15 +19,22 @@ export default function CaseStudySectionNav({
   const [active, setActive] = useState(sections[0]?.id ?? "");
 
   useEffect(() => {
-    // The active section is the last one whose top has passed a line
-    // ~140px below the viewport top (just under the sticky site header).
+    // The active section is the last one whose top has passed a reading
+    // line a third of the way down the visible area below the sticky site
+    // header (an anchor jump lands the section top well above it, so a
+    // clicked item always highlights itself). At the very bottom of the
+    // page the last section wins, even if it's too short to reach the line.
     const onScroll = () => {
-      const line = 140;
+      const line = HEADER_HEIGHT + (window.innerHeight - HEADER_HEIGHT) / 3;
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 2;
       let current = sections[0]?.id ?? "";
       for (const { id } of sections) {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top <= line) current = id;
       }
+      if (atBottom) current = sections[sections.length - 1]?.id ?? current;
       setActive(current);
     };
     onScroll();

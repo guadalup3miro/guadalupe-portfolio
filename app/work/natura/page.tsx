@@ -69,8 +69,9 @@ function Prose({ children }: { children: React.ReactNode }) {
   );
 }
 
-// One numbered section: id'd for the left rail, scroll offset so anchor
-// jumps clear the sticky site header.
+// One numbered section: id'd for the left rail. The scroll margin is the
+// header height minus 2rem, which with the 3.5rem top padding lands the
+// section's label 1.5rem below the sticky site header on an anchor jump.
 function Section({
   id,
   children,
@@ -79,7 +80,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-28 py-14">
+    <section id={id} className="scroll-mt-[calc(var(--header-height)-2rem)] py-14">
       {children}
     </section>
   );
