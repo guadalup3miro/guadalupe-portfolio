@@ -1,0 +1,2515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>apaleo – Finance / Tax Engine v4</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sidebar-bg: #3E4457;
+    --brand-amber: #E8941B;
+    --page-bg: #FFFFFF;
+    --toolbar-bg: #F9FAFC;
+    --tag-bg: #EDEFF5;
+    --text-primary: #1B1B1D;
+    --body-slate: #3E4457;
+    --muted: #70778C;
+    --placeholder: #9197AC;
+    --divider: #E6E8F0;
+    --danger: #B4281C;
+    --radius: 4px;
+    --font: 'Roboto', sans-serif;
+  }
+
+  body {
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-primary);
+    background: #FFFFFF;
+    min-height: 100vh;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 168px; min-width: 168px;
+    background: var(--sidebar-bg); color: #a0a9bc;
+    display: flex; flex-direction: column;
+    height: 100vh; overflow-y: auto; flex-shrink: 0;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: #555d73; }
+  .sidebar-logo {
+    display: flex; align-items: center;
+    padding: 20px 16px 16px;
+  }
+  .sidebar-logo img { height: 28px; width: auto; }
+  .sidebar-context {
+    margin: 0 10px 8px; background: #353b4e;
+    border-radius: var(--radius); padding: 6px 10px;
+  }
+  .sidebar-context label {
+    display: block; font-size: 10px; color: var(--muted);
+    margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .sidebar-context select {
+    background: transparent; border: none; color: #d0d5e4;
+    font-size: 12px; font-family: inherit; width: 100%;
+    cursor: pointer; outline: none; appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2370778C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 2px center; padding-right: 14px;
+  }
+  .nav-section { margin-top: 4px; }
+  .nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 16px; color: #a0a9bc; font-size: 12px;
+    cursor: pointer; user-select: none; transition: background 0.15s; position: relative;
+  }
+  .nav-item:hover { background: #353b4e; color: #d0d5e4; }
+  .nav-item.active { background: #353b4e; color: #fff; }
+  .nav-item .nav-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; }
+  .nav-item.active .nav-icon { opacity: 1; }
+  .nav-item .nav-arrow { margin-left: auto; width: 10px; height: 10px; opacity: 0.5; }
+  .nav-item.nav-has-children.open .nav-arrow { transform: rotate(180deg); }
+  .nav-sub-item {
+    display: flex; align-items: center;
+    padding: 5px 16px 5px 40px; color: #7d879d; font-size: 12px;
+    cursor: pointer; user-select: none; transition: background 0.15s;
+  }
+  .nav-sub-item:hover { background: #353b4e; color: #d0d5e4; }
+  .nav-sub-item.active { color: #fff; background: #4a5168; }
+
+  /* ── MAIN ── */
+  .main { flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    background: #F9FAFC;
+    padding: 12px 32px 0;
+    display: flex; align-items: flex-start;
+    justify-content: space-between; flex-shrink: 0;
+  }
+  .breadcrumb { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; padding-top: 2px; }
+  .breadcrumb a { color: var(--muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--brand-amber); }
+  .breadcrumb .sep { color: var(--placeholder); }
+  .top-bar-actions { display: flex; align-items: center; gap: 16px; }
+  .top-bar-actions .icon-btn {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--muted); border: none; background: transparent;
+  }
+  .top-bar-actions .icon-btn:hover { background: var(--divider); }
+  .top-bar-actions .notif-badge { position: relative; }
+  .top-bar-actions .notif-badge::after {
+    content: '3'; position: absolute; top: -4px; right: -4px;
+    background: var(--brand-amber); color: #fff; font-size: 9px; font-weight: 500;
+    width: 16px; height: 16px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--sidebar-bg); color: #fff; font-size: 11px; font-weight: 500;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+
+  /* ── SECTION HEADER (merged with top bar) ── */
+  .section-header {
+    background: #F9FAFC;
+    padding: 0 32px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--divider);
+  }
+  .section-title-row { padding: 12px 0 8px; display: flex; align-items: center; }
+  .section-title { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.3px; }
+  .tabs { display: flex; gap: 0; border-bottom: none; }
+  .tab {
+    padding: 12px 20px; font-size: 14px; color: var(--muted);
+    cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    white-space: nowrap; transition: color 0.15s; user-select: none;
+  }
+  .tab:first-child { padding-left: 0; }
+  .tab:hover { color: var(--text-primary); }
+  .tab.active { color: var(--text-primary); border-bottom-color: var(--brand-amber); font-weight: 500; }
+
+  /* ── CONTENT WRAPPER ── */
+  .content-wrapper { flex: 1; overflow-y: auto; padding-bottom: 80px; background: #FFFFFF; }
+  .content-wrapper::-webkit-scrollbar { width: 6px; }
+  .content-wrapper::-webkit-scrollbar-thumb { background: var(--divider); border-radius: 3px; }
+  .content { padding: 24px 32px; max-width: 1100px; }
+
+  /* ── ALERT BANNER ── */
+  .alert-banner {
+    display: flex; align-items: center; gap: 10px;
+    background: #e8f0fe; border: none;
+    border-radius: var(--radius); padding: 12px 16px;
+    margin-bottom: 24px; font-family: var(--font); font-size: 14px; font-weight: 400; line-height: 20px; color: var(--text-primary);
+  }
+  .alert-banner .alert-icon { color: #3b6ef8; flex-shrink: 0; }
+  .alert-banner.alert-inline {
+    margin-bottom: 16px; padding: 10px 12px; font-size: 13px;
+  }
+  .alert-banner.alert-stack { align-items: flex-start; }
+  .alert-banner.alert-stack .alert-icon { margin-top: 2px; }
+  .alert-banner .alert-stack-body { display: flex; flex-direction: column; gap: 4px; }
+
+  /* ── SECTION CARD (H1 sections) ── */
+  .section-card {
+    margin-bottom: 16px;
+    border: 1px solid var(--divider);
+    border-radius: 6px;
+    background: var(--page-bg);
+    overflow: visible;
+  }
+  .section-card-header {
+    padding: 16px 20px 12px;
+  }
+  .section-card-header h1 {
+    font-family: var(--font); font-size: 24px; font-weight: 500; line-height: 32px; color: var(--text-primary); margin: 0 0 4px;
+  }
+  .section-card-header .section-desc {
+    font-family: var(--font); font-size: 12px; font-weight: 400; line-height: 16px; color: var(--muted); margin: 0;
+  }
+  .section-card-body {
+    padding: 0 20px 20px;
+  }
+
+  /* ── H2 SUBSECTION TITLE ── */
+  .subsection-title {
+    font-family: var(--font); font-size: 14px; font-weight: 500; line-height: 20px; color: var(--text-primary);
+    margin-bottom: 12px; margin-top: 20px;
+  }
+  .subsection-title:first-child { margin-top: 0; }
+
+  /* ── FIELD HINT ── */
+  .field-hint { font-size: 11px; color: var(--placeholder); margin-top: 3px; }
+  .field-label {
+    display: block; font-size: 11px; font-weight: 500; color: var(--muted);
+    margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.4px;
+  }
+
+  /* ── INPUTS ── */
+  .form-row { display: flex; gap: 16px; margin-bottom: 16px; }
+  .form-row .form-col { flex: 1; }
+  .form-row .form-col-half { flex: 0 0 calc(50% - 8px); }
+
+  input[type="text"], input[type="date"], input[type="number"],
+  textarea, select, .fake-input {
+    width: 100%; height: 40px;
+    border: 1px solid var(--divider); border-radius: var(--radius);
+    padding: 0 12px; font-size: 14px; font-weight: 400; line-height: 20px; font-family: var(--font);
+    color: var(--text-primary); background: var(--page-bg);
+    outline: none; transition: border-color 0.15s;
+    appearance: none; -webkit-appearance: none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--brand-amber); box-shadow: 0 0 0 2px rgba(232,148,27,0.12);
+  }
+  input::placeholder, textarea::placeholder { color: var(--placeholder); }
+  input[disabled], .field-readonly {
+    background: var(--toolbar-bg); color: var(--muted); cursor: not-allowed;
+  }
+  select[disabled], select.locked-select {
+    background: var(--toolbar-bg); color: var(--muted); cursor: not-allowed;
+  }
+  textarea { height: 64px; padding: 10px 12px; resize: vertical; }
+
+  .input-wrapper { position: relative; }
+  .input-wrapper .input-icon {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    color: var(--placeholder); pointer-events: none;
+  }
+  .input-wrapper input { padding-right: 32px; }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2370778C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; cursor: pointer;
+  }
+  /* Placeholder state — when no real option is selected */
+  select:invalid, select.placeholder { color: var(--placeholder); }
+  select option[disabled] { color: var(--placeholder); }
+  select option:not([disabled]) { color: var(--text-primary); }
+
+  /* ── TOGGLE ── */
+  .toggle-row { display: flex; align-items: center; gap: 10px; margin: 4px 0 8px; }
+  .toggle { position: relative; width: 44px; height: 24px; cursor: pointer; flex-shrink: 0; }
+  .toggle input { display: none; }
+  .toggle-track { position: absolute; inset: 0; background: var(--divider); border-radius: 12px; transition: background 0.2s; }
+  .toggle input:checked ~ .toggle-track { background: var(--brand-amber); }
+  .toggle-thumb {
+    position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+    background: #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: left 0.2s;
+  }
+  .toggle input:checked ~ .toggle-thumb { left: 23px; }
+  .toggle-label { font-family: var(--font); font-size: 14px; font-weight: 400; line-height: 20px; color: var(--text-primary); }
+
+  /* ── IDENTITY GRID ── */
+  .identity-grid { display: flex; gap: 12px; margin-bottom: 16px; }
+  .identity-grid .ig-col { flex: 1; }
+
+  /* ── VAT ROW ── */
+  .vat-handling-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .vh-col-labeled { flex: 1; }
+  .vh-col-labeled .field-label { margin-bottom: 4px; }
+
+  /* ── APPLICABILITY ROW ── */
+  .applicability-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+  .applicability-row select { flex: 1; }
+  .applicability-row .remove-link {
+    color: var(--brand-amber); font-size: 12px; cursor: pointer;
+    white-space: nowrap; flex-shrink: 0; line-height: 40px;
+  }
+  .applicability-row .remove-link:hover { text-decoration: underline; }
+
+  /* ── SUB-ACCOUNT MULTI-SELECT ── */
+  .sub-account-wrapper { position: relative; flex: 1; }
+  .sub-account-trigger {
+    display: flex; align-items: center; gap: 4px;
+    height: 40px; padding: 5px 32px 5px 8px;
+    border: 1px solid var(--divider); border-radius: var(--radius);
+    background: var(--page-bg); cursor: pointer; position: relative; transition: border-color 0.15s;
+    overflow: hidden;
+  }
+  .sub-account-trigger-content {
+    display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; overflow: hidden;
+  }
+  .sub-account-trigger:hover:not(.disabled) { border-color: var(--brand-amber); }
+  .sub-account-trigger.open { border-color: var(--brand-amber); box-shadow: 0 0 0 2px rgba(232,148,27,0.12); }
+  .sub-account-trigger.disabled {
+    background: var(--toolbar-bg); cursor: not-allowed; pointer-events: none;
+  }
+  .sub-account-trigger.disabled .sa-arrow { opacity: 0.4; }
+  .sub-account-trigger .sa-placeholder { color: var(--placeholder); font-size: 14px; padding: 2px 0; }
+  .sub-account-trigger .sa-arrow {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    width: 10px; height: 6px; pointer-events: none; color: var(--muted); flex-shrink: 0;
+  }
+  .sub-account-trigger.open .sa-arrow { transform: translateY(-50%) rotate(180deg); }
+  .sub-account-dropdown {
+    display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: var(--page-bg); border: 1px solid var(--divider);
+    border-radius: var(--radius); box-shadow: 0 6px 20px rgba(0,0,0,0.13);
+    z-index: 200; overflow: hidden;
+    flex-direction: column;
+  }
+  .sub-account-dropdown.open { display: flex; }
+  /* fixed search bar at top */
+  .sa-search-bar {
+    flex-shrink: 0; padding: 8px 10px; border-bottom: 1px solid var(--divider);
+    position: relative;
+  }
+  .sa-search-bar input {
+    width: 100%; height: 32px; border: 1px solid var(--divider); border-radius: var(--radius);
+    padding: 0 10px 0 30px; font-size: 13px; font-family: var(--font);
+    color: var(--text-primary); background: var(--toolbar-bg); outline: none;
+    appearance: none; -webkit-appearance: none;
+  }
+  .sa-search-bar input:focus { border-color: var(--brand-amber); background: var(--page-bg); box-shadow: none; }
+  .sa-search-bar .sa-search-icon {
+    position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+    color: var(--placeholder); pointer-events: none;
+  }
+  /* scrollable options list */
+  .sa-options-list { flex: 1; overflow-y: auto; max-height: 180px; }
+  .sub-account-option {
+    display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+    font-size: 14px; color: var(--text-primary); cursor: pointer; transition: background 0.12s;
+  }
+  .sub-account-option:hover { background: var(--toolbar-bg); }
+  .sub-account-option input[type="checkbox"] {
+    width: 14px; height: 14px; flex-shrink: 0; accent-color: var(--brand-amber); cursor: pointer;
+  }
+  /* fixed footer bar */
+  .sa-footer {
+    flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; border-top: 1px solid var(--divider); background: var(--page-bg);
+    gap: 8px;
+  }
+  .sa-footer-count { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .sa-footer-actions { display: flex; align-items: center; gap: 8px; }
+  .sa-select-all {
+    font-size: 12px; color: var(--brand-amber); cursor: pointer; font-weight: 500;
+    border: none; background: transparent; font-family: var(--font); padding: 0; white-space: nowrap;
+  }
+  .sa-select-all:hover { text-decoration: underline; }
+  .sa-confirm-btn {
+    width: 28px; height: 28px; border-radius: var(--radius);
+    background: var(--brand-amber); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sa-confirm-btn:hover { background: #d0840f; }
+  /* pill tags inside trigger */
+  .sa-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 24px; padding: 0 8px; background: #fff; border: 1px solid #70778C;
+    border-radius: 40px; font-size: 12px; color: var(--text-primary);
+    white-space: nowrap; flex-shrink: 0; font-family: var(--font);
+    max-width: 200px;
+  }
+  .sa-pill-text {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .sa-pill-remove {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: transparent; color: #70778C; font-size: 11px; line-height: 1;
+    cursor: pointer; flex-shrink: 0; transition: color 0.15s, background 0.15s;
+  }
+  .sa-pill-remove:hover { background: var(--tag-bg); color: var(--text-primary); }
+  .sa-overflow-pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 24px; padding: 0 8px; background: var(--tag-bg); border: 1px solid var(--divider);
+    border-radius: 40px; font-size: 12px; color: var(--muted);
+    white-space: nowrap; flex-shrink: 0; cursor: default; font-weight: 400;
+  }
+
+  /* ── ADD LINK ── */
+  .add-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--brand-amber); font-size: 13px; font-weight: 500;
+    cursor: pointer; border: none; background: transparent;
+    padding: 6px 0; font-family: var(--font);
+  }
+  .add-link:hover { text-decoration: underline; }
+  .add-link .plus { font-size: 16px; font-weight: 400; }
+  .add-rule-btn:hover { text-decoration: none !important; opacity: 0.75; }
+
+  /* ── RULE CARDS ── */
+  .rule-card {
+    border: 1px solid var(--divider); border-radius: 6px;
+    background: var(--page-bg); margin-bottom: 12px; overflow: hidden;
+    border-top: 3px solid var(--brand-amber);
+  }
+  .rule-card-header {
+    display: flex; align-items: center; padding: 24px 24px 0;
+    background: var(--page-bg); border-bottom: none; gap: 12px;
+  }
+    flex: 1; height: 32px; border: 1px solid var(--divider);
+    border-radius: var(--radius); padding: 0 10px; font-size: 13px;
+    font-family: var(--font); color: var(--text-primary); background: var(--page-bg); outline: none;
+  }
+  .rule-name-input:focus { border-color: var(--brand-amber); }
+  .rule-name-input::placeholder { color: var(--placeholder); }
+  .priority-chip {
+    display: flex; height: 32px; padding: 0 8px; align-items: center; gap: 4px;
+    border-radius: 40px; background: #F5F6FA;
+    font-family: var(--font); font-size: 14px; font-weight: 500;
+    color: var(--body-slate); white-space: nowrap; flex-shrink: 0;
+    border: none; cursor: pointer; position: relative;
+  }
+  .priority-chip:hover { background: #EDEFF5; }
+  .priority-chip .dot { display: none; }
+  .priority-chip::after {
+    content: '';
+    display: inline-block; width: 0; height: 0;
+    border-left: 4px solid transparent; border-right: 4px solid transparent;
+    border-top: 5px solid var(--body-slate); margin-left: 2px;
+  }
+
+  /* ── PRIORITY DROPDOWN ── */
+  .priority-dropdown {
+    display: none; position: absolute; top: calc(100% + 6px); left: 0;
+    background: var(--page-bg); border: 1px solid var(--divider);
+    border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    z-index: 300; min-width: 160px; overflow: hidden;
+  }
+  .priority-dropdown.open { display: block; }
+  .priority-dropdown-list { padding: 4px 0; max-height: 220px; overflow-y: auto; }
+  .priority-option {
+    display: flex; align-items: center; gap: 8px; padding: 8px 14px;
+    font-size: 13px; color: var(--text-primary); cursor: pointer;
+    transition: background 0.12s;
+  }
+  .priority-option:hover { background: var(--toolbar-bg); }
+  .priority-option.active { font-weight: 500; color: var(--brand-amber); }
+  .priority-option .check-icon { width: 14px; flex-shrink: 0; }
+  .priority-dropdown-footer {
+    border-top: 1px solid var(--divider); padding: 8px 10px;
+    display: flex; justify-content: flex-end;
+  }
+  .priority-ok-btn {
+    height: 28px; padding: 0 14px; border-radius: var(--radius);
+    background: var(--brand-amber); color: #fff; border: none;
+    font-size: 12px; font-weight: 500; font-family: var(--font); cursor: pointer;
+  }
+  .priority-ok-btn:hover { background: #d0840f; }
+
+  /* ── MORE MENU ── */
+  .more-btn {
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--body-slate); border-radius: var(--radius); flex-shrink: 0;
+    flex-direction: column; gap: 3px; border: none; background: transparent; position: relative;
+  }
+  .more-btn:hover { background: var(--tag-bg); }
+  .more-btn::before, .more-btn::after, .more-btn span {
+    content: ''; display: block;
+    width: 4px; height: 4px; border-radius: 50%; background: var(--body-slate); flex-shrink: 0;
+  }
+  .more-menu {
+    display: none; position: absolute; top: calc(100% + 4px); right: 0;
+    background: var(--page-bg); border: 1px solid var(--divider);
+    border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    z-index: 300; min-width: 140px; overflow: hidden;
+  }
+  .more-menu.open { display: block; }
+  .more-menu-item {
+    display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+    font-size: 13px; cursor: pointer; transition: background 0.12s;
+  }
+  .more-menu-item:hover { background: var(--toolbar-bg); }
+  .more-menu-item.danger { color: var(--danger); }
+  .more-menu-item.danger:hover { background: #fdeaea; }
+
+  /* hide priority+more when only 1 rule */
+  .rule-cards-container.single-rule .priority-chip,
+  .rule-cards-container.single-rule .more-btn { display: none; }
+  .rule-card-body { padding: 16px 24px 24px; }
+
+  /* First rule priority dot amber */
+  .rule-card:first-child .priority-chip .dot { background: var(--brand-amber); }
+
+  /* ── RULE LAYOUT ── */
+  .rule-row-2 { display: flex; gap: 12px; margin-top: 0; margin-bottom: 12px; }
+  .rule-row-2 .form-col { flex: 1; }
+
+  /* ── PERIOD GROUP - updated style per PNG ── */
+  .period-group { display: flex; gap: 16px; margin-bottom: 16px; }
+  .period-group .period-block { flex: 1; }
+  .period-block-label {
+    font-family: var(--font); font-size: 14px; font-weight: 500; line-height: 20px;
+    color: var(--text-primary); margin-bottom: 6px;
+  }
+  .period-inputs { display: flex; gap: 8px; }
+  .period-inputs .input-wrapper { flex: 1; }
+
+  /* ── SEGMENTED CONTROL ── */
+  .seg-control {
+    display: inline-flex; border: 1px solid var(--divider);
+    border-radius: var(--radius); overflow: hidden; margin: 12px 0 16px;
+  }
+  .seg-btn {
+    padding: 6px 14px; font-size: 12px; font-family: var(--font); color: var(--muted);
+    background: var(--page-bg); border: none; cursor: pointer;
+    border-right: 1px solid var(--divider); transition: all 0.15s; white-space: nowrap;
+  }
+  .seg-btn:last-child { border-right: none; }
+  .seg-btn:hover { background: var(--toolbar-bg); }
+  .seg-btn.active { background: var(--brand-amber); color: #fff; font-weight: 500; }
+
+  /* ── CALC TYPE ── */
+  .calc-type-section { margin-top: 4px; padding-top: 16px; border-top: 1px solid var(--divider); }
+  .calc-type-label { font-family: var(--font); font-size: 16px; font-weight: 500; line-height: 24px; color: var(--text-primary); margin-bottom: 2px; }
+  .calc-type-hint { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 8px; }
+  .calc-type-panel { margin-top: 16px; }
+  .calc-type-panel .form-row { display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; }
+  .calc-type-panel .form-col { flex: 1; }
+  .calc-type-panel .form-col label { display: block; font-size: 12px; color: var(--text-primary); margin-bottom: 4px; }
+  .calc-type-panel .form-col input[type="number"] {
+    width: 100%; height: 40px; padding: 0 10px; border: 1px solid var(--divider);
+    border-radius: var(--radius); font-family: var(--font); font-size: 14px; background: var(--page-bg);
+  }
+  .calc-type-panel .form-col input[type="number"]:focus { border-color: var(--brand-amber); outline: none; }
+  .calc-type-panel .pct-suffix { position: relative; }
+  .calc-type-panel .pct-suffix input { padding-right: 28px; }
+  .calc-type-panel .pct-suffix::after {
+    content: '%'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    font-size: 14px; color: var(--muted); pointer-events: none;
+  }
+  .calc-type-panel .tier-delete-btn {
+    width: 32px; height: 40px; display: flex; align-items: center; justify-content: center;
+    color: var(--danger); cursor: pointer; border: none; background: transparent;
+    border-radius: var(--radius); flex-shrink: 0;
+  }
+  .calc-type-panel .tier-delete-btn:hover { background: #fdeaea; }
+
+  /* ── TIERS ── */
+  .tiers-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .tiers-row input { flex: 1; height: 36px; }
+  .tiers-row .delete-btn {
+    width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--placeholder); border-radius: var(--radius);
+    border: none; background: transparent; flex-shrink: 0;
+  }
+  .tiers-row .delete-btn:hover { background: #fdeaea; color: var(--danger); }
+  .pct-icon {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    color: var(--placeholder); font-size: 13px;
+  }
+  .tier-null-locked {
+    display: flex; align-items: center; justify-content: center;
+    height: 36px; flex: 1; background: var(--toolbar-bg);
+    border: 1px solid var(--divider); border-radius: var(--radius);
+    color: var(--placeholder); font-size: 13px; cursor: not-allowed; user-select: none;
+  }
+
+  /* ── BOTTOM BAR ── */
+  .bottom-bar {
+    position: fixed; bottom: 0; left: 168px; right: 0; height: 64px;
+    background: var(--page-bg); border-top: 1px solid var(--divider);
+    display: flex; align-items: stretch;
+    padding: 0; z-index: 10; box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+  }
+  .bottom-bar-inner {
+    width: 100%; max-width: 1100px;
+    padding: 0 32px;
+    display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    height: 32px; padding: 0 16px; border-radius: var(--radius);
+    font-size: 13px; font-family: var(--font); font-weight: 500;
+    cursor: pointer; border: none; display: inline-flex; align-items: center;
+    gap: 6px; transition: all 0.15s; white-space: nowrap;
+  }
+  .btn-primary { background: var(--brand-amber); color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: #d0840f; }
+  .btn-primary:disabled { background: var(--divider); color: var(--placeholder); cursor: not-allowed; }
+  .btn-secondary { background: var(--page-bg); color: var(--text-primary); border: 1px solid var(--divider); }
+  .btn-secondary:hover { background: var(--toolbar-bg); }
+
+  /* ── MODALS ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(27,27,29,0.45); z-index: 100;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--page-bg); border-radius: 8px; width: 520px;
+    max-width: calc(100vw - 48px); box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    overflow: hidden; animation: modal-in 0.18s ease-out;
+  }
+  @keyframes modal-in {
+    from { opacity: 0; transform: translateY(-12px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px; border-bottom: 1px solid var(--divider);
+  }
+  .modal-title { font-size: 16px; font-weight: 500; color: var(--text-primary); }
+  .modal-close {
+    width: 28px; height: 28px; border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--placeholder); border: none; background: transparent;
+    font-size: 18px; line-height: 1;
+  }
+  .modal-close:hover { background: var(--toolbar-bg); color: var(--text-primary); }
+  .modal-body { padding: 24px; }
+  .modal-alert {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: #fff8e1; border: 1px solid #ffe082; border-radius: var(--radius);
+    padding: 12px 16px; margin-bottom: 16px; font-size: 13px;
+    color: var(--text-primary); line-height: 1.5;
+  }
+  .modal-alert .warn-icon { color: #F9A825; flex-shrink: 0; font-size: 16px; }
+  .modal-text { font-size: 13px; color: var(--body-slate); line-height: 1.5; }
+  .modal-footer {
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 10px; padding: 16px 24px; border-top: 1px solid var(--divider);
+  }
+
+  /* ── SCREEN ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── PAGE TITLE ROW (for create/edit screens with back button + status tag) ── */
+  .section-title-row .back-btn {
+    width: 32px; height: 32px; border-radius: var(--radius);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--muted); border: none; background: transparent;
+    margin-right: 6px; flex-shrink: 0;
+  }
+  .section-title-row .back-btn:hover { background: var(--divider); color: var(--text-primary); }
+  .section-title-row .status-tag {
+    margin-left: 12px; padding: 3px 10px; border-radius: 12px;
+    font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;
+    background: var(--tag-bg); color: var(--muted);
+  }
+  .section-title-row .status-tag.is-draft { background: #FFF3DC; color: #8B6F1F; }
+  .section-title-row .status-tag.is-editing { background: #E8F0FE; color: #2F5BC9; }
+
+  /* ── PAGE TOOLBAR (for list screen) ── */
+  .page-toolbar {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 16px;
+  }
+  .page-toolbar .page-h2 {
+    font-size: 16px; font-weight: 500; color: var(--text-primary);
+  }
+  .page-toolbar .toolbar-actions {
+    margin-left: auto; display: flex; gap: 8px;
+  }
+
+  /* ── TAX LIST TABLE ── */
+  .tax-table {
+    border: 1px solid var(--divider); border-radius: 6px;
+    background: var(--page-bg); overflow: hidden;
+  }
+  .tax-table-head {
+    display: flex; align-items: center;
+    background: var(--toolbar-bg);
+    padding: 10px 16px;
+    font-size: 11px; font-weight: 500; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.4px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .tax-table-row {
+    display: flex; align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--divider);
+    font-size: 13px; color: var(--text-primary);
+    transition: background 0.12s;
+  }
+  .tax-table-row:hover { background: #FAFBFD; }
+  .tax-table-row:last-of-type { border-bottom: none; }
+  .tax-table-row.is-expanded { background: #FAFBFD; border-bottom: none; }
+  .tax-table .col-expand {
+    width: 28px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tax-table .col-expand .expand-btn {
+    width: 22px; height: 22px; border-radius: 3px; border: none;
+    background: transparent; color: var(--muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.15s, background 0.12s;
+  }
+  .tax-table .col-expand .expand-btn:hover { background: var(--divider); }
+  .tax-table .col-expand .expand-btn.is-open { transform: rotate(90deg); }
+  .tax-table .col-name { flex: 1.8; font-weight: 500; }
+  .tax-table .col-identifier { flex: 1.2; color: var(--body-slate); font-family: monospace; font-size: 12px; }
+  .tax-table .col-taxtype { flex: 1.8; color: var(--body-slate); }
+  .tax-table .col-vathandling { flex: 1.2; color: var(--body-slate); }
+  .tax-table .col-rate { flex: .7; color: var(--body-slate); font-variant-numeric: tabular-nums; }
+  .tax-table .col-status { flex: .9; }
+  .tax-table .col-actions {
+    width: 44px; flex-shrink: 0;
+    display: flex; justify-content: flex-end; align-items: center; gap: 6px;
+  }
+
+  /* status pill */
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px; border-radius: 12px;
+    font-size: 11px; font-weight: 500;
+  }
+  .status-pill::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+  }
+  .status-pill.is-active { background: #fff; color: #2DAB46; border: 1px solid #2DAB46; }
+  .status-pill.is-active::before { background: #2DAB46; }
+  .status-pill.is-inactive { background: var(--tag-bg); color: var(--muted); border: 1px solid var(--divider); }
+  .status-pill.is-inactive::before { background: var(--placeholder); }
+
+  /* small button (table actions) */
+  .btn-small {
+    height: 26px; padding: 0 10px; font-size: 12px;
+  }
+  .icon-only-btn {
+    width: 28px; height: 28px; border-radius: var(--radius);
+    border: none; background: transparent;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--muted); padding: 0;
+  }
+  .icon-only-btn:hover { background: var(--toolbar-bg); color: var(--text-primary); }
+
+  /* row-level more menu (Edit / Deactivate) */
+  .row-more {
+    position: relative;
+  }
+  .row-more-menu {
+    display: none; position: absolute; top: calc(100% + 4px); right: 0;
+    background: var(--page-bg); border: 1px solid var(--divider); border-radius: 6px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.13);
+    z-index: 50; min-width: 160px; padding: 4px 0;
+  }
+  .row-more-menu.open { display: block; }
+  .row-more-menu .menu-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px; font-size: 13px; color: var(--text-primary);
+    cursor: pointer; user-select: none; background: transparent; border: none;
+    width: 100%; text-align: left;
+  }
+  .row-more-menu .menu-item:hover { background: var(--toolbar-bg); }
+  .row-more-menu .menu-item.is-danger { color: var(--danger); }
+  .row-more-menu .menu-item.is-danger:hover { background: #FCEAE7; }
+
+  /* expanded row */
+  .tax-row-expanded {
+    background: #FAFBFD;
+    border-bottom: 1px solid var(--divider);
+    padding: 0 16px 16px 44px;
+  }
+  .tax-row-expanded .te-section-title {
+    font-size: 11px; font-weight: 500; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.4px;
+    margin: 14px 0 10px;
+  }
+  .tax-row-expanded .te-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 24px;
+  }
+  .tax-row-expanded .te-grid.te-rule {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .tax-row-expanded .kv .kv-label {
+    font-size: 11px; color: var(--muted); margin-bottom: 2px;
+  }
+  .tax-row-expanded .kv .kv-value {
+    font-size: 13px; color: var(--text-primary);
+  }
+  .tax-row-expanded .te-divider {
+    height: 1px; background: var(--divider); margin: 12px 0 0;
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 88px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; border-radius: 6px;
+    font-size: 13px; color: #fff; background: #1E7E34;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    z-index: 200;
+    animation: toast-in 0.22s ease-out;
+  }
+  .toast.toast-hide { animation: toast-out 0.22s ease-in forwards; }
+  .toast .toast-close {
+    background: transparent; border: none; color: #fff; opacity: 0.85;
+    cursor: pointer; padding: 0; margin-left: 4px; font-size: 16px; line-height: 1;
+  }
+  .toast .toast-close:hover { opacity: 1; }
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  @keyframes toast-out {
+    from { opacity: 1; transform: translateX(-50%) translateY(0); }
+    to   { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    border: 1px solid var(--divider); border-radius: 8px;
+    background: var(--page-bg);
+    padding: 56px 32px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+  .empty-state h3 {
+    font-size: 18px; font-weight: 500; color: var(--text-primary); margin-bottom: 8px;
+  }
+  .empty-state p {
+    font-size: 13px; color: var(--muted); max-width: 520px; line-height: 1.5; margin-bottom: 20px;
+  }
+
+  /* breadcrumb current crumb */
+  .breadcrumb .crumb-current { color: var(--text-primary); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <img src="data:image/png;base64,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" alt="apaleo" style="height:28px;width:auto;">
+  </div>
+  <div class="sidebar-context">
+    <label>Context</label>
+    <select>
+      <option>BER — Berlin</option>
+      <option>MUC — Munich</option>
+      <option>HAM — Hamburg</option>
+    </select>
+  </div>
+  <div class="nav-section">
+    <div class="nav-item">Dashboard</div>
+    <div class="nav-item">Reservations</div>
+    <div class="nav-item">Room Rack</div>
+    <div class="nav-item">Housekeeping</div>
+    <div class="nav-item">Availability</div>
+    <div class="nav-item nav-has-children">Inventory<svg class="nav-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item nav-has-children">Rates<svg class="nav-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item">Companies</div>
+    <div class="nav-item nav-has-children">Finance<svg class="nav-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item nav-has-children">Reports<svg class="nav-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item nav-has-children">Audit / Logs<svg class="nav-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item nav-has-children">Payment<svg class="nav-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item active nav-has-children open">
+      
+      Settings
+      <svg class="nav-arrow" viewBox="0 0 10 6" fill="none" style="transform:rotate(180deg)"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="nav-sub-item">Property</div>
+    <div class="nav-sub-item">Distribution</div>
+    <div class="nav-sub-item active">Finance</div>
+    <div class="nav-sub-item">Payment</div>
+    <div class="nav-sub-item">Automation</div>
+    <div class="nav-sub-item">User management</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="top-bar">
+    <div class="breadcrumb" id="breadcrumb">
+      <a href="#" onclick="goList();return false;">Property Name</a><span class="sep">/</span><a href="#" onclick="goList();return false;">Finance</a><span class="sep">/</span><span class="crumb-current" id="breadcrumb-current">Tax engine</span>
+    </div>
+    <div class="top-bar-actions">
+      <button class="icon-btn" title="Help">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 6a1.5 1.5 0 013 .5c0 1-1.5 1.5-1.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r="0.75" fill="currentColor"/></svg>
+      </button>
+      <button class="icon-btn notif-badge" title="Notifications">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1a1 1 0 011 1v.5A4.5 4.5 0 0113 7v3l1 2H2l1-2V7a4.5 4.5 0 014-4.5V2a1 1 0 011-1zm-2 13h4a2 2 0 01-4 0z" fill="currentColor"/></svg>
+      </button>
+      <div class="avatar">AR</div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-title-row" id="section-title-row">
+      <div class="section-title" id="section-title">Finance</div>
+    </div>
+    <div class="tabs" id="finance-tabs">
+      <div class="tab" onclick="switchTab(this)">Invoice settings</div>
+      <div class="tab" onclick="switchTab(this)">Invoice styling</div>
+      <div class="tab" onclick="switchTab(this)">Custom sub-accounts</div>
+      <div class="tab" onclick="switchTab(this)">Payment settings</div>
+      <div class="tab" onclick="switchTab(this)">Fiscalisation settings</div>
+      <div class="tab active" onclick="switchTab(this)">Tax engine</div>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+
+    <!-- ═══ SCREEN: TAX LIST ═══ -->
+    <div class="screen active" id="screen-list">
+      <div class="content">
+        <div class="alert-banner">
+          <span class="alert-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="7" fill="#3b6ef8"/><path d="M8 5v4M8 11v.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          Tax settings will apply to new reservations only. Existing reservations are not affected.
+        </div>
+
+        <div class="page-toolbar" id="page-toolbar">
+          <div class="page-h2">Taxes</div>
+          <div class="toolbar-actions">
+            <button class="btn btn-primary" onclick="goCreate()">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              Create tax
+            </button>
+          </div>
+        </div>
+
+        <div id="tax-list-container">
+          <div class="tax-table" id="tax-table">
+            <div class="tax-table-head">
+              <div class="col-expand"></div>
+              <div class="col-name">Name</div>
+              <div class="col-identifier">Identifier</div>
+              <div class="col-taxtype">Tax type</div>
+              <div class="col-vathandling">VAT/GST handling</div>
+              <div class="col-rate">Tax rate</div>
+              <div class="col-status">Status</div>
+              <div class="col-actions"></div>
+            </div>
+            <!-- rows injected by JS -->
+          </div>
+          <div class="empty-state" id="tax-empty-state" style="display:none;">
+            <h3>No taxes added yet</h3>
+            <p>Create your first tax to start applying it to charges. You can configure rates, applicability, and rules to fit your property's setup.</p>
+            <button class="btn btn-primary" onclick="goCreate()">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              Create tax
+            </button>
+          </div>
+        </div>
+      </div>
+    </div><!-- /screen-list -->
+
+    <!-- ═══ SCREEN: CREATE/EMPTY ═══ -->
+    <div class="screen" id="screen-empty">
+      <div class="content">
+        <div class="alert-banner">
+          <span class="alert-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="7" fill="#3b6ef8"/><path d="M8 5v4M8 11v.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          Tax settings will apply to new reservations only. Existing reservations are not affected.
+        </div>
+
+        <!-- S1: Classification & tax configuration -->
+        <div class="section-card">
+          <div class="section-card-header">
+            <h1>Classification &amp; tax configuration</h1>
+            <p class="section-desc">This section determines the tax type, pricing mode, and VAT handling before defining where and how it is applied.</p>
+          </div>
+          <div class="section-card-body">
+
+            <!-- H2: Tax name -->
+            <h2 class="subsection-title">Tax name</h2>
+            <div class="form-row">
+              <div class="form-col"><input type="text" id="e-name-en" placeholder="English name*" oninput="checkSave()"></div>
+              <div class="form-col"><input type="text" id="e-name-de" placeholder="German name*" oninput="checkSave()"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-col"><textarea placeholder="English description"></textarea></div>
+              <div class="form-col"><textarea placeholder="German description"></textarea></div>
+            </div>
+
+            <!-- H2: Classification -->
+            <h2 class="subsection-title">Classification</h2>
+            <div class="identity-grid">
+              <div class="ig-col">
+                <select required id="e-taxtype" onchange="checkSave()">
+                  <option value="" disabled selected>Tax type*</option>
+                  <option>Tourism tax on services</option>
+                  <option>Consumption tax</option>
+                </select>
+              </div>
+              <div class="ig-col"></div>
+              <div class="ig-col"></div>
+            </div>
+            <div class="identity-grid">
+              <div class="ig-col">
+                <input type="text" id="e-code" placeholder="Code*" oninput="updateIdentifier('e'); checkSave()">
+                <div class="field-hint">Code cannot be changed after creation</div>
+              </div>
+              <div class="ig-col">
+                <input type="text" value="BER — Berlin" disabled class="field-readonly">
+                <div class="field-hint">Auto-filled from the property</div>
+              </div>
+              <div class="ig-col">
+                <input type="text" id="e-identifier" value="BER-" disabled class="field-readonly">
+                <div class="field-hint">Identifier is set by property name and code</div>
+              </div>
+            </div>
+
+            <!-- H2: VAT/GST handling -->
+            <h2 class="subsection-title">VAT/GST handling</h2>
+            <div class="vat-handling-row">
+              <div class="vh-col-labeled">
+                
+                <select required id="e-taxhandling" onchange="checkSave()">
+                  <option value="" disabled selected>Tax handling*</option>
+                  <option>Included – Tax within price</option>
+                  <option>Excluded – Tax added on top</option>
+                </select>
+              </div>
+              <div class="vh-col-labeled">
+                
+                <select required id="e-vathandling" onchange="checkSave()">
+                  <option value="" disabled selected>VAT handling*</option>
+                  <option>0% – Null</option>
+                  <option>7% – Reduced</option>
+                  <option>19% – Standard</option>
+                  <option>Without</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S3: Applicability -->
+        <div class="section-card">
+          <div class="section-card-header">
+            <h1>Applicability</h1>
+            <p class="section-desc">Define where this tax applies by selecting the relevant service types and sub-accounts. This ensures the tax is only applied to the correct charges based on configured scope.</p>
+          </div>
+          <div class="section-card-body">
+            <div id="e-app-rows">
+              <div class="applicability-row">
+                <select required style="flex:1" onchange="onServiceTypeChange(this); checkSave()">
+                  <option value="" disabled selected>Service type*</option>
+                  <option>Accommodation</option><option>Food &amp; Beverages</option>
+                  <option>No show</option><option>Cancellation</option><option>Other</option>
+                </select>
+                <div class="sub-account-wrapper">
+                  <div class="sub-account-trigger disabled" onclick="toggleSubAccount(this)">
+                    <span class="sa-placeholder">Sub-account</span>
+                    <svg class="sa-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="sub-account-dropdown">
+                    <div class="sa-search-bar">
+                      <svg class="sa-search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10 10l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      <input type="text" placeholder="Search..." oninput="filterSubAccounts(this)">
+                    </div>
+                    <div class="sa-options-list"></div>
+                    <div class="sa-footer">
+                      <span class="sa-footer-count">0 selected</span>
+                      <div class="sa-footer-actions">
+                        <button class="sa-select-all" onclick="toggleSelectAll(this)">Select all</button>
+                        <button class="sa-confirm-btn" onclick="closeSubAccount(this)" title="Done">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3.5 3.5 5.5-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <span class="remove-link" onclick="removeServiceRow(this)" style="display:none;">Remove</span>
+              </div>
+            </div>
+            <button class="add-link" onclick="addServiceRow('e-app-rows')"><span class="plus">+</span> Add service type</button>
+          </div>
+        </div>
+
+        <!-- S4: Calculation rules -->
+        <div class="section-card">
+          <div class="section-card-header">
+            <h1>Calculation rules</h1>
+            <p class="section-desc">Define how the tax is calculated, including the calculation method, pricing mode, and applicable conditions. This determines the exact tax amount based on configured rules such as percentage, tiers, and validity periods.</p>
+          </div>
+          <div class="section-card-body">
+            <div class="rule-cards-container single-rule" id="e-rules-container">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <input class="rule-name-input" type="text" placeholder="Rule name*" oninput="checkSave()">
+                <div class="priority-chip" onclick="togglePriorityDropdown(this)">Priority 1
+                  <div class="priority-dropdown">
+                    <div class="priority-dropdown-list"></div>
+                    <div class="priority-dropdown-footer">
+                      <button class="priority-ok-btn" onclick="closePriorityDropdown(this)">OK</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="more-btn" onclick="toggleMoreMenu(this)"><span></span>
+                  <div class="more-menu">
+                    <div class="more-menu-item danger" onclick="removeRuleCard(this)">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M5 3V2h4v1M6 6v4M8 6v4M3 3l1 9h6l1-9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      Remove rule
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="rule-card-body">
+                <div class="rule-row-2">
+                  <div class="form-col">
+                    <select required onchange="checkSave()"><option value="" disabled selected>Calculation base*</option>
+                      <option>Percentage of gross amount</option><option>Percentage of base amount</option>
+                      <option>Per piece</option><option>Per night</option>
+                    </select>
+                  </div>
+                  <div class="form-col">
+                    <select disabled class="locked-select">
+                      <option selected>Included – Tax within price</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="period-group">
+                  <div class="period-block">
+                    <div class="period-block-label">Valid period</div>
+                    <div class="period-inputs">
+                      <div class="input-wrapper"><input type="date" placeholder="From"></div>
+                      <div class="input-wrapper"><input type="date" placeholder="To"></div>
+                    </div>
+                  </div>
+                  <div class="period-block">
+                    <div class="period-block-label">Stay range</div>
+                    <div class="period-inputs">
+                      <div class="input-wrapper"><input type="number" min="1" placeholder="From night"></div>
+                      <div class="input-wrapper"><input type="number" min="1" placeholder="To night"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="calc-type-section">
+                  <div class="calc-type-label">Calculation type</div>
+                  <div>
+                    <div class="form-row"><div class="form-col-half"><div class="input-wrapper" style="position:relative;"><input type="number" placeholder="Percentage per service"><span class="pct-icon">%</span></div></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div><!-- /rule-cards-container -->
+            <div style="text-align:center; margin-top:8px;">
+              <button class="add-link add-rule-btn" onclick="addRuleCard('e-rules-container')"><span class="plus">+</span> Add calculation rule</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /screen-empty -->
+
+    <!-- ═══ SCREEN: COMPLETED ═══ -->
+    <div class="screen" id="screen-completed">
+      <div class="content">
+        <div class="alert-banner">
+          <span class="alert-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="7" fill="#3b6ef8"/><path d="M8 5v4M8 11v.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          Tax settings will apply to new reservations only. Existing reservations are not affected.
+        </div>
+
+        <!-- S1: Classification & tax configuration -->
+        <div class="section-card">
+          <div class="section-card-header"><h1>Classification &amp; tax configuration</h1>
+            <p class="section-desc">This section determines the tax type, pricing mode, and VAT handling before defining where and how it is applied.</p></div>
+          <div class="section-card-body">
+
+            <!-- H2: Tax name -->
+            <h2 class="subsection-title">Tax name</h2>
+            <div class="form-row">
+              <div class="form-col"><input type="text" value="Consumption tax"></div>
+              <div class="form-col"><input type="text" value="Consumption (German)"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-col"><textarea>English description</textarea></div>
+              <div class="form-col"><textarea>German description</textarea></div>
+            </div>
+
+            <!-- H2: Classification -->
+            <h2 class="subsection-title">Classification</h2>
+            <div class="identity-grid">
+              <div class="ig-col">
+                <select>
+                  <option value="" disabled>Tax type*</option>
+                  <option>Tourism tax on services</option>
+                  <option selected>Consumption tax</option>
+                </select>
+              </div>
+              <div class="ig-col"></div>
+              <div class="ig-col"></div>
+            </div>
+            <div class="identity-grid">
+              <div class="ig-col">
+                <input type="text" value="ALCO" id="c-code" oninput="updateIdentifier('c')">
+                <div class="field-hint">Code cannot be changed after creation</div>
+              </div>
+              <div class="ig-col">
+                <input type="text" value="BER — Berlin" disabled class="field-readonly">
+                <div class="field-hint">Auto-filled from the property</div>
+              </div>
+              <div class="ig-col">
+                <input type="text" value="BER-ALCO" id="c-identifier" disabled class="field-readonly">
+                <div class="field-hint">Identifier is set by property name and code</div>
+              </div>
+            </div>
+
+            <!-- H2: VAT/GST handling -->
+            <h2 class="subsection-title">VAT/GST handling</h2>
+            <div class="vat-handling-row">
+              <div class="vh-col-labeled">
+                
+                <select><option>Included – Tax within price</option><option>Excluded – Tax added on top</option></select>
+              </div>
+              <div class="vh-col-labeled">
+                
+                <select>
+                  <option>0% – Null</option><option>7% – Reduced</option>
+                  <option selected>19% – Standard</option><option>Without</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S3: Applicability -->
+        <div class="section-card">
+          <div class="section-card-header">
+            <h1>Applicability</h1>
+            <p class="section-desc">Define where this tax applies by selecting the relevant service types and sub-accounts. This ensures the tax is only applied to the correct charges based on configured scope.</p>
+          </div>
+          <div class="section-card-body">
+            <div id="c-app-rows">
+              <!-- Row 1: Food & Beverages with pills -->
+              <div class="applicability-row">
+                <select style="flex:1"><option>Food &amp; Beverages</option></select>
+                <div class="sub-account-wrapper">
+                  <div class="sub-account-trigger" onclick="toggleSubAccount(this)">
+                    <span class="sa-pill">Sub-account 1 <span class="sa-pill-remove" onclick="removePill(event,this)">✕</span></span>
+                    <span class="sa-pill">Sub-account 2 <span class="sa-pill-remove" onclick="removePill(event,this)">✕</span></span>
+                    <svg class="sa-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="sub-account-dropdown">
+                    <div class="sa-search-bar">
+                      <svg class="sa-search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10 10l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      <input type="text" placeholder="Search..." oninput="filterSubAccounts(this)">
+                    </div>
+                    <div class="sa-options-list">
+                      <label class="sub-account-option"><input type="checkbox" checked onchange="syncPills(this)"> Sub-account 1</label>
+                      <label class="sub-account-option"><input type="checkbox" checked onchange="syncPills(this)"> Sub-account 2</label>
+                      <label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> F&amp;B revenue</label>
+                      <label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> Parking</label>
+                      <label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> Spa &amp; wellness</label>
+                      <label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> Other services</label>
+                    </div>
+                    <div class="sa-footer">
+                      <span class="sa-footer-count">2 selected</span>
+                      <div class="sa-footer-actions">
+                        <button class="sa-select-all" onclick="toggleSelectAll(this)">Select all</button>
+                        <button class="sa-confirm-btn" onclick="closeSubAccount(this)" title="Done">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3.5 3.5 5.5-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <span class="remove-link" onclick="removeServiceRow(this)">Remove</span>
+              </div>
+              <!-- Row 2: Accommodation with pills -->
+              <div class="applicability-row">
+                <select style="flex:1" onchange="onServiceTypeChange(this)"><option>Accommodation</option></select>
+                <div class="sub-account-wrapper">
+                  <div class="sub-account-trigger" onclick="toggleSubAccount(this)">
+                    <span class="sa-pill">Sun Balcony <span class="sa-pill-remove" onclick="removePill(event,this)">✕</span></span>
+                    <svg class="sa-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="sub-account-dropdown">
+                    <div class="sa-search-bar">
+                      <svg class="sa-search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10 10l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      <input type="text" placeholder="Search..." oninput="filterSubAccounts(this)">
+                    </div>
+                    <div class="sa-options-list">
+                      <label class="sub-account-option"><input type="checkbox" checked onchange="syncPills(this)"> Sun Balcony</label>
+                      <label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> City tax</label>
+                      <label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> F&amp;B revenue</label>
+                      <label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> Parking</label>
+                    </div>
+                    <div class="sa-footer">
+                      <span class="sa-footer-count">1 selected</span>
+                      <div class="sa-footer-actions">
+                        <button class="sa-select-all" onclick="toggleSelectAll(this)">Select all</button>
+                        <button class="sa-confirm-btn" onclick="closeSubAccount(this)" title="Done">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3.5 3.5 5.5-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <span class="remove-link" onclick="removeServiceRow(this)">Remove</span>
+              </div>
+              <!-- Row 3: No show, empty sub-account -->
+              <div class="applicability-row">
+                <select style="flex:1" onchange="onServiceTypeChange(this)"><option>No show</option></select>
+                <div class="sub-account-wrapper">
+                  <div class="sub-account-trigger" onclick="toggleSubAccount(this)">
+                    <span class="sa-placeholder">Sub-account</span>
+                    <svg class="sa-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="sub-account-dropdown">
+                    <div class="sa-search-bar">
+                      <svg class="sa-search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10 10l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      <input type="text" placeholder="Search..." oninput="filterSubAccounts(this)">
+                    </div>
+                    <div class="sa-options-list">
+                      <label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> Accommodation revenue</label>
+                      <label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> City tax</label>
+                      <label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> F&amp;B revenue</label>
+                      <label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> Parking</label>
+                    </div>
+                    <div class="sa-footer">
+                      <span class="sa-footer-count">0 selected</span>
+                      <div class="sa-footer-actions">
+                        <button class="sa-select-all" onclick="toggleSelectAll(this)">Select all</button>
+                        <button class="sa-confirm-btn" onclick="closeSubAccount(this)" title="Done">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3.5 3.5 5.5-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <span class="remove-link" onclick="removeServiceRow(this)">Remove</span>
+              </div>
+            </div>
+            <button class="add-link" onclick="addServiceRow('c-app-rows')"><span class="plus">+</span> Add service type</button>
+          </div>
+        </div>
+
+        <!-- S4: Calculation rules -->
+        <div class="section-card">
+          <div class="section-card-header">
+            <h1>Calculation rules</h1>
+            <p class="section-desc">Define how the tax is calculated, including the calculation method, pricing mode, and applicable conditions. This determines the exact tax amount based on configured rules such as percentage, tiers, and validity periods.</p>
+          </div>
+          <div class="section-card-body">
+            <div class="rule-cards-container" id="c-rules-container">
+
+            <!-- Rule 1 -->
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <input class="rule-name-input" type="text" value="Rule name defined by user">
+                <div class="priority-chip" onclick="togglePriorityDropdown(this)">Priority 1
+                  <div class="priority-dropdown">
+                    <div class="priority-dropdown-list"></div>
+                    <div class="priority-dropdown-footer">
+                      <button class="priority-ok-btn" onclick="closePriorityDropdown(this)">OK</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="more-btn" onclick="toggleMoreMenu(this)"><span></span>
+                  <div class="more-menu">
+                    <div class="more-menu-item danger" onclick="removeRuleCard(this)">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M5 3V2h4v1M6 6v4M8 6v4M3 3l1 9h6l1-9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      Remove rule
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="rule-card-body">
+                <div class="rule-row-2">
+                  <div class="form-col"><select><option selected>Percentage of gross amount</option><option>Percentage of base amount</option><option>Per piece</option><option>Per night</option></select></div>
+                  <div class="form-col"><select><option>Included – Tax within price</option><option>Excluded – Tax added on top</option></select></div>
+                </div>
+                <div class="period-group">
+                  <div class="period-block">
+                    <div class="period-block-label">Valid period</div>
+                    <div class="period-inputs">
+                      <div class="input-wrapper"><input type="text" value="01/01/25"><span class="input-icon"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="11" rx="1.5" stroke="var(--placeholder)" stroke-width="1.2"/><path d="M1 5.5h12" stroke="var(--placeholder)" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                      <div class="input-wrapper"><input type="text" value="01/01/26"><span class="input-icon"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="11" rx="1.5" stroke="var(--placeholder)" stroke-width="1.2"/><path d="M1 5.5h12" stroke="var(--placeholder)" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                    </div>
+                  </div>
+                  <div class="period-block">
+                    <div class="period-block-label">Stay range</div>
+                    <div class="period-inputs">
+                      <div class="input-wrapper"><input type="text" value="01/07/25"></div>
+                      <div class="input-wrapper"><input type="text" value="01/03/26"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="calc-type-section">
+                  <div class="calc-type-label">Calculation type</div>
+                  <div class="form-row"><div class="form-col-half"><div class="input-wrapper" style="position:relative;"><input type="number" value="16" placeholder="Percentage per service"><span class="pct-icon">%</span></div></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rule 2 -->
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <input class="rule-name-input" type="text" value="Rule name defined by user">
+                <div class="priority-chip" onclick="togglePriorityDropdown(this)">Priority 2
+                  <div class="priority-dropdown">
+                    <div class="priority-dropdown-list"></div>
+                    <div class="priority-dropdown-footer">
+                      <button class="priority-ok-btn" onclick="closePriorityDropdown(this)">OK</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="more-btn" onclick="toggleMoreMenu(this)"><span></span>
+                  <div class="more-menu">
+                    <div class="more-menu-item danger" onclick="removeRuleCard(this)">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M5 3V2h4v1M6 6v4M8 6v4M3 3l1 9h6l1-9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      Remove rule
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="rule-card-body">
+                <div class="rule-row-2">
+                  <div class="form-col"><select><option selected>Percentage of gross amount</option><option>Percentage of base amount</option><option>Per piece</option><option>Per night</option></select></div>
+                  <div class="form-col"><select><option>Included – Tax within price</option><option>Excluded – Tax added on top</option></select></div>
+                </div>
+                <div class="period-group">
+                  <div class="period-block">
+                    <div class="period-block-label">Valid period</div>
+                    <div class="period-inputs">
+                      <div class="input-wrapper"><input type="text" value="01/06/25"><span class="input-icon"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="11" rx="1.5" stroke="var(--placeholder)" stroke-width="1.2"/><path d="M1 5.5h12" stroke="var(--placeholder)" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                      <div class="input-wrapper"><input type="text" value="01/01/26"><span class="input-icon"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="11" rx="1.5" stroke="var(--placeholder)" stroke-width="1.2"/><path d="M1 5.5h12" stroke="var(--placeholder)" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                    </div>
+                  </div>
+                  <div class="period-block">
+                    <div class="period-block-label">Stay range</div>
+                    <div class="period-inputs">
+                      <div class="input-wrapper"><input type="text" value="01/04/26"></div>
+                      <div class="input-wrapper"><input type="text" value="01/03/26"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="calc-type-section">
+                  <div class="calc-type-label">Calculation type</div>
+                  <div class="form-row"><div class="form-col-half"><div class="input-wrapper" style="position:relative;"><input type="number" value="7" placeholder="Percentage per service"><span class="pct-icon">%</span></div></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rule 3 -->
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <input class="rule-name-input" type="text" value="Rule name defined by user">
+                <div class="priority-chip" onclick="togglePriorityDropdown(this)">Priority 3
+                  <div class="priority-dropdown">
+                    <div class="priority-dropdown-list"></div>
+                    <div class="priority-dropdown-footer">
+                      <button class="priority-ok-btn" onclick="closePriorityDropdown(this)">OK</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="more-btn" onclick="toggleMoreMenu(this)"><span></span>
+                  <div class="more-menu">
+                    <div class="more-menu-item danger" onclick="removeRuleCard(this)">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M5 3V2h4v1M6 6v4M8 6v4M3 3l1 9h6l1-9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      Remove rule
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="rule-card-body">
+                <div class="rule-row-2">
+                  <div class="form-col"><select><option selected>Percentage of gross amount</option><option>Percentage of base amount</option><option>Per piece</option><option>Per night</option></select></div>
+                  <div class="form-col"><select><option>Included – Tax within price</option><option selected>Excluded – Tax added on top</option></select></div>
+                </div>
+                <div class="period-group">
+                  <div class="period-block">
+                    <div class="period-block-label">Valid period</div>
+                    <div class="period-inputs">
+                      <div class="input-wrapper"><input type="text" value="01/08/25"><span class="input-icon"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="11" rx="1.5" stroke="var(--placeholder)" stroke-width="1.2"/><path d="M1 5.5h12" stroke="var(--placeholder)" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                      <div class="input-wrapper"><input type="text" value="01/01/26"><span class="input-icon"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="11" rx="1.5" stroke="var(--placeholder)" stroke-width="1.2"/><path d="M1 5.5h12" stroke="var(--placeholder)" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                    </div>
+                  </div>
+                  <div class="period-block">
+                    <div class="period-block-label">Stay range</div>
+                    <div class="period-inputs">
+                      <div class="input-wrapper"><input type="text" value="01/03/26"></div>
+                      <div class="input-wrapper"><input type="text" value="01/03/26"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="calc-type-section">
+                  <div class="calc-type-label">Calculation type</div>
+                  <div class="form-row"><div class="form-col-half"><div class="input-wrapper" style="position:relative;"><input type="number" value="19" placeholder="Percentage per service"><span class="pct-icon">%</span></div></div></div>
+                </div>
+              </div>
+            </div>
+
+            </div><!-- /rule-cards-container -->
+
+            <div style="text-align:center; margin-top:8px;">
+              <button class="add-link add-rule-btn" onclick="addRuleCard('c-rules-container')"><span class="plus">+</span> Add calculation rule</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /screen-completed -->
+
+  </div><!-- /content-wrapper -->
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar" id="bottom-bar">
+    <div class="bottom-bar-inner">
+      <button class="btn btn-secondary" onclick="openModal('modal-leave')">Cancel</button>
+      <button class="btn btn-primary" id="save-btn" disabled onclick="handleSave()">Save tax</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- MODAL: Deactivate -->
+<div class="modal-overlay" id="modal-deactivate">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Deactivate tax</span>
+      <button class="modal-close" onclick="closeModal('modal-deactivate')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-alert">
+        <span class="warn-icon">⚠</span>
+        <span>Deactivating this tax will stop it from being applied to future charge postings. If this tax is currently in use, this may lead to discrepancies and incorrect tax calculation on new transactions.</span>
+      </div>
+      <p class="modal-text">You are about to deactivate this tax. The tax setting will still be available for reactivation.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-deactivate')">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmDeactivate()">Deactivate tax</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Leave -->
+<div class="modal-overlay" id="modal-leave">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Leave tax setting</span>
+      <button class="modal-close" onclick="closeModal('modal-leave')">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-text">You are about to leave this tax setting. Unsaved changes will be lost.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modal-leave')">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmLeave()">Leave</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Screen navigation ──
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+  }
+
+  // ── Tabs ──
+  function switchTab(el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ── Modals ──
+  function openModal(id) { document.getElementById(id)?.classList.add('open'); }
+  function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+  });
+
+  // ── Toggle (deactivate confirm) ──
+  function handleToggle(checkbox) {
+    if (!checkbox.checked) {
+      openModal('modal-deactivate');
+      setTimeout(() => { checkbox.checked = true; }, 10);
+    }
+  }
+  function confirmDeactivate() {
+    closeModal('modal-deactivate');
+    goList();
+    showToast('Tax deactivated.');
+  }
+  function confirmLeave() { closeModal('modal-leave'); goList(); }
+  function handleSave() {
+    const isNew = document.getElementById('screen-empty').classList.contains('active');
+    if (isNew) {
+      const newRow = readFormIntoTaxRow();
+      TAX_ROWS.push(newRow);
+    }
+    goList();
+    renderTaxList();
+    showToast(isNew ? 'Tax created successfully.' : 'Tax saved successfully.');
+  }
+
+  // Read the create-form fields and produce a list row.
+  function readFormIntoTaxRow() {
+    const nameEn = (document.getElementById('e-name-en')?.value || '').trim();
+    const codeRaw = (document.getElementById('e-code')?.value || '').trim().toUpperCase();
+    const taxTypeRaw = document.getElementById('e-taxtype')?.value || '';
+    const taxhandlingRaw = document.getElementById('e-taxhandling')?.value || '';
+    const vathandlingRaw = document.getElementById('e-vathandling')?.value || '';
+
+    // VAT/GST handling → "Included" or "Excluded"
+    let vatHandling = '—';
+    if (taxhandlingRaw.startsWith('Included')) vatHandling = 'Included';
+    else if (taxhandlingRaw.startsWith('Excluded')) vatHandling = 'Excluded';
+
+    // VAT handling → rate like "7%"
+    let rate = '—';
+    const rateMatch = vathandlingRaw.match(/^(\d+(?:\.\d+)?)%/);
+    if (rateMatch) rate = rateMatch[1] + '%';
+    else if (vathandlingRaw === 'Without') rate = '—';
+
+    // Percentage from first rule card
+    const pctInput = document.querySelector('#e-rules-container .calc-type-section input[type="number"]');
+    if (pctInput && pctInput.value) rate = pctInput.value + '%';
+
+    const identifier = codeRaw ? 'BER-' + codeRaw : '—';
+
+    return {
+      name: nameEn || 'Untitled tax',
+      code: codeRaw,
+      identifier,
+      taxType: taxTypeRaw || '—',
+      vatHandling,
+      rate,
+      status: 'active',
+    };
+  }
+
+  // ── List ↔ Create ↔ Edit navigation ──
+  function setSectionTitle(opts) {
+    // opts = { kind: 'list'|'create'|'edit', name?: string }
+    const titleRow = document.getElementById('section-title-row');
+    const tabs = document.getElementById('finance-tabs');
+    const bar = document.getElementById('bottom-bar');
+
+    if (opts.kind === 'list') {
+      titleRow.innerHTML = '<div class="section-title">Finance</div>';
+      tabs.style.display = '';
+      bar.style.display = 'none';
+      // rebuild breadcrumb cleanly
+      document.getElementById('breadcrumb').innerHTML =
+        '<a href="#" onclick="goList();return false;">Property Name</a>' +
+        '<span class="sep">/</span>' +
+        '<a href="#" onclick="goList();return false;">Finance</a>' +
+        '<span class="sep">/</span>' +
+        '<span class="crumb-current" id="breadcrumb-current">Tax engine</span>';
+    } else {
+      const title = opts.kind === 'create' ? 'New tax' : (opts.name || 'Edit tax');
+      const showTag = opts.kind === 'edit';
+      titleRow.innerHTML =
+        '<button class="back-btn" onclick="askLeaveOrGoList()" aria-label="Back">' +
+          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none">' +
+            '<path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '</svg>' +
+        '</button>' +
+        '<div class="section-title">' + title + '</div>' +
+        (showTag ? '<span class="status-tag is-editing">Editing</span>' : '');
+      tabs.style.display = 'none';
+      bar.style.display = 'flex';
+      document.getElementById('breadcrumb').innerHTML =
+        '<a href="#" onclick="goList();return false;">Property Name</a>' +
+        '<span class="sep">/</span>' +
+        '<a href="#" onclick="goList();return false;">Finance</a>' +
+        '<span class="sep">/</span>' +
+        '<a href="#" onclick="goList();return false;">Tax engine</a>' +
+        '<span class="sep">/</span>' +
+        '<span class="crumb-current">' + title + '</span>';
+    }
+  }
+
+  function goList() {
+    showScreen('screen-list');
+    document.getElementById('finance-tabs').style.display = '';
+    document.getElementById('section-title-row').innerHTML = '<div class="section-title">Finance</div>';
+    document.getElementById('breadcrumb').innerHTML =
+      '<a href="#" onclick="goList();return false;">Property Name</a>' +
+      '<span class="sep">/</span>' +
+      '<a href="#" onclick="goList();return false;">Finance</a>' +
+      '<span class="sep">/</span>' +
+      '<span class="crumb-current" id="breadcrumb-current">Tax engine</span>';
+    document.getElementById('bottom-bar').style.display = 'none';
+    document.querySelector('.content-wrapper')?.scrollTo(0, 0);
+  }
+
+  function goCreate() {
+    showScreen('screen-empty');
+    // Keep Finance header + tabs visible — just show the form and bottom bar
+    document.getElementById('finance-tabs').style.display = '';
+    document.getElementById('section-title-row').innerHTML = '<div class="section-title">Finance</div>';
+    document.getElementById('breadcrumb').innerHTML =
+      '<a href="#" onclick="goList();return false;">Property Name</a>' +
+      '<span class="sep">/</span>' +
+      '<a href="#" onclick="goList();return false;">Finance</a>' +
+      '<span class="sep">/</span>' +
+      '<span class="crumb-current">Tax engine</span>';
+    document.getElementById('bottom-bar').style.display = 'flex';
+    document.querySelector('.content-wrapper')?.scrollTo(0, 0);
+  }
+
+  function goEdit(index) {
+    const t = TAX_ROWS[index];
+    if (!t) return;
+    // Pre-populate the edit form (screen-completed) with the selected tax's data
+    populateEditForm(t, index);
+    showScreen('screen-completed');
+    // Keep Finance header + tabs visible
+    document.getElementById('finance-tabs').style.display = '';
+    document.getElementById('section-title-row').innerHTML = '<div class="section-title">Finance</div>';
+    document.getElementById('breadcrumb').innerHTML =
+      '<a href="#" onclick="goList();return false;">Property Name</a>' +
+      '<span class="sep">/</span>' +
+      '<a href="#" onclick="goList();return false;">Finance</a>' +
+      '<span class="sep">/</span>' +
+      '<span class="crumb-current">Tax engine</span>';
+    document.getElementById('bottom-bar').style.display = 'flex';
+    document.querySelector('.content-wrapper')?.scrollTo(0, 0);
+  }
+
+  function populateEditForm(t, index) {
+    const s = document.getElementById('screen-completed');
+    if (!s) return;
+    // Tax name fields
+    const inputs = s.querySelectorAll('input[type="text"]');
+    if (inputs[0]) inputs[0].value = t.name || '';
+    if (inputs[1]) inputs[1].value = t.name || '';
+    // Code field
+    const codeInput = document.getElementById('c-code');
+    if (codeInput) { codeInput.value = t.code || 'ALCO'; updateIdentifier('c'); }
+    // Tax type select
+    const taxTypeSelect = s.querySelector('select');
+    if (taxTypeSelect && t.taxType) {
+      Array.from(taxTypeSelect.options).forEach(o => {
+        o.selected = o.text === t.taxType;
+      });
+    }
+    // Tax handling
+    const handlingSelects = s.querySelectorAll('.vat-handling-row select');
+    if (handlingSelects[0] && t.vatHandling) {
+      Array.from(handlingSelects[0].options).forEach(o => {
+        o.selected = o.text.startsWith(t.vatHandling);
+      });
+    }
+    // Rate — update first calc rule's percentage input
+    const pctInput = s.querySelector('.calc-type-section input[type="number"]');
+    if (pctInput && t.rate) pctInput.value = parseFloat(t.rate) || '';
+    // Store edit index
+    s.dataset.editIndex = index;
+  }
+
+  function askLeaveOrGoList() {
+    // Open the leave-confirm modal (same as Cancel)
+    openModal('modal-leave');
+  }
+
+  // ── Toast ──
+  function showToast(msg) {
+    const old = document.getElementById('toast');
+    if (old) old.remove();
+    const el = document.createElement('div');
+    el.className = 'toast';
+    el.id = 'toast';
+    el.innerHTML =
+      '<svg width="16" height="16" viewBox="0 0 16 16" fill="none">' +
+        '<circle cx="8" cy="8" r="7" stroke="#fff" stroke-width="1.4"/>' +
+        '<path d="M5 8.5l2 2 4-5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</svg>' +
+      '<span>' + msg + '</span>' +
+      '<button class="toast-close" onclick="hideToast()">×</button>';
+    document.body.appendChild(el);
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(hideToast, 4000);
+  }
+  function hideToast() {
+    const el = document.getElementById('toast');
+    if (!el) return;
+    el.classList.add('toast-hide');
+    setTimeout(() => el.remove(), 240);
+  }
+
+  // ── Tax list data + render ──
+  const TAX_ROWS = [];
+
+  // Sample data for previewing the populated list (use resetTaxes() in console)
+  const __SAMPLE_TAX_ROWS = [
+    { name: 'City Tax',            code: 'CITY', identifier: 'BER-CITY', taxType: 'Tourism tax on services', vatHandling: 'Included', rate: '10%', status: 'active' },
+    { name: 'Food & Beverage Tax', code: 'FBEV', identifier: 'BER-FBEV', taxType: 'Consumption tax',          vatHandling: 'Excluded', rate: '19%', status: 'active' },
+    { name: 'Parking Tax',         code: 'PARK', identifier: 'BER-PARK', taxType: 'Consumption tax',          vatHandling: 'Included', rate: '7%',  status: 'active' },
+    { name: 'Wellness & Spa Tax',  code: 'WLNS', identifier: 'BER-WLNS', taxType: 'Tourism tax on services',  vatHandling: 'Excluded', rate: '5%',  status: 'active' },
+  ];
+
+  function renderTaxList() {
+    const table = document.getElementById('tax-table');
+    const empty = document.getElementById('tax-empty-state');
+    const toolbar = document.getElementById('page-toolbar');
+    if (!table) return;
+
+    if (TAX_ROWS.length === 0) {
+      table.style.display = 'none';
+      empty.style.display = 'flex';
+      toolbar.style.display = 'none';
+      return;
+    }
+    table.style.display = '';
+    empty.style.display = 'none';
+    toolbar.style.display = 'flex';
+
+    // Keep header, append rows
+    const head = table.querySelector('.tax-table-head');
+    table.innerHTML = '';
+    table.appendChild(head);
+
+    TAX_ROWS.forEach((t, i) => {
+      const row = document.createElement('div');
+      row.className = 'tax-table-row';
+      row.dataset.index = i;
+      row.innerHTML =
+        '<div class="col-expand">' +
+          '<button class="expand-btn" onclick="toggleExpand(' + i + ')" aria-label="Expand">' +
+            '<svg width="14" height="14" viewBox="0 0 14 14" fill="none">' +
+              '<path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+            '</svg>' +
+          '</button>' +
+        '</div>' +
+        '<div class="col-name">' + t.name + '</div>' +
+        '<div class="col-identifier">' + (t.identifier || '—') + '</div>' +
+        '<div class="col-taxtype">' + (t.taxType || '—') + '</div>' +
+        '<div class="col-vathandling">' + (t.vatHandling || t.handling || '—') + '</div>' +
+        '<div class="col-rate">' + t.rate + '</div>' +
+        '<div class="col-status"><span class="status-pill is-' + t.status + '">' + (t.status === 'active' ? 'Active' : 'Inactive') + '</span></div>' +
+        '<div class="col-actions">' +
+          '<div class="row-more">' +
+            '<button class="icon-only-btn" aria-label="More" onclick="toggleRowMenu(event, ' + i + ')">' +
+              '<svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">' +
+                '<circle cx="7" cy="3" r="1.1"/><circle cx="7" cy="7" r="1.1"/><circle cx="7" cy="11" r="1.1"/>' +
+              '</svg>' +
+            '</button>' +
+            '<div class="row-more-menu" id="row-menu-' + i + '">' +
+              '<button class="menu-item" onclick="goEdit(' + i + ')">' +
+                '<svg width="14" height="14" viewBox="0 0 14 14" fill="none">' +
+                  '<path d="M2 12h2.5L12 4.5 9.5 2 2 9.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>' +
+                  '<path d="M8.5 3l2.5 2.5" stroke="currentColor" stroke-width="1.3"/>' +
+                '</svg>' +
+                'Edit tax' +
+              '</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      table.appendChild(row);
+    });
+  }
+
+  function toggleExpand(i) {
+    const table = document.getElementById('tax-table');
+    const rows = table.querySelectorAll('.tax-table-row');
+    const row = rows[i];
+    if (!row) return;
+    const btn = row.querySelector('.expand-btn');
+    const isOpen = btn.classList.contains('is-open');
+
+    // close any open expansions
+    table.querySelectorAll('.tax-row-expanded').forEach(e => e.remove());
+    table.querySelectorAll('.expand-btn').forEach(b => b.classList.remove('is-open'));
+    table.querySelectorAll('.tax-table-row').forEach(r => r.classList.remove('is-expanded'));
+
+    if (!isOpen) {
+      btn.classList.add('is-open');
+      row.classList.add('is-expanded');
+      const t = TAX_ROWS[i];
+      const exp = document.createElement('div');
+      exp.className = 'tax-row-expanded';
+      exp.innerHTML =
+        '<h5 class="te-section-title">Classification & tax configuration</h5>' +
+        '<div class="te-grid">' +
+          kv('English name', t.name) +
+          kv('German name', '—') +
+          kv('Tax type', t.taxType || '—') +
+          kv('Identifier', t.identifier || '—') +
+          kv('VAT/GST handling', (t.vatHandling || t.handling || '—') + ' – Tax ' + ((t.vatHandling || t.handling) === 'Included' ? 'within price' : 'added on top')) +
+          kv('Tax rate', t.rate) +
+        '</div>' +
+        '<div class="te-divider"></div>' +
+        '<h5 class="te-section-title">Applicability</h5>' +
+        '<div class="te-grid">' +
+          kv('Service type', t.name.includes('Food') ? 'Food & Beverages' : (t.name.includes('Parking') ? 'Other' : 'Accommodation')) +
+          kv('Sub-account', 'All sub-accounts') +
+        '</div>' +
+        '<div class="te-divider"></div>' +
+        '<h5 class="te-section-title">Calculation rules</h5>' +
+        '<div class="te-grid te-rule">' +
+          kv('Calculation base', 'Percentage of gross amount') +
+          kv('Pricing mode', (t.vatHandling || t.handling || '—') + ' – Tax ' + ((t.vatHandling || t.handling) === 'Included' ? 'within price' : 'added on top')) +
+          kv('Valid period', '01/01/26 – 31/12/26') +
+          kv('Calculation type', 'Percentage per service') +
+          kv('Tax rate', t.rate) +
+        '</div>';
+      row.after(exp);
+    }
+  }
+
+  function kv(label, value) {
+    return '<div class="kv"><div class="kv-label">' + label + '</div><div class="kv-value">' + value + '</div></div>';
+  }
+
+  // ── Row more-menu ──
+  function toggleRowMenu(e, i) {
+    e.stopPropagation();
+    const menu = document.getElementById('row-menu-' + i);
+    const wasOpen = menu.classList.contains('open');
+    document.querySelectorAll('.row-more-menu.open').forEach(m => m.classList.remove('open'));
+    if (!wasOpen) menu.classList.add('open');
+  }
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.row-more-menu.open').forEach(m => m.classList.remove('open'));
+  });
+
+  // initial render
+  document.addEventListener('DOMContentLoaded', () => {
+    renderTaxList();
+    // hide bottom bar on first load (we start on list)
+    const bar = document.getElementById('bottom-bar');
+    if (bar) bar.style.display = 'none';
+  });
+
+  // ── Convenience helpers ──
+  // In the browser console, run: resetTaxes()  → shows the populated list with sample taxes
+  //                              clearTaxes()  → returns to the empty state
+  window.clearTaxes = function() { TAX_ROWS.length = 0; renderTaxList(); };
+  window.resetTaxes = function() {
+    TAX_ROWS.length = 0;
+    __SAMPLE_TAX_ROWS.forEach(t => TAX_ROWS.push(t));
+    renderTaxList();
+  };
+
+  // ── Identifier auto-update ──
+  function updateIdentifier(prefix) {
+    const code = document.getElementById(prefix + '-code')?.value || '';
+    const id = document.getElementById(prefix + '-identifier');
+    if (id) id.value = 'BER-' + code.toUpperCase();
+  }
+
+  // ── Save button: enable when required fields filled ──
+  function checkSave() {
+    const screen = document.getElementById('screen-empty');
+    const btn = document.getElementById('save-btn');
+    if (!btn || !screen) return;
+
+    // Classification & tax configuration
+    const nameEn = document.getElementById('e-name-en')?.value.trim();
+    const nameDe = document.getElementById('e-name-de')?.value.trim();
+    const taxType = document.getElementById('e-taxtype')?.value;
+    const code = document.getElementById('e-code')?.value.trim();
+    const taxHandling = document.getElementById('e-taxhandling')?.value;
+    const vatHandling = document.getElementById('e-vathandling')?.value;
+    const identityOK = nameEn && nameDe && taxType && code && taxHandling && vatHandling;
+
+    // Applicability — at least one row with a service type selected
+    const appRows = screen.querySelectorAll('#e-app-rows .applicability-row');
+    let applicabilityOK = false;
+    appRows.forEach(row => {
+      const sel = row.querySelector('select');
+      if (sel && sel.value) applicabilityOK = true;
+    });
+
+    // Calculation rules — every rule card must be valid
+    const ruleCards = screen.querySelectorAll('#e-rules-container .rule-card');
+    let rulesOK = ruleCards.length > 0;
+    ruleCards.forEach(card => {
+      const ruleName = card.querySelector('.rule-name-input')?.value.trim();
+      const selects = card.querySelectorAll('.rule-row-2 select');
+      const calcBase = selects[0]?.value;
+      const pricingMode = selects[1]?.value;
+      const periodInputs = card.querySelectorAll('.period-group input');
+      const validFrom = periodInputs[0]?.value;
+      const validTo = periodInputs[1]?.value;
+      const stayFrom = periodInputs[2]?.value;
+      const stayTo = periodInputs[3]?.value;
+      // Percentage per service: any number input inside calc-type-section
+      const pctInput = card.querySelector('.calc-type-section input[type="number"]');
+      const pct = pctInput?.value;
+      const cardOK = ruleName && calcBase && pricingMode && validFrom && validTo && stayFrom && stayTo && pct;
+      if (!cardOK) rulesOK = false;
+    });
+
+    btn.disabled = !(identityOK && applicabilityOK && rulesOK);
+  }
+
+  // ── Segmented control ──
+  function setSegment(btn, activeId) {
+    const ctrl = btn.closest('.seg-control');
+    ctrl.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    // Determine prefix by stripping suffix
+    const suffixes = ['per-service', 'per-age', 'per-price'];
+    let prefix = activeId;
+    for (const s of suffixes) {
+      if (activeId.endsWith('-' + s)) { prefix = activeId.slice(0, activeId.length - s.length - 1); break; }
+    }
+    suffixes.forEach(s => {
+      const panel = document.getElementById(prefix + '-' + s);
+      if (panel) panel.style.display = (prefix + '-' + s === activeId) ? 'block' : 'none';
+    });
+  }
+
+  // ── Sub-account dropdown ──
+  function toggleSubAccount(trigger) {
+    const dropdown = trigger.nextElementSibling;
+    const isOpen = dropdown.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.sub-account-dropdown.open').forEach(d => {
+      d.classList.remove('open');
+      d.previousElementSibling.classList.remove('open');
+    });
+    if (!isOpen) {
+      dropdown.classList.add('open');
+      trigger.classList.add('open');
+      // Focus search
+      const search = dropdown.querySelector('.sa-search-bar input');
+      if (search) setTimeout(() => search.focus(), 50);
+    }
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.sub-account-wrapper')) {
+      document.querySelectorAll('.sub-account-dropdown.open').forEach(d => {
+        d.classList.remove('open');
+        d.previousElementSibling?.classList.remove('open');
+      });
+    }
+  });
+
+  function closeSubAccount(btn) {
+    const dropdown = btn.closest('.sub-account-dropdown');
+    dropdown.classList.remove('open');
+    dropdown.previousElementSibling?.classList.remove('open');
+  }
+
+  function filterSubAccounts(input) {
+    const query = input.value.toLowerCase();
+    const list = input.closest('.sub-account-dropdown').querySelector('.sa-options-list');
+    list.querySelectorAll('.sub-account-option').forEach(opt => {
+      const text = opt.textContent.toLowerCase();
+      opt.style.display = text.includes(query) ? '' : 'none';
+    });
+  }
+
+  function updateFooterCount(dropdown) {
+    const total = dropdown.querySelectorAll('.sub-account-option input:checked').length;
+    const countEl = dropdown.querySelector('.sa-footer-count');
+    if (countEl) countEl.textContent = total + ' selected';
+    // Update select-all button label
+    const allCheckboxes = dropdown.querySelectorAll('.sub-account-option input');
+    const allChecked = total === allCheckboxes.length;
+    const btn = dropdown.querySelector('.sa-select-all');
+    if (btn) btn.textContent = allChecked ? 'Deselect all' : 'Select all';
+  }
+
+  function toggleSelectAll(btn) {
+    const dropdown = btn.closest('.sub-account-dropdown');
+    const wrapper = btn.closest('.sub-account-wrapper');
+    const allCbs = dropdown.querySelectorAll('.sub-account-option input');
+    const anyUnchecked = Array.from(allCbs).some(cb => !cb.checked);
+    allCbs.forEach(cb => { cb.checked = anyUnchecked; });
+    renderTriggerPills(wrapper);
+  }
+
+  // ── Render trigger pills (adaptive fitting with +N overflow) ──
+  function renderTriggerPills(wrapper) {
+    const trigger = wrapper.querySelector('.sub-account-trigger');
+    const dropdown = wrapper.querySelector('.sub-account-dropdown');
+    const arrow = trigger.querySelector('.sa-arrow');
+    const checked = Array.from(dropdown.querySelectorAll('.sub-account-option input:checked'));
+    const labels = checked.map(cb => cb.closest('label').textContent.trim());
+
+    // Clear existing content
+    trigger.querySelectorAll('.sa-pill, .sa-placeholder, .sa-overflow-pill, .sub-account-trigger-content').forEach(el => el.remove());
+
+    if (labels.length === 0) {
+      const ph = document.createElement('span');
+      ph.className = 'sa-placeholder'; ph.textContent = 'Sub-account';
+      trigger.insertBefore(ph, arrow);
+      updateFooterCount(dropdown);
+      return;
+    }
+
+    // Create content wrapper
+    const content = document.createElement('div');
+    content.className = 'sub-account-trigger-content';
+    trigger.insertBefore(content, arrow);
+
+    // Measure available width (trigger width - arrow space - padding)
+    const triggerWidth = trigger.offsetWidth;
+    const arrowSpace = 32; // arrow width + padding
+    const availableWidth = triggerWidth - arrowSpace - 16; // 16px for padding
+
+    // Create all pills off-screen to measure them
+    const tempContainer = document.createElement('div');
+    tempContainer.style.cssText = 'position:absolute;visibility:hidden;display:flex;gap:4px;';
+    document.body.appendChild(tempContainer);
+
+    const pillElements = labels.map(label => {
+      const pill = document.createElement('span');
+      pill.className = 'sa-pill';
+      pill.dataset.value = label;
+      const textSpan = document.createElement('span');
+      textSpan.className = 'sa-pill-text';
+      textSpan.textContent = label;
+      const removeBtn = document.createElement('span');
+      removeBtn.className = 'sa-pill-remove';
+      removeBtn.innerHTML = '✕';
+      removeBtn.onclick = (e) => removePillClick(e, removeBtn);
+      pill.appendChild(textSpan);
+      pill.appendChild(removeBtn);
+      tempContainer.appendChild(pill);
+      return { element: pill, width: pill.offsetWidth };
+    });
+
+    // Calculate how many pills fit
+    let visibleCount = 0;
+    let usedWidth = 0;
+    const gap = 4;
+    const overflowPillWidth = 45; // estimate for "+N" pill
+
+    for (let i = 0; i < pillElements.length; i++) {
+      const nextWidth = usedWidth + pillElements[i].width + (i > 0 ? gap : 0);
+      // Check if we need overflow pill
+      const needsOverflow = i < pillElements.length - 1;
+      const totalWidth = nextWidth + (needsOverflow ? gap + overflowPillWidth : 0);
+      
+      if (totalWidth <= availableWidth) {
+        visibleCount = i + 1;
+        usedWidth = nextWidth;
+      } else {
+        break;
+      }
+    }
+
+    // Render visible pills
+    for (let i = 0; i < visibleCount; i++) {
+      content.appendChild(pillElements[i].element.cloneNode(true));
+      // Re-attach event listener since cloneNode loses it
+      const clonedPill = content.lastChild;
+      const removeBtn = clonedPill.querySelector('.sa-pill-remove');
+      if (removeBtn) {
+        removeBtn.onclick = (e) => removePillClick(e, removeBtn);
+      }
+    }
+
+    // Add overflow pill if needed
+    const hiddenCount = labels.length - visibleCount;
+    if (hiddenCount > 0) {
+      const overflowPill = document.createElement('span');
+      overflowPill.className = 'sa-overflow-pill';
+      overflowPill.textContent = '+' + hiddenCount;
+      content.appendChild(overflowPill);
+    }
+
+    document.body.removeChild(tempContainer);
+    updateFooterCount(dropdown);
+  }
+
+  // ── Called by checkbox change ──
+  function syncPills(checkbox) {
+    const wrapper = checkbox.closest('.sub-account-wrapper');
+    renderTriggerPills(wrapper);
+  }
+
+  // ── Called by × on a pill ──
+  function removePillClick(e, btn) {
+    e.stopPropagation();
+    const val = btn.closest('.sa-pill').dataset.value;
+    if (!val) return; // overflow pill has no value, clicking does nothing
+    const wrapper = btn.closest('.sub-account-wrapper');
+    // Uncheck the corresponding checkbox
+    wrapper.querySelectorAll('.sub-account-option input').forEach(cb => {
+      if (cb.closest('label').textContent.trim() === val) cb.checked = false;
+    });
+    renderTriggerPills(wrapper);
+  }
+
+  // Keep legacy names working (called from static HTML in completed screen)
+  function removePill(e, btn) { removePillClick(e, btn); }
+  function removePillByValue(e, btn, val) {
+    e.stopPropagation();
+    const wrapper = btn.closest('.sub-account-wrapper');
+    wrapper.querySelectorAll('.sub-account-option input').forEach(cb => {
+      if (cb.closest('label').textContent.trim() === val) cb.checked = false;
+    });
+    renderTriggerPills(wrapper);
+  }
+
+  // ── Add / remove service rows ──
+  function addServiceRow(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const row = document.createElement('div');
+    row.className = 'applicability-row';
+    const options = ['Accommodation','Food &amp; Beverages','No show','Cancellation','Other']
+      .map(o => `<option>${o}</option>`).join('');
+    row.innerHTML = `
+      <select required style="flex:1" onchange="onServiceTypeChange(this); checkSave()">
+        <option value="" disabled selected>Service type*</option>${options}
+      </select>
+      <div class="sub-account-wrapper">
+        <div class="sub-account-trigger disabled" onclick="toggleSubAccount(this)">
+          <span class="sa-placeholder">Sub-account</span>
+          <svg class="sa-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="sub-account-dropdown">
+          <div class="sa-search-bar">
+            <svg class="sa-search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10 10l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Search..." oninput="filterSubAccounts(this)">
+          </div>
+          <div class="sa-options-list"></div>
+          <div class="sa-footer">
+            <span class="sa-footer-count">0 selected</span>
+            <div class="sa-footer-actions">
+              <button class="sa-select-all" onclick="toggleSelectAll(this)">Select all</button>
+              <button class="sa-confirm-btn" onclick="closeSubAccount(this)" title="Done">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3.5 3.5 5.5-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="remove-link" onclick="removeServiceRow(this)">Remove</span>`;
+    container.appendChild(row);
+    updateRemoveLinks(container);
+    refreshServiceTypeOptions(container);
+  }
+
+  // ── Sub-account options per service type ──
+  const SUB_ACCOUNTS = {
+    'Accommodation': ['Early bird','Flexible','Promotion','Easy Use','Include breakfast','Non-Refundable','Corporate Applies','Friends and family'],
+    'Food & Beverages': ['Final cleaning','Breakfast Food','Welcome drink','Lucifer feast','Breakfast Tea/Coffee','Breakfast Jorum'],
+    'No show': ['Standard','Late cancellation','No show fee'],
+    'Cancellation': ['Full refund','Partial refund','Non-refundable','Admin fee'],
+    'Other': ['Service charge','Miscellaneous','Extra charge','Adjustment']
+  };
+
+  function onServiceTypeChange(select) {
+    const row = select.closest('.applicability-row');
+    const trigger = row.querySelector('.sub-account-trigger');
+    const dropdown = row.querySelector('.sub-account-dropdown');
+    const optionsList = dropdown.querySelector('.sa-options-list');
+    const selectedType = select.value;
+
+    // Clear existing pills and reset trigger to placeholder
+    trigger.querySelectorAll('.sa-pill, .sa-placeholder, .sa-overflow-pill').forEach(el => el.remove());
+    const ph = document.createElement('span');
+    ph.className = 'sa-placeholder'; ph.textContent = 'Sub-account';
+    trigger.insertBefore(ph, trigger.querySelector('.sa-arrow'));
+
+    // Populate options
+    const opts = SUB_ACCOUNTS[selectedType] || [];
+    optionsList.innerHTML = opts.map(o =>
+      `<label class="sub-account-option"><input type="checkbox" onchange="syncPills(this)"> ${o}</label>`
+    ).join('');
+
+    // Reset footer count
+    const countEl = dropdown.querySelector('.sa-footer-count');
+    if (countEl) countEl.textContent = '0 selected';
+    const allBtn = dropdown.querySelector('.sa-select-all');
+    if (allBtn) allBtn.textContent = 'Select all';
+
+    // Enable trigger
+    trigger.classList.remove('disabled');
+    trigger.style.pointerEvents = '';
+
+    // Refresh disabled state across all service-type selects in this group
+    refreshServiceTypeOptions(row.parentElement);
+  }
+
+  // For each service-type select in the group, disable any option that's already
+  // selected in another row. Don't disable the option that the current row owns.
+  function refreshServiceTypeOptions(container) {
+    if (!container) return;
+    const selects = container.querySelectorAll('.applicability-row select');
+    const usedElsewhere = new Map(); // selectElement -> Set of values used by other rows
+
+    const allValues = Array.from(selects).map(s => s.value).filter(v => v);
+
+    selects.forEach(select => {
+      const own = select.value;
+      Array.from(select.options).forEach(opt => {
+        if (!opt.value || opt.value === '') return; // skip placeholder
+        const usedByOther = allValues.some((v, i) => v === opt.textContent && Array.from(selects)[i] !== select);
+        opt.disabled = usedByOther;
+      });
+    });
+  }
+
+  function removeServiceRow(el) {
+    const row = el.closest('.applicability-row');
+    const container = row.parentElement;
+    row.remove();
+    updateRemoveLinks(container);
+    refreshServiceTypeOptions(container);
+  }
+
+  function updateRemoveLinks(container) {
+    if (!container) return;
+    const rows = container.querySelectorAll('.applicability-row');
+    rows.forEach(row => {
+      const removeLink = row.querySelector('.remove-link');
+      if (removeLink) {
+        removeLink.style.display = rows.length > 1 ? '' : 'none';
+      }
+    });
+  }
+
+  // ── Rule card management ──
+
+  function getRuleContainer(el) {
+    return el.closest('.rule-cards-container');
+  }
+
+  function refreshRuleNumbers(container) {
+    const cards = container.querySelectorAll('.rule-card');
+    const single = cards.length <= 1;
+    container.classList.toggle('single-rule', single);
+    cards.forEach((card, i) => {
+      const chip = card.querySelector('.priority-chip');
+      if (chip) {
+        // Preserve the dropdown inside, just update text node
+        const dropdown = chip.querySelector('.priority-dropdown');
+        chip.textContent = 'Priority ' + (i + 1);
+        if (dropdown) chip.appendChild(dropdown);
+      }
+    });
+    // Rebuild priority dropdown lists
+    cards.forEach((card, i) => {
+      const list = card.querySelector('.priority-dropdown-list');
+      if (!list) return;
+      list.innerHTML = Array.from({length: cards.length}, (_, j) =>
+        `<div class="priority-option ${j === i ? 'active' : ''}" onclick="selectPriority(this, ${j+1})">
+          <svg class="check-icon" viewBox="0 0 14 14" fill="none">
+            ${j === i ? '<path d="M2.5 7l3.5 3.5 5.5-6" stroke="var(--brand-amber)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' : ''}
+          </svg>
+          Priority ${j + 1}
+        </div>`
+      ).join('');
+    });
+  }
+
+  function addRuleCard(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const cards = container.querySelectorAll('.rule-card');
+    const newIndex = cards.length + 1;
+    const uid = Date.now();
+
+    const card = document.createElement('div');
+    card.className = 'rule-card';
+    card.innerHTML = `
+      <div class="rule-card-header">
+        <input class="rule-name-input" type="text" placeholder="Rule name*" oninput="checkSave()">
+        <div class="priority-chip" onclick="togglePriorityDropdown(this)">Priority ${newIndex}
+          <div class="priority-dropdown">
+            <div class="priority-dropdown-list"></div>
+            <div class="priority-dropdown-footer">
+              <button class="priority-ok-btn" onclick="closePriorityDropdown(this)">OK</button>
+            </div>
+          </div>
+        </div>
+        <div class="more-btn" onclick="toggleMoreMenu(this)"><span></span>
+          <div class="more-menu">
+            <div class="more-menu-item danger" onclick="removeRuleCard(this)">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M5 3V2h4v1M6 6v4M8 6v4M3 3l1 9h6l1-9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Remove rule
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rule-card-body">
+        <div class="rule-row-2">
+          <div class="form-col">
+            <select required onchange="checkSave()">
+              <option value="" disabled selected>Calculation base*</option>
+              <option>Percentage of gross amount</option><option>Percentage of base amount</option>
+              <option>Per piece</option><option>Per night</option>
+            </select>
+          </div>
+          <div class="form-col">
+            <select disabled class="locked-select">
+              <option selected>Included – Tax within price</option>
+            </select>
+          </div>
+        </div>
+        <div class="period-group">
+          <div class="period-block">
+            <div class="period-block-label">Valid period</div>
+            <div class="period-inputs">
+              <div class="input-wrapper"><input type="date" placeholder="From"></div>
+              <div class="input-wrapper"><input type="date" placeholder="To"></div>
+            </div>
+          </div>
+          <div class="period-block">
+            <div class="period-block-label">Stay range</div>
+            <div class="period-inputs">
+              <div class="input-wrapper"><input type="number" min="1" placeholder="From night"></div>
+              <div class="input-wrapper"><input type="number" min="1" placeholder="To night"></div>
+            </div>
+          </div>
+        </div>
+        <div class="calc-type-section">
+          <div class="calc-type-label">Calculation type</div>
+          <div class="form-row"><div class="form-col-half"><div class="input-wrapper" style="position:relative;"><input type="number" placeholder="Percentage per service" oninput="checkSave()"><span class="pct-icon">%</span></div></div></div>
+        </div>
+      </div>`;
+    container.appendChild(card);
+    refreshRuleNumbers(container);
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function removeRuleCard(el) {
+    const card = el.closest('.rule-card');
+    const container = card.closest('.rule-cards-container');
+    // Close any open menus first
+    el.closest('.more-menu')?.classList.remove('open');
+    card.remove();
+    refreshRuleNumbers(container);
+  }
+
+  // ── Priority dropdown ──
+  function togglePriorityDropdown(chip) {
+    const dropdown = chip.querySelector('.priority-dropdown');
+    const isOpen = dropdown.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.priority-dropdown.open').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.more-menu.open').forEach(m => m.classList.remove('open'));
+    if (!isOpen) dropdown.classList.add('open');
+  }
+
+  function closePriorityDropdown(btn) {
+    btn.closest('.priority-dropdown').classList.remove('open');
+  }
+
+  function selectPriority(option, newPriority) {
+    const container = option.closest('.rule-cards-container');
+    const cards = Array.from(container.querySelectorAll('.rule-card'));
+    const currentCard = option.closest('.rule-card');
+    const currentIndex = cards.indexOf(currentCard); // 0-based
+    const targetIndex = newPriority - 1; // 0-based
+
+    if (currentIndex === targetIndex) return;
+
+    // Reorder: remove and insert at target position
+    container.removeChild(currentCard);
+    const siblings = container.querySelectorAll('.rule-card');
+    if (targetIndex >= siblings.length) {
+      container.appendChild(currentCard);
+    } else {
+      container.insertBefore(currentCard, siblings[targetIndex]);
+    }
+    refreshRuleNumbers(container);
+    // Close dropdown
+    option.closest('.priority-dropdown').classList.remove('open');
+  }
+
+  // ── More menu ──
+  function toggleMoreMenu(btn) {
+    const menu = btn.querySelector('.more-menu');
+    const isOpen = menu.classList.contains('open');
+    document.querySelectorAll('.more-menu.open').forEach(m => m.classList.remove('open'));
+    document.querySelectorAll('.priority-dropdown.open').forEach(d => d.classList.remove('open'));
+    if (!isOpen) menu.classList.add('open');
+  }
+
+  // Close dropdowns/menus on outside click
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.priority-chip')) {
+      document.querySelectorAll('.priority-dropdown.open').forEach(d => d.classList.remove('open'));
+    }
+    if (!e.target.closest('.more-btn')) {
+      document.querySelectorAll('.more-menu.open').forEach(m => m.classList.remove('open'));
+    }
+  });
+
+  // ── Tier management ──
+  function addAgeTier(btn) {
+    const panel = btn.closest('.calc-type-panel');
+    const row = document.createElement('div');
+    row.className = 'form-row';
+    row.innerHTML = `
+      <div class="form-col"><label>From age</label><input type="number" placeholder="6"></div>
+      <div class="form-col"><label>To age*</label><input type="number" placeholder="8"></div>
+      <div class="form-col pct-suffix"><label>Tax value *</label><input type="number" placeholder="42"></div>
+      <button class="tier-delete-btn" onclick="removeTier(this)">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M5 3V2h4v1M6 6v4M8 6v4M3 3l1 9h6l1-9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>`;
+    panel.insertBefore(row, btn);
+  }
+
+  function addPriceTier(btn) {
+    const panel = btn.closest('.calc-type-panel');
+    const row = document.createElement('div');
+    row.className = 'form-row';
+    row.innerHTML = `
+      <div class="form-col"><label>From price*</label><input type="number" placeholder="101"></div>
+      <div class="form-col"><label>To price*</label><input type="text" value="No limit" disabled></div>
+      <div class="form-col pct-suffix"><label>Tax value *</label><input type="number" placeholder="10"></div>
+      <button class="tier-delete-btn" onclick="removeTier(this)">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M5 3V2h4v1M6 6v4M8 6v4M3 3l1 9h6l1-9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>`;
+    panel.insertBefore(row, btn);
+  }
+
+  function removeTier(btn) {
+    btn.closest('.form-row').remove();
+  }
+
+  // Init: refresh rule numbers on load
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.rule-cards-container').forEach(c => refreshRuleNumbers(c));
+    document.querySelectorAll('.sub-account-wrapper').forEach(wrapper => {
+      const hasChecked = wrapper.querySelector('.sub-account-option input:checked');
+      if (hasChecked) renderTriggerPills(wrapper);
+    });
+    // Update remove links on all applicability sections
+    document.querySelectorAll('#e-app-rows, #c-app-rows').forEach(updateRemoveLinks);
+
+    // Delegated validation: any input/change inside the create screen re-runs checkSave
+    const createScreen = document.getElementById('screen-empty');
+    if (createScreen) {
+      createScreen.addEventListener('input', checkSave);
+      createScreen.addEventListener('change', checkSave);
+    }
+    // Initial run
+    checkSave();
+  });
+</script>
+</body>
+</html>
