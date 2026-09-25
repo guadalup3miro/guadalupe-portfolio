@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import CaseStudySectionNav from "@/components/case-study-section-nav";
-import CaseStudyPlaceholder from "@/components/case-study-placeholder";
 import PrototypeEmbed from "@/components/prototype-embed";
 import ZoomableImage from "@/components/zoomable-image";
 import { isUnlocked } from "@/lib/tax-engine-gate";
@@ -333,9 +332,12 @@ export default async function ApaleoTaxEnginePage({
                 </Option>
               </div>
               <div className="mt-8">
-                {/* TODO(image): step wizard — one screenshot per step, or a
-                    single composite showing the 4-step progression. */}
-                <CaseStudyPlaceholder label="Image coming soon" />
+                <ZoomableImage
+                  src="/images/apaleo-tax-engine/step-wizard-steps.png"
+                  alt="Step wizard prototype, all four steps: Identity & tax config, Applicability, Calculation rules, and Review & confirm"
+                  width={3968}
+                  height={4323}
+                />
               </div>
 
               <div className="mt-16">
@@ -345,10 +347,19 @@ export default async function ApaleoTaxEnginePage({
                   middle ground between guidance and context.
                 </Option>
               </div>
-              <div className="mt-8">
-                {/* TODO(image): accordion — one collapsed-with-summary state
-                    + one expanded state. */}
-                <CaseStudyPlaceholder label="Image coming soon" />
+              <div className="mt-8 space-y-6">
+                <ZoomableImage
+                  src="/images/apaleo-tax-engine/accordion-expanded.png"
+                  alt="Accordion prototype with the first section expanded and the rest collapsed"
+                  width={1960}
+                  height={2457}
+                />
+                <ZoomableImage
+                  src="/images/apaleo-tax-engine/accordion-summaries.png"
+                  alt="Accordion prototype with the first two sections collapsed into live summaries and Calculation rules open"
+                  width={1960}
+                  height={2220}
+                />
               </div>
 
               <div className="mt-16">
